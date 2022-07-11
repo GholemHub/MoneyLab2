@@ -10,10 +10,8 @@ import com.gholem.moneylab.features.splashScreen.viewmodel.SplashViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
-
 
     private val viewModel: SplashViewModel by viewModels()
 
@@ -37,7 +35,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             when (uiState) {
                 SplashViewModel.UiState.Loading -> {
                     getViewBinding().progressBar.visibility = View.VISIBLE
-
                 }
                 SplashViewModel.UiState.Loaded -> {
                     getViewBinding().progressBar.visibility = View.GONE
@@ -48,5 +45,4 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             }
         }
     }
-
 }

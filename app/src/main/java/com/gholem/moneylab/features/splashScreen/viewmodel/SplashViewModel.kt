@@ -25,7 +25,6 @@ class SplashViewModel : ViewModel() {
         _uiState.send(UiState.NavigateToNext)
     }
 
-
     fun goToNexScreen() {
         navigation.emit(SplashNavigationEvent.ToNextScreen)
     }

@@ -1,12 +1,12 @@
 package com.gholem.moneylab.main
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity(){
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
     }
 }

@@ -10,27 +10,25 @@
         android:name="com.gholem.moneylab.features.template.TemplateFragment"
         android:label="template_fragment"
         tools:layout="@layout/fragment_template">
+
         <!--<action
             android:id="@+id/action_to_template_fragment"
-            app:destination="@id/template_fragment"
+            app:destination="@id/template_fragment">
 
-            >
-            <argument android:name="age" app:argType="integer">
-
-            </argument>
-
+            <argument
+                android:name="age"
+                app:argType="integer"/>
         </action>-->
     </fragment>
 
     <fragment
         android:id="@+id/splash_fragment"
         android:name="com.gholem.moneylab.features.splashScreen.SplashFragment"
-        android:label="template_fragment"
+        android:label="splash_fragment"
         tools:layout="@layout/fragment_splash">
 
         <action
             android:id="@+id/action_to_template_fragment"
-            app:destination="@id/template_fragment"
-        />
+            app:destination="@id/template_fragment" />
     </fragment>
 </navigation>
