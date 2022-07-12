@@ -6,12 +6,20 @@
         <entry key="..\:/111/MoneyLab/app/src/main/res/layout/activity_main.xml" value="0.16799999999999998" />
         <entry key="..\:/111/MoneyLab/app/src/main/res/layout/fragment_splash.xml" value="0.1" />
         <entry key="..\:/111/MoneyLab/app/src/main/res/layout/fragment_template.xml" value="0.1" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/drawable/ic_logo1.xml" value="0.1" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/layout/fragment_add.xml" value="0.18802083333333333" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/layout/fragment_chart.xml" value="0.18541666666666667" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/layout/fragment_splash.xml" value="0.35280797101449274" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/layout/fragment_template.xml" value="0.3625" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/menu/bottom_menu_navigation.xml" value="0.18802083333333333" />
+        <entry key="..\:/ALEX/KOTLIN/MoneyLab2/app/src/main/res/menu/bottom_navigation.xml" value="0.3625" />
         <entry key="..\:/Users/barto/AndroidStudioProjects/MoneyLab/app/src/main/res/layout/activity_main.xml" value="0.41770833333333335" />
         <entry key="..\:/Users/barto/AndroidStudioProjects/MoneyLab/app/src/main/res/layout/fragment_template.xml" value="0.403125" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
