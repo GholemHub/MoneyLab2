@@ -1,9 +1,11 @@
 package com.gholem.moneylab.features.splashScreen.viewmodel
 
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
+import com.gholem.moneylab.main.MainActivity.Companion.bindingMain
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -21,8 +23,17 @@ class SplashViewModel : ViewModel() {
         _uiState.send(UiState.Loading)
         delay(3000)
         _uiState.send(UiState.Loaded)
+
         delay(1000)
         _uiState.send(UiState.NavigateToNext)
+
+        changeMenu()
+    }
+
+    private fun changeMenu() {
+        bindingMain.bottomAppBar.visibility = View.VISIBLE
+        bindingMain.bnv.visibility = View.VISIBLE
+        bindingMain.fab.visibility = View.VISIBLE
     }
 
     fun goToNexScreen() {

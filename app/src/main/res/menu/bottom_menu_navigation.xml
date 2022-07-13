@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/chartFragment"
+        android:title="Charts"
+        android:icon="@drawable/ic_baseline_bar_chart_24"/>
+
+    <item android:id="@+id/templateFragment"
+        android:title="Add"
+        />
+
+    <item android:id="@+id/addFragment"
+        android:title="Planing"
+        android:icon="@drawable/ic_baseline_data_saver_off_24"/>
+
+
+</menu>
