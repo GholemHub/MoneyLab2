@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.splashScreen
 
-import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.arch.base.BaseFragment
@@ -34,13 +34,13 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         viewModel.uiState.observeWithLifecycle(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 SplashViewModel.UiState.Loading -> {
-                    getViewBinding().progressBar.visibility = View.VISIBLE
+                    getViewBinding().splashProgressBar.isVisible = true
                 }
                 SplashViewModel.UiState.Loaded -> {
-                    getViewBinding().progressBar.visibility = View.GONE
+                    getViewBinding().splashProgressBar.isVisible = false
                 }
-                SplashViewModel.UiState.NavigateToNext -> {
-                    viewModel.goToNexScreen()
+                SplashViewModel.UiState.NavigateToDashboard -> {
+                    viewModel.goToDashboard()
                 }
             }
         }
