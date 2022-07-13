@@ -1,18 +1,22 @@
 package com.gholem.moneylab.features.splashScreen.viewmodel
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
+import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
-import com.gholem.moneylab.main.MainActivity.Companion.bindingMain
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashViewModel : ViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus
+) : ViewModel() {
 
     private val _uiState = Channel<UiState>(Channel.BUFFERED)
     val uiState: Flow<UiState> = _uiState.receiveAsFlow()
@@ -21,29 +25,24 @@ class SplashViewModel : ViewModel() {
 
     fun init() = viewModelScope.launch {
         _uiState.send(UiState.Loading)
-        delay(3000)
-        _uiState.send(UiState.Loaded)
-
-        delay(1000)
-        _uiState.send(UiState.NavigateToNext)
-
-        changeMenu()
+        delay(3000) { _uiState.send(UiState.Loaded) }
+        delay(1000) { _uiState.send(UiState.NavigateToDashboard) }
     }
 
-    private fun changeMenu() {
-        bindingMain.bottomAppBar.visibility = View.VISIBLE
-        bindingMain.bnv.visibility = View.VISIBLE
-        bindingMain.fab.visibility = View.VISIBLE
+    fun goToDashboard() {
+        navigation.emit(SplashNavigationEvent.ToDashboard)
+        bottomNavigationVisibilityBus.changeVisibility(true)
     }
 
-    fun goToNexScreen() {
-        navigation.emit(SplashNavigationEvent.ToNextScreen)
+    private suspend fun delay(timeMillis: Long, action: suspend () -> Unit) {
+        delay(timeMillis)
+        action.invoke()
     }
 
     sealed class UiState() {
 
         object Loading : UiState()
         object Loaded : UiState()
-        object NavigateToNext : UiState()
+        object NavigateToDashboard : UiState()
     }
 }
