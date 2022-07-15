@@ -16,10 +16,10 @@ class TemplateFragment : BaseFragment<FragmentTemplateBinding, TemplateViewModel
 
     lateinit var templateNavigation: TemplateNavigation
 
-    override fun constructViewBinding(): ViewBinding =
+    override fun constructViewBinding(): FragmentTemplateBinding =
         FragmentTemplateBinding.inflate(layoutInflater)
 
-    override fun init(viewBinding: ViewBinding) {
+    override fun init(viewBinding: FragmentTemplateBinding) {
         viewModel.getTemplates()
         observeData()
     }

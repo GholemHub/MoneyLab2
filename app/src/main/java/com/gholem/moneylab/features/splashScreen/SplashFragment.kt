@@ -17,10 +17,10 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
     lateinit var splashNavigation: SplashNavigation
 
-    override fun constructViewBinding(): ViewBinding =
+    override fun constructViewBinding(): FragmentSplashBinding =
         FragmentSplashBinding.inflate(layoutInflater)
 
-    override fun init(viewBinding: ViewBinding) {
+    override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
     }
