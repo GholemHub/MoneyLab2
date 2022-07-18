@@ -1,17 +1,16 @@
 package com.gholem.moneylab.features.add.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
+import com.gholem.moneylab.databinding.ItemCategoryBinding
+import com.gholem.moneylab.databinding.ItemNewTransactionBinding
+import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddNextTransaction
-import okhttp3.internal.notify
+import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 
-class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionsAdapter.ViewHolder>() {
+class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private var adapterData = mutableListOf<AddNextTransaction>()
         set(value) {
@@ -19,31 +18,50 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionsAdapter.ViewH
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = when (viewType) {
-            TYPE_CATEGORY -> R.layout.item_category
-            TYPE_TRANSACTION -> R.layout.item_transaction
-            TYPE_NEWTRANSACTION -> R.layout.item_new_transaction
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
+        return when (viewType) {
+            R.layout.item_category -> AddTransactionViewHolder.CategoryViewHolder(
+                ItemCategoryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            R.layout.item_transaction -> AddTransactionViewHolder.TransactionViewHolder(
+                ItemTransactionBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            R.layout.item_new_transaction -> AddTransactionViewHolder.NewTransactionViewHolder(
+                ItemNewTransactionBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
             else -> throw IllegalArgumentException("Invalid view type")
         }
-
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(layout, parent, false)
-        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(adapterData[position])
+    override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
+        when (holder) {
+            is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.Category)
+            is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.Transaction)
+            is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.NewTransaction)
+        }
     }
 
     override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
-            is AddNextTransaction.Category -> TYPE_CATEGORY
-            is AddNextTransaction.Transaction -> TYPE_TRANSACTION
-            else -> TYPE_NEWTRANSACTION
+            is AddNextTransaction.Category -> R.layout.item_category
+            is AddNextTransaction.Transaction -> R.layout.item_transaction
+            is AddNextTransaction.NewTransaction -> R.layout.item_new_transaction
+
+            else -> throw IllegalArgumentException("Invalid view type getItemView")
         }
     }
 
@@ -52,34 +70,5 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionsAdapter.ViewH
             clear()
             addAll(data)
         }
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private fun bindCategory(item: AddNextTransaction.Category) {
-            itemView.findViewById<TextView>(R.id.name_of_category).text = item.name
-        }
-
-        private fun bindTransaction(item: AddNextTransaction.Transaction) {
-            itemView.findViewById<EditText>(R.id.amount_category).hint = item.amount.toString()
-            itemView.findViewById<Button>(R.id.set_data_btn).text = item.data
-        }
-
-        private fun bindNewTransaction(item: AddNextTransaction.NewTransaction) {
-            itemView.findViewById<Button>(R.id.create_new_transaction_btn).text = item.add
-        }
-
-        fun bind(dataModel: AddNextTransaction) {
-            when (dataModel) {
-                is AddNextTransaction.Category -> bindCategory(dataModel)
-                is AddNextTransaction.Transaction -> bindTransaction(dataModel)
-                is AddNextTransaction.NewTransaction -> bindNewTransaction(dataModel)
-            }
-        }
-    }
-
-    companion object {
-        private const val TYPE_CATEGORY = 0
-        private const val TYPE_TRANSACTION = 1
-        private const val TYPE_NEWTRANSACTION = 2
     }
 }
