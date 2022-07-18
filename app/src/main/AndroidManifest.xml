@@ -14,12 +14,6 @@ package="com.gholem.moneylab">
     android:theme="@style/Theme.MoneyLab"
     tools:targetApi="31">
 
-
-    <activity
-        android:name="com.gholem.moneylab.features.add.activity.AddActivity"
-        android:exported="false"
-    />
-
     <activity
         android:name=".main.MainActivity"
         android:exported="true"

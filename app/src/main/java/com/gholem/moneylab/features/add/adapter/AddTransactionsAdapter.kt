@@ -5,15 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
-import com.gholem.moneylab.domain.model.AddFragmentDataModel
+import com.gholem.moneylab.domain.model.AddNextTransaction
+import okhttp3.internal.notify
 
-class TransactionsAddAdapter : RecyclerView.Adapter<TransactionsAddAdapter.ViewHolder>() {
+class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionsAdapter.ViewHolder>() {
 
-    private val adapterData = mutableListOf<AddFragmentDataModel>()
+    private var adapterData = mutableListOf<AddNextTransaction>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = when (viewType) {
@@ -37,13 +41,13 @@ class TransactionsAddAdapter : RecyclerView.Adapter<TransactionsAddAdapter.ViewH
 
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
-            is AddFragmentDataModel.Category -> TYPE_CATEGORY
-            is AddFragmentDataModel.Transaction -> TYPE_TRANSACTION
+            is AddNextTransaction.Category -> TYPE_CATEGORY
+            is AddNextTransaction.Transaction -> TYPE_TRANSACTION
             else -> TYPE_NEWTRANSACTION
         }
     }
 
-    fun setData(data: List<AddFragmentDataModel>) {
+    fun setData(data: List<AddNextTransaction>) {
         adapterData.apply {
             clear()
             addAll(data)
@@ -51,24 +55,24 @@ class TransactionsAddAdapter : RecyclerView.Adapter<TransactionsAddAdapter.ViewH
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private fun bindCategory(item: AddFragmentDataModel.Category) {
+        private fun bindCategory(item: AddNextTransaction.Category) {
             itemView.findViewById<TextView>(R.id.name_of_category).text = item.name
         }
 
-        private fun bindTransaction(item: AddFragmentDataModel.Transaction) {
+        private fun bindTransaction(item: AddNextTransaction.Transaction) {
             itemView.findViewById<EditText>(R.id.amount_category).hint = item.amount.toString()
             itemView.findViewById<Button>(R.id.set_data_btn).text = item.data
         }
 
-        private fun bindNewTransaction(item: AddFragmentDataModel.NewTransaction) {
+        private fun bindNewTransaction(item: AddNextTransaction.NewTransaction) {
             itemView.findViewById<Button>(R.id.create_new_transaction_btn).text = item.add
         }
 
-        fun bind(dataModel: AddFragmentDataModel) {
+        fun bind(dataModel: AddNextTransaction) {
             when (dataModel) {
-                is AddFragmentDataModel.Category -> bindCategory(dataModel)
-                is AddFragmentDataModel.Transaction -> bindTransaction(dataModel)
-                is AddFragmentDataModel.NewTransaction -> bindNewTransaction(dataModel)
+                is AddNextTransaction.Category -> bindCategory(dataModel)
+                is AddNextTransaction.Transaction -> bindTransaction(dataModel)
+                is AddNextTransaction.NewTransaction -> bindNewTransaction(dataModel)
             }
         }
     }

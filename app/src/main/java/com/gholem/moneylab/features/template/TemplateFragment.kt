@@ -1,7 +1,6 @@
 package com.gholem.moneylab.features.template
 
 import androidx.fragment.app.viewModels
-import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentTemplateBinding
 import com.gholem.moneylab.features.template.navigation.TemplateNavigation
