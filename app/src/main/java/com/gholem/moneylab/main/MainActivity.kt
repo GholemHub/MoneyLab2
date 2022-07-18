@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     //TODO BackBtn to return into navigation
     override fun onBackPressed() {
-
         super.onBackPressed()
     }
 
@@ -70,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationFab.setOnClickListener {
             binding.bottomNavigationView.selectedItemId = R.id.add_navigation
             bottomNavigationVisibilityBus.changeVisibility(false)
-
         }
     }
 

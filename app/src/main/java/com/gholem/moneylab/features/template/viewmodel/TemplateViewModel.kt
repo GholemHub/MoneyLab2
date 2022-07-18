@@ -44,7 +44,6 @@ class TemplateViewModel @Inject constructor(
     }
 
     sealed class UiState {
-
         object Empty : UiState()
         object Loading : UiState()
         data class Loaded(val templateModelList: List<TemplateModel>) : UiState()

@@ -11,14 +11,10 @@ import javax.inject.Inject
 class TemplateNavigation @Inject constructor(
     private val navControllerWrapper: NavControllerWrapper
 ) : NavigationController<TemplateNavigationEvent> {
-
     override fun navigate(event: TemplateNavigationEvent) {
         when (event) {
-
             //ToNextScreen -> navControllerWrapper.navigate(actionToNextFragment())
-
             //ToNextScreen -> navControllerWrapper.navigate(actionToNextFragment())
-
             ToPreviousScreen -> navControllerWrapper.navigateUp()
             ToErrorScreen -> {}
             //is TemplateNavigationEvent.TimplateData -> navControllerWrapper.navigate(ectionToTimplateData(event.age))

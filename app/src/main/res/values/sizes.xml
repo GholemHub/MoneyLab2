@@ -11,4 +11,8 @@
 
     <dimen name="activity_add_layout_margin">4dp</dimen>
 
+    <dimen name="image_add_fragment_size">60dp</dimen>
+    <dimen name="app_text_size">30sp</dimen>
+    <dimen name="margin_recycler_add_fragment">4dp</dimen>
+
 </resources>
