@@ -20,17 +20,14 @@ class AddViewModel @Inject constructor(
         bottomNavigationVisibilityBus.changeVisibility(false)
     }
 
-
     override fun onCleared() {
         bottomNavigationVisibilityBus.changeVisibility(true)
         super.onCleared()
     }
 
     fun getMockData(): List<AddNextTransaction> = listOf(
-        AddNextTransaction.Category(1, "sdf", 1),
+        AddNextTransaction.Category(1, "sd11f", 1),
         AddNextTransaction.Transaction(10, "01.02.2000"),
-        AddNextTransaction.Transaction(120, "01.12.2000"),
-        AddNextTransaction.Transaction(42, "02.02.2000"),
         AddNextTransaction.NewTransaction("Add")
     )
 
