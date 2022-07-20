@@ -1,17 +1,17 @@
 package com.gholem.moneylab.features.add.adapter
 
-import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddNextTransaction
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber.d
-import java.util.*
+import kotlinx.coroutines.launch
 
 class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() {
 
@@ -34,17 +34,20 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         dataSetListener = listener
     }
 
-    private var adapterData = mutableListOf<AddNextTransaction>()
+    private var listOfTransactions = mutableListOf<AddNextTransaction>()
+        /*
         set(value) {
             field = value
             notifyDataSetChanged()
-        }
+        }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
 
         this.setOnItemClickAddListener(object : AddTransactionsAdapter.OnItemClickAddListener {
             override fun onItemClick(position: Int) {
                 //how to notify changes.
+
+
                 swap(AddNextTransaction.Transaction(12, "dada"))
             }
         })
@@ -84,16 +87,16 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
         when (holder) {
-            is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.Category)
-            is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.Transaction)
-            is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(adapterData[position] as AddNextTransaction.NewTransaction)
+            is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(listOfTransactions[position] as AddNextTransaction.Category)
+            is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(listOfTransactions[position] as AddNextTransaction.Transaction)
+            is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(listOfTransactions[position] as AddNextTransaction.NewTransaction)
         }
     }
 
-    override fun getItemCount(): Int = adapterData.size
+    override fun getItemCount(): Int = listOfTransactions.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
+        return when (listOfTransactions[position]) {
             is AddNextTransaction.Category -> R.layout.item_category
             is AddNextTransaction.Transaction -> R.layout.item_transaction
             is AddNextTransaction.NewTransaction -> R.layout.item_new_transaction
@@ -102,16 +105,22 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         }
     }
 
+    fun setDataTransactionModel(data: List<TransactionModel>){
+        data.forEach {
+            swap(AddNextTransaction.Transaction(it.amount, it.data))
+        }
+
+    }
     fun setData(data: List<AddNextTransaction>) {
-        adapterData.apply {
+        listOfTransactions.apply {
             clear()
             addAll(data)
         }
     }
 
     fun swap(new: AddNextTransaction) {
-        adapterData.add(new)
-        adapterData[adapterData.size - 1] = adapterData[adapterData.size - 2]
-        adapterData[adapterData.size - 2] = new
+        listOfTransactions.add(new)
+        listOfTransactions[listOfTransactions.size - 1] = listOfTransactions[listOfTransactions.size - 2]
+        listOfTransactions[listOfTransactions.size - 2] = new
     }
 }
