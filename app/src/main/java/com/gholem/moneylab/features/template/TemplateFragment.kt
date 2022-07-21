@@ -1,7 +1,6 @@
 package com.gholem.moneylab.features.template
 
 import androidx.fragment.app.viewModels
-import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentTemplateBinding
 import com.gholem.moneylab.features.template.navigation.TemplateNavigation
@@ -16,10 +15,10 @@ class TemplateFragment : BaseFragment<FragmentTemplateBinding, TemplateViewModel
 
     lateinit var templateNavigation: TemplateNavigation
 
-    override fun constructViewBinding(): ViewBinding =
+    override fun constructViewBinding(): FragmentTemplateBinding =
         FragmentTemplateBinding.inflate(layoutInflater)
 
-    override fun init(viewBinding: ViewBinding) {
+    override fun init(viewBinding: FragmentTemplateBinding) {
         viewModel.getTemplates()
         observeData()
     }
