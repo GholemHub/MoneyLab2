@@ -8,11 +8,13 @@ import com.gholem.moneylab.repository.storage.MoneyLabDatabase.Companion.DATABAS
 import com.gholem.moneylab.repository.storage.dao.TemplateDao
 import com.gholem.moneylab.repository.storage.dao.TransactionDao
 import com.gholem.moneylab.repository.storage.entity.TemplateEntity
+import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 
 @Database(
     version = DATABASE_VERSION,
     entities = [
-        TemplateEntity::class
+        TemplateEntity::class,
+        TransactionEntity::class
     ]
 )
 abstract class MoneyLabDatabase : RoomDatabase() {

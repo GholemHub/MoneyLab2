@@ -4,7 +4,7 @@ import com.gholem.moneylab.arch.nav.NavControllerWrapper
 import com.gholem.moneylab.arch.nav.NavigationController
 import javax.inject.Inject
 
-class AddNavigation @Inject constructor(
+class AddTransactionNavigation @Inject constructor(
     private val navControllerWrapper: NavControllerWrapper
 ): NavigationController<AddNavigationEvent> {
 

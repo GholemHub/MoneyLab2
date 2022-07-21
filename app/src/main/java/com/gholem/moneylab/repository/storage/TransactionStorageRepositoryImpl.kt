@@ -9,7 +9,7 @@ import javax.inject.Inject
 class TransactionStorageRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao
 ) : TransactionStorageRepository {
-    val readAllData: LiveData<List<TransactionModel>> = transactionDao.getAll()
+    //val readAllData: LiveData<List<TransactionModel>> = transactionDao.getAll()
 
     override suspend fun insertTransactionModel(transactionModel: TransactionModel) {
         transactionDao.insert(TransactionEntity.from(transactionModel))

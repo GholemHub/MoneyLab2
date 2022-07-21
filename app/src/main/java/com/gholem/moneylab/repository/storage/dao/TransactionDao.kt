@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gholem.moneylab.domain.model.AddNextTransaction
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 

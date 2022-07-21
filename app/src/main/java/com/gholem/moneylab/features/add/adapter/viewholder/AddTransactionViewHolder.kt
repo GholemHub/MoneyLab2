@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.AddNextTransaction
+import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.AddTransactionsAdapter
 import java.util.*
 
@@ -18,7 +18,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
 
     class CategoryViewHolder(private val binding: ItemCategoryBinding) :
         AddTransactionViewHolder(binding) {
-        fun bind(category: AddNextTransaction.Category) {
+        fun bind(category: AddTransactionItem.Category) {
             binding.nameOfCategory.text = category.name
         }
     }
@@ -37,7 +37,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
                 }
             }
         }
-            fun bind(transaction: AddNextTransaction.Transaction) {
+            fun bind(transaction: AddTransactionItem.Transaction) {
                 binding.setDataBtn.text = transaction.data
             }
         }
@@ -53,8 +53,8 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
                     listener.onItemClick(adapterPosition)
                 }
             }
-            fun bind(newTransaction: AddNextTransaction.NewTransaction) {
-                binding.createNewTransactionBtn.text = newTransaction.add
+            fun bind(newTransaction: AddTransactionItem.NewTransaction) {
+
             }
         }
 }
