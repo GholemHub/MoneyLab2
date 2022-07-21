@@ -15,6 +15,6 @@ class TransactionStorageRepositoryImpl @Inject constructor(
         transactionDao.insert(TransactionEntity.from(transactionModel))
     }
 
-    override suspend fun getAll(): LiveData<List<TransactionModel>> =
+    override suspend fun getAll(): List<TransactionModel> =
         transactionDao.getAll()
 }
