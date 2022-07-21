@@ -39,6 +39,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
+        dataAdapter.setData(viewModel.getMockData())
     }
 
     override fun setupNavigation() {
