@@ -25,12 +25,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupBottomNavigation()
 
-        showBottomNavigation(savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false)
+        showBottomNavigation(
+            savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
+        )
     }
 
+    //Can change stuff when screen is rotating(or when screen is reloaded)
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY, binding.bottomNavigationView.isVisible)
+        outState.putBoolean(
+            BOTTOM_NAVIGATION_VISIBILITY_KEY,
+            binding.bottomNavigationView.isVisible
+        )
+    }
+
+    //TODO BackBtn to return into navigation
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     private fun setupBottomNavigation() {
@@ -44,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupFabButton()
     }
 
+
     private fun setupBottomNavigationVisibility() {
         bottomNavigationVisibilityBus.isVisible.observe(this, ::showBottomNavigation)
     }
@@ -56,11 +68,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupFabButton() {
         binding.bottomNavigationFab.setOnClickListener {
             binding.bottomNavigationView.selectedItemId = R.id.add_navigation
+            bottomNavigationVisibilityBus.changeVisibility(false)
         }
     }
 
     companion object {
-
         private const val BOTTOM_NAVIGATION_VISIBILITY_KEY = "BOTTOM_NAVIGATION_VISIBILITY_KEY"
     }
 }

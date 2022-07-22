@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="purple_200">@color/purple_seren</color>
+    <color name="purple_500">@color/purple</color>
+    <color name="purple_700">@color/purple_blue</color>
+
+    <color name="teal_200">@color/cyan</color>
+    <color name="teal_700">@color/cyan_gray</color>
+
+    <color name="black">@color/deep_black</color>
+    <color name="white">@color/deep_white</color>
+
+    <color name="silver">@color/light_silver</color>
+
+    <!--Palette White/Black-->
+    <color name="deep_black">#FF000000</color>
+    <color name="deep_white">#FFFFFFFF</color>
+    <!--Palette purple -->
+    <color name="purple_seren">#FFBB86FC</color>
+    <color name="purple">#FF6200EE</color>
+    <color name="purple_blue">#FF3700B3</color>
+    <!--Palette cyan-->
+    <color name="cyan">#FF03DAC5</color>
+    <color name="cyan_gray">#FF018786</color>
+    <!--Palette gray-->
+    <color name="light_silver">#E4E4E4</color>
 </resources>

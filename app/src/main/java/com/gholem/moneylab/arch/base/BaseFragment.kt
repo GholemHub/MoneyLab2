@@ -29,7 +29,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = constructViewBinding()
-        viewBinding?.let { init(it) }
+        (viewBinding as? VB)?.let { init(it) }
         return viewBinding?.root
     }
 
@@ -45,7 +45,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>() : Fragment() {
         navControllerWrapper.init(this)
     }
 
-    abstract fun constructViewBinding(): ViewBinding
-    abstract fun init(viewBinding: ViewBinding)
+    abstract fun constructViewBinding(): VB
+    abstract fun init(viewBinding: VB)
     abstract fun setupNavigation()
 }
