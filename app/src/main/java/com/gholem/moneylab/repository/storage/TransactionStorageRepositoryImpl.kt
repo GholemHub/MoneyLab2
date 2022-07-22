@@ -1,6 +1,5 @@
 package com.gholem.moneylab.repository.storage
 
-import androidx.lifecycle.LiveData
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.dao.TransactionDao
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.gholem.moneylab.repository.storage.MoneyLabDatabase
 import com.gholem.moneylab.repository.storage.dao.TemplateDao
+import com.gholem.moneylab.repository.storage.dao.TransactionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +28,8 @@ object StorageModule {
     @Provides
     fun provideTemplateDao(database: MoneyLabDatabase): TemplateDao =
         database.templateDao()
+
+    @Provides
+    fun provideTransactionDao(database: MoneyLabDatabase): TransactionDao =
+        database.transactionDao()
 }
