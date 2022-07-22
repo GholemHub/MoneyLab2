@@ -115,8 +115,6 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         })
     }
 
-
-
     fun setData(data: List<AddTransactionItem>) {
         adapterData.apply {
             clear()

@@ -15,7 +15,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val viewModel: AddTransactionViewModel by viewModels()
 
     lateinit var addNavigation: AddTransactionNavigation
-    lateinit var adapter: AddTransactionsAdapter
 
     override fun constructViewBinding(): FragmentAddBinding =
         FragmentAddBinding.inflate(layoutInflater)
@@ -23,7 +22,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val dataAdapter: AddTransactionsAdapter by lazy {
         AddTransactionsAdapter()
     }
-
 
     override fun init(viewBinding: FragmentAddBinding) {
         viewModel.init()
@@ -34,6 +32,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 this.adapter = dataAdapter
             }
         dataAdapter.setData(viewModel.getMockData())
+        //viewModel.getTransactions()
     }
 
     override fun setupNavigation() {

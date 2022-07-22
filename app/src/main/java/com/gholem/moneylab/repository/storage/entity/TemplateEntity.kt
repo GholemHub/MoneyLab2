@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.gholem.moneylab.domain.model.TemplateModel
 
-@Entity
+@Entity(tableName = "template_table")
 data class TemplateEntity(
     @PrimaryKey val name: String,
     val count: Int,

@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.databinding.ActivityMainBinding
+import com.gholem.moneylab.domain.model.TransactionModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var bottomNavigationVisibilityBus: BottomNavigationVisibilityBus
+    private lateinit var transactionModel: TransactionModel
 
     private lateinit var binding: ActivityMainBinding
 
@@ -24,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBottomNavigation()
+
+        //TODO ROOM
+        //transactionModel = ViewModelProvider(this).get(AddViewModel::)
 
         showBottomNavigation(
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
@@ -54,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigationVisibility()
         setupFabButton()
     }
-
 
     private fun setupBottomNavigationVisibility() {
         bottomNavigationVisibilityBus.isVisible.observe(this, ::showBottomNavigation)
