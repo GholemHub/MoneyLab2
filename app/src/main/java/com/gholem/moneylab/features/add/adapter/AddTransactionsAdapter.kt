@@ -123,9 +123,9 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
             AddTransactionsAdapter.OnItemClickDoneListener {
             override fun onItemClick(position: Int) {
                 var category = adapterData[0] as AddTransactionItem.Category
-                for (i in 1..position) {
+                for (i in 1..position-1) {
 
-                    var transaction = adapterData[position] as AddTransactionItem.Transaction
+                    var transaction = adapterData[i] as AddTransactionItem.Transaction
 
                     listNewTransactions.add(
                         TransactionModel(
@@ -138,6 +138,7 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
                     )
                 }
                 //TODO Where and how to put the data into room(In adapter or in fragment)
+
             }
         })
     }
