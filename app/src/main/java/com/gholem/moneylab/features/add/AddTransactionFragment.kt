@@ -25,14 +25,15 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
     override fun init(viewBinding: FragmentAddBinding) {
         viewModel.init()
+
+        dataAdapter.setData(viewModel.getMockData())
+
         viewBinding.transactionsRecyclerView
             .apply {
                 layoutManager = LinearLayoutManager(context)
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
-        dataAdapter.setData(viewModel.getMockData())
-        //viewModel.getTransactions()
     }
 
     override fun setupNavigation() {

@@ -8,15 +8,23 @@ import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddTransactionItem
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 
 class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private lateinit var addListener: OnItemClickAddListener
+    private lateinit var doneListener: OnItemClickDoneListener
     private lateinit var dataSetListener: OnItemClickDataSetListener
+
+    var listNewTransactions: MutableList<TransactionModel> = mutableListOf()
 
     //Where should be interfaces in Adapter in Viewmodel or in ViewHolder
     interface OnItemClickAddListener {
+        fun onItemClick(position: Int)
+    }
+
+    interface OnItemClickDoneListener {
         fun onItemClick(position: Int)
     }
 
@@ -33,6 +41,7 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         ClickListenerOfAddListener()
         ClickListenerOfDataSetListener()
+        ClickDoneListener()
 
         return SetTypeAddTransactionViewHolder(parent, viewType)
     }
@@ -52,7 +61,6 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
             is AddTransactionItem.Category -> R.layout.item_category
             is AddTransactionItem.Transaction -> R.layout.item_transaction
             is AddTransactionItem.NewTransaction -> R.layout.item_new_transaction
-
             else -> throw IllegalArgumentException("Invalid view type getItemView")
         }
     }
@@ -83,7 +91,8 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
                     parent,
                     false
                 ),
-                addListener
+                addListener,
+                doneListener
             )
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -91,6 +100,10 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
 
     fun setOnItemClickAddListener(listener: OnItemClickAddListener) {
         addListener = listener
+    }
+
+    fun setOnItemClickDoneListener(listener: OnItemClickDoneListener) {
+        doneListener = listener
     }
 
     fun setOnItemClickDataSetListener(listener: OnItemClickDataSetListener) {
@@ -105,11 +118,35 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         })
     }
 
+    private fun ClickDoneListener() {
+        this.setOnItemClickDoneListener(object :
+            AddTransactionsAdapter.OnItemClickDoneListener {
+            override fun onItemClick(position: Int) {
+                var category = adapterData[0] as AddTransactionItem.Category
+                for (i in 1..position) {
+
+                    var transaction = adapterData[position] as AddTransactionItem.Transaction
+
+                    listNewTransactions.add(
+                        TransactionModel(
+                            System.currentTimeMillis().toInt(),
+                            category.name,
+                            category.image,
+                            transaction.amount,
+                            transaction.data
+                        )
+                    )
+                }
+                //TODO Where and how to put the data into room(In adapter or in fragment)
+            }
+        })
+    }
+
     private fun ClickListenerOfAddListener() {
         this.setOnItemClickAddListener(object : AddTransactionsAdapter.OnItemClickAddListener {
             override fun onItemClick(position: Int) {
                 val startPosition = adapterData.size - 1
-                adapterData.add(startPosition, AddTransactionItem.Transaction(12, "dada"))
+                adapterData.add(startPosition, AddTransactionItem.Transaction(0, "Set Date"))
                 notifyItemRangeChanged(startPosition, 2)
             }
         })
@@ -121,11 +158,5 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
             addAll(data)
             notifyDataSetChanged()
         }
-    }
-
-    fun swap(new: AddTransactionItem) {
-        adapterData.add(new)
-        adapterData[adapterData.size - 1] = adapterData[adapterData.size - 2]
-        adapterData[adapterData.size - 2] = new
     }
 }

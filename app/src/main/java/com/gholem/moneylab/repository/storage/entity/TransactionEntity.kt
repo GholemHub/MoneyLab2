@@ -10,15 +10,15 @@ data class TransactionEntity(
     val nameCategory: String,
     val image: Int,
     val amount: Int,
-    val data: String
+    val date: String
 ) {
 
     fun toModel(): TransactionModel = TransactionModel(
-        id,
-        nameCategory,
-        image,
-        amount,
-        data
+        id = id,
+        nameCategory = nameCategory,
+        image = image,
+        amount = amount,
+        date = date
     )
 
     companion object {
@@ -28,7 +28,7 @@ data class TransactionEntity(
                 transaction.nameCategory,
                 transaction.image,
                 transaction.amount,
-                transaction.data
+                transaction.date
             )
     }
 }

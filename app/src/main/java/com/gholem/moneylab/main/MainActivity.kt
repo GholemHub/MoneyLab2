@@ -26,10 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBottomNavigation()
-
-        //TODO ROOM
-        //transactionModel = ViewModelProvider(this).get(AddViewModel::)
-
         showBottomNavigation(
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
         )

@@ -15,7 +15,6 @@ import java.util.*
 sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-
     class CategoryViewHolder(private val binding: ItemCategoryBinding) :
         AddTransactionViewHolder(binding) {
         fun bind(category: AddTransactionItem.Category) {
@@ -23,10 +22,11 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.N)
-    class TransactionViewHolder(private val binding: ItemTransactionBinding,
-                                listener: AddTransactionsAdapter.OnItemClickDataSetListener) :
+    class TransactionViewHolder(
+        private val binding: ItemTransactionBinding,
+        listener: AddTransactionsAdapter.OnItemClickDataSetListener
+    ) :
         AddTransactionViewHolder(binding) {
         init {
             binding.setDataBtn.setOnClickListener {
@@ -37,24 +37,31 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
                 }
             }
         }
-            fun bind(transaction: AddTransactionItem.Transaction) {
-                binding.setDataBtn.text = transaction.data
+
+        fun bind(transaction: AddTransactionItem.Transaction) {
+            binding.setDataBtn.text = transaction.data
+        }
+    }
+
+    class NewTransactionViewHolder(
+        private val binding: ItemNewTransactionBinding,
+        addListener: AddTransactionsAdapter.OnItemClickAddListener,
+        doneListener: AddTransactionsAdapter.OnItemClickDoneListener
+    ) :
+        AddTransactionViewHolder(binding) {
+
+        init {
+            binding.createNewTransactionBtn.setOnClickListener {
+                addListener.onItemClick(adapterPosition)
+            }
+            binding.doneBtn.setOnClickListener {
+                doneListener.onItemClick(adapterPosition)
             }
         }
 
-        class NewTransactionViewHolder(
-            private val binding: ItemNewTransactionBinding,
-            listener: AddTransactionsAdapter.OnItemClickAddListener
-        ) :
-            AddTransactionViewHolder(binding) {
-
-            init {
-                binding.createNewTransactionBtn.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
-                }
-            }
-            fun bind(newTransaction: AddTransactionItem.NewTransaction) {
-
-            }
+        fun bind(newTransaction: AddTransactionItem.NewTransaction) {
         }
+    }
+
+
 }

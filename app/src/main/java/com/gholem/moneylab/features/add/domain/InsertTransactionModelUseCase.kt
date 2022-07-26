@@ -8,6 +8,7 @@ import javax.inject.Inject
 class InsertTransactionModelUseCase @Inject constructor(
     private val transactionStorageRepository: TransactionStorageRepository
 ) : UseCase<TransactionModel, Unit> {
+
     override suspend fun run(input: TransactionModel) {
         transactionStorageRepository.insertTransactionModel(input)
     }
