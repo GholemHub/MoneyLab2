@@ -4,5 +4,8 @@
     <string name="add_placeholder">Add</string>
     <string name="chart_placeholder">Charts</string>
     <string name="planning_placeholder">Planning</string>
+    <string name="category_food">Food</string>
+    <string name="category_transport">Transport</string>
+    <string name="category_sport">Sport</string>
 
 </resources>

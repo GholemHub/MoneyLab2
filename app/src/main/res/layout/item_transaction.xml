@@ -15,7 +15,7 @@
         app:srcCompat="@drawable/ic_baseline_close_24" />
 
     <EditText
-        android:id="@+id/amount_category"
+        android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Wright amount"
