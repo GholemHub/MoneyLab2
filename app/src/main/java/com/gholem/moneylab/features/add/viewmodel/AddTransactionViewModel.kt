@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
+import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
+import com.gholem.moneylab.features.template.navigation.TemplateNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -17,12 +19,12 @@ import javax.inject.Inject
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase,
-    private val insertTransactionModelUseCase: InsertTransactionModelUseCase,
+    private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
     private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus
 ) : ViewModel() {
 
-    val actions: NavigationLiveData<Action> =
-        NavigationLiveData()
+    private val _actions = Channel<Action>(Channel.BUFFERED)
+    val actions = _actions.receiveAsFlow()
 
     val navigation: NavigationLiveData<AddNavigationEvent> =
         NavigationLiveData()
@@ -36,19 +38,25 @@ class AddTransactionViewModel @Inject constructor(
         bottomNavigationVisibilityBus.changeVisibility(false)
     }
 
-    fun saveTransaction(transaction: List<Transaction>) = viewModelScope.launch {
-        insertTransactionModelUseCase.run(transaction[0])
-        getTransactionListUseCase.run(Unit).forEach {
-            Timber.i("Transaction from db: Category: ${it.category.categoryName}, amount: ${it.amount}")
-        }
+    fun onDoneButtonClick() {
+        Action.GetTransactionsData.send()
     }
 
-    fun onDoneButtonClick() {
-        actions.emit(Action.GetData)
+    fun saveTransaction(transactions: List<Transaction>) = viewModelScope.launch {
+        insertTransactionsModelUseCase.run(transactions)
+        getTransactionListUseCase.run(Unit).forEach {
+            Timber.i("Transaction from db: Category: ${it.category.name}, amount: ${it.amount}")
+        }
+        navigation.emit(AddNavigationEvent.ToPreviousScreen)
     }
+
+    private fun Action.send() =
+        viewModelScope.launch {
+            _actions.send(this@send)
+        }
 
     sealed class Action {
 
-        object GetData: Action()
+        object GetTransactionsData : Action()
     }
 }

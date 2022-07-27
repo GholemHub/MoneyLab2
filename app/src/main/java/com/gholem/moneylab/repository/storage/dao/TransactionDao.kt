@@ -10,8 +10,8 @@ import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 @Dao
 interface TransactionDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(transactionEntity: TransactionEntity)
+    @Insert
+    suspend fun insert(transactionEntity: List<TransactionEntity>)
 
     @Query("SELECT * FROM transaction_table")
     suspend fun getAll(): List<TransactionEntity>
