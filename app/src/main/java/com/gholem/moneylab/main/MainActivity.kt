@@ -8,7 +8,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.databinding.ActivityMainBinding
-import com.gholem.moneylab.domain.model.Transaction
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var bottomNavigationVisibilityBus: BottomNavigationVisibilityBus
-    private lateinit var transaction: Transaction
 
     private lateinit var binding: ActivityMainBinding
 
@@ -38,11 +36,6 @@ class MainActivity : AppCompatActivity() {
             BOTTOM_NAVIGATION_VISIBILITY_KEY,
             binding.bottomNavigationView.isVisible
         )
-    }
-
-    //TODO BackBtn to return into navigation
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     private fun setupBottomNavigation() {

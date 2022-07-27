@@ -13,7 +13,9 @@
 
         <action
             android:id="@+id/action_to_dashboard"
-            app:destination="@id/chart_navigation"/>
+            app:destination="@id/chart_navigation"
+            app:popUpTo="@id/dashboard_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <include app:graph="@navigation/chart_navigation" />

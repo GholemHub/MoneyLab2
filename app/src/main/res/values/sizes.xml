@@ -3,8 +3,10 @@
 
     <dimen name="image_size">70dp</dimen>
     <dimen name="image_category_size">100dp</dimen>
-    <dimen name="btn_activity_add_height">60dp</dimen>
 
+    <dimen name="image_size_small">18dp</dimen>
+
+    <dimen name="btn_activity_add_height">60dp</dimen>
     <dimen name="btn_activity_add_width">0dp</dimen>
     <dimen name="btn_activity_add_text_size">24sp</dimen>
 
@@ -13,7 +15,11 @@
     <dimen name="activity_add_layout_margin">4dp</dimen>
 
     <dimen name="image_add_fragment_size">60dp</dimen>
-    <dimen name="app_text_size">30sp</dimen>
     <dimen name="margin_recycler_add_fragment">4dp</dimen>
+
+    <dimen name="app_text_size_header">18sp</dimen>
+    <dimen name="app_text_size_micro">12sp</dimen>
+    <dimen name="app_text_size_small">14sp</dimen>
+    <dimen name="app_text_size_default">16sp</dimen>
 
 </resources>

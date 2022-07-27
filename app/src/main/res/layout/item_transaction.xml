@@ -3,35 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin_default"
+    android:paddingEnd="@dimen/margin_default">
+
+    <TextView
+        android:id="@+id/item_transaction_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/transaction_details"
+        android:textSize="@dimen/app_text_size_micro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/remove_category_from_recycler"
-        android:layout_width="@dimen/image_add_fragment_size"
-        android:layout_height="@dimen/image_add_fragment_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_close_24" />
-
-    <EditText
-        android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Wright amount"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_transaction_header"
+        app:srcCompat="@drawable/ic_baseline_close_24"
+        app:tint="@color/silver" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:background="@drawable/bg_edit_text"
+        android:hint="@string/transaction_amount_hint"
+        android:textSize="@dimen/app_text_size_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/set_data_btn"
         app:layout_constraintStart_toEndOf="@+id/remove_category_from_recycler"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintTop_toBottomOf="@id/item_transaction_header" />
 
     <Button
         android:id="@+id/set_data_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Date"
-        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/app_text_size_micro"
+        app:icon="@drawable/ic_calendar"
+        app:iconPadding="@dimen/margin_0.5x"
+        app:iconSize="@dimen/image_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/item_transaction_header"
+        tools:text="25.07.22" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
