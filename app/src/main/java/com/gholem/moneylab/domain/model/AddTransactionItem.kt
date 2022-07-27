@@ -1,16 +1,24 @@
 package com.gholem.moneylab.domain.model
 
-open class AddTransactionItem {
+sealed class AddTransactionItem {
     data class Category(
-        val image: Int,
-        val name: String,
-        val id: Int
-    ): AddTransactionItem()
+        val category: TransactionCategory
+    ) : AddTransactionItem()
 
     data class Transaction(
-        val amount: Int,
-        val data: String
-    ): AddTransactionItem()
+        var amount: String = "",
+        var date: Long = System.currentTimeMillis()
+    ) : AddTransactionItem()
 
-    object NewTransaction: AddTransactionItem()
+    object NewTransaction : AddTransactionItem()
+
+    companion object {
+
+        fun getDefaultItems(): List<AddTransactionItem> =
+            listOf(
+                Category(TransactionCategory.getDefault()),
+                Transaction(),
+                NewTransaction
+            )
+    }
 }

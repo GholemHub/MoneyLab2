@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".features.chart.ChartFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chart_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/chart_placeholder" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="primary_color">#545274</color>
+    <color name="primary_color_dark">#3d3b55</color>
+    <color name="secondary_color">#edb22a</color>
+    <color name="secondary_color_dark">#b88715</color>
+
     <color name="purple_200">@color/purple_seren</color>
     <color name="purple_500">@color/purple</color>
     <color name="purple_700">@color/purple_blue</color>
@@ -11,7 +16,7 @@
     <color name="black">@color/deep_black</color>
     <color name="white">@color/deep_white</color>
 
-    <color name="silver">@color/light_silver</color>
+    <color name="silver">#777777</color>
 
     <!--Palette White/Black-->
     <color name="deep_black">#FF000000</color>

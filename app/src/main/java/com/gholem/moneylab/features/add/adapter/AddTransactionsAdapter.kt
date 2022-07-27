@@ -8,33 +8,17 @@ import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddTransactionItem
+import com.gholem.moneylab.domain.model.Transaction
+import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import com.gholem.moneylab.util.timestampToString
 
 class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() {
 
-    private lateinit var addListener: OnItemClickAddListener
-    private lateinit var dataSetListener: OnItemClickDataSetListener
-
-    //Where should be interfaces in Adapter in Viewmodel or in ViewHolder
-    interface OnItemClickAddListener {
-        fun onItemClick(position: Int)
-    }
-
-    interface OnItemClickDataSetListener {
-        fun onItemClick(position: Int)
-    }
-
-    private var adapterData = mutableListOf<AddTransactionItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
-        ClickListenerOfAddListener()
-        ClickListenerOfDataSetListener()
-
-        return SetTypeAddTransactionViewHolder(parent, viewType)
+        return createViewHolders(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
@@ -52,82 +36,76 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
             is AddTransactionItem.Category -> R.layout.item_category
             is AddTransactionItem.Transaction -> R.layout.item_transaction
             is AddTransactionItem.NewTransaction -> R.layout.item_new_transaction
-
-            else -> throw IllegalArgumentException("Invalid view type getItemView")
         }
     }
 
-    private fun SetTypeAddTransactionViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): AddTransactionViewHolder {
+    fun getData(): List<Transaction> =
+        mutableListOf<Transaction>().apply {
+            var currentCategory: TransactionCategory? = null
+
+            adapterData.forEach { item ->
+                when (item) {
+                    is AddTransactionItem.Category -> currentCategory = item.category
+                    is AddTransactionItem.Transaction -> {
+                        this.add(mapToTransaction(currentCategory, item))
+                    }
+                    else -> Unit // Do nothing
+                }
+            }
+        }
+
+    private fun mapToTransaction(
+        category: TransactionCategory?,
+        item: AddTransactionItem.Transaction
+    ) = Transaction(
+        category = category ?: TransactionCategory.getDefault(),
+        amount = item.amount.toInt(),
+        date = item.date.timestampToString()
+    )
+
+    private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return when (viewType) {
-            R.layout.item_category -> AddTransactionViewHolder.CategoryViewHolder(
-                ItemCategoryBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-            R.layout.item_transaction -> AddTransactionViewHolder.TransactionViewHolder(
-                ItemTransactionBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ),
-                dataSetListener
-            )
-            R.layout.item_new_transaction -> AddTransactionViewHolder.NewTransactionViewHolder(
-                ItemNewTransactionBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ),
-                addListener
-            )
+            R.layout.item_category -> createCategoryViewHolder(parent)
+            R.layout.item_transaction -> createTransactionViewHolder(parent)
+            R.layout.item_new_transaction -> createNewTransactionViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
-    fun setOnItemClickAddListener(listener: OnItemClickAddListener) {
-        addListener = listener
-    }
+    private fun createCategoryViewHolder(parent: ViewGroup) =
+        AddTransactionViewHolder.CategoryViewHolder(
+            ItemCategoryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
-    fun setOnItemClickDataSetListener(listener: OnItemClickDataSetListener) {
-        dataSetListener = listener
-    }
+    private fun createTransactionViewHolder(parent: ViewGroup) =
+        AddTransactionViewHolder.TransactionViewHolder(
+            ItemTransactionBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
-    private fun ClickListenerOfDataSetListener() {
-        this.setOnItemClickDataSetListener(object :
-            AddTransactionsAdapter.OnItemClickDataSetListener {
-            override fun onItemClick(position: Int) {
+    private fun createNewTransactionViewHolder(
+        parent: ViewGroup
+    ): AddTransactionViewHolder.NewTransactionViewHolder {
+        val binding = ItemNewTransactionBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return AddTransactionViewHolder.NewTransactionViewHolder(binding)
+            .also { viewHolder ->
+                binding.createNewTransactionBtn.setOnClickListener {
+                    val startPosition = viewHolder.adapterPosition
+                    adapterData.add(startPosition, AddTransactionItem.Transaction())
+                    notifyItemRangeChanged(startPosition, 2)
+                }
             }
-        })
-    }
-
-    private fun ClickListenerOfAddListener() {
-        this.setOnItemClickAddListener(object : AddTransactionsAdapter.OnItemClickAddListener {
-            override fun onItemClick(position: Int) {
-                val startPosition = adapterData.size - 1
-                adapterData.add(startPosition, AddTransactionItem.Transaction(12, "dada"))
-                notifyItemRangeChanged(startPosition, 2)
-            }
-        })
-    }
-
-
-
-    fun setData(data: List<AddTransactionItem>) {
-        adapterData.apply {
-            clear()
-            addAll(data)
-            notifyDataSetChanged()
-        }
-    }
-
-    fun swap(new: AddTransactionItem) {
-        adapterData.add(new)
-        adapterData[adapterData.size - 1] = adapterData[adapterData.size - 2]
-        adapterData[adapterData.size - 2] = new
     }
 }

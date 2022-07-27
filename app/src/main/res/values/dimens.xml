@@ -1,0 +1,10 @@
+<resources>
+      <dimen name="fab_margin">48dp</dimen>
+
+      <dimen name="button_primary_height">56dp</dimen>
+
+      <dimen name="margin_0.5x">8dp</dimen>
+      <dimen name="margin_default">16dp</dimen>
+      <dimen name="margin_1.5x">24dp</dimen>
+      <dimen name="margin_2x">32dp</dimen>
+   </resources>

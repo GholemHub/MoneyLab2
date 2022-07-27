@@ -10,7 +10,7 @@ class AddTransactionNavigation @Inject constructor(
 
     override fun navigate(event: AddNavigationEvent) {
         when(event){
-
+            AddNavigationEvent.ToPreviousScreen -> navControllerWrapper.navigateUp()
         }
     }
 }

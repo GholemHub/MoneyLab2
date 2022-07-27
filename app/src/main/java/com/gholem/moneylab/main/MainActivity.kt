@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBottomNavigation()
-
         showBottomNavigation(
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
         )
@@ -39,11 +38,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    //TODO BackBtn to return into navigation
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     private fun setupBottomNavigation() {
         val bottomNavigationView = binding.bottomNavigationView
         val navHostFragment = supportFragmentManager
@@ -54,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigationVisibility()
         setupFabButton()
     }
-
 
     private fun setupBottomNavigationVisibility() {
         bottomNavigationVisibilityBus.isVisible.observe(this, ::showBottomNavigation)

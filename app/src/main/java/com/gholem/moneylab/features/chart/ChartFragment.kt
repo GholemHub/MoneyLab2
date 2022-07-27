@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.gholem.moneylab.R
 
+
 class ChartFragment : Fragment() {
 
     override fun onCreateView(
