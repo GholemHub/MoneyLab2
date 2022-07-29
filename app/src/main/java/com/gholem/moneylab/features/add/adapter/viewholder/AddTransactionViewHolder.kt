@@ -19,8 +19,6 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
             binding.categoryButton.setText(category.category.categoryName)
             binding.categoryButton
                 .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.category.image, 0)
-//            binding.itemCategoryName.setText(category.category.categoryName)
-//            binding.itemCategoryImage.setBackgroundResource(category.category.image)
         }
     }
 

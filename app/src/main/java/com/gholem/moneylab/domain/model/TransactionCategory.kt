@@ -18,7 +18,6 @@ enum class TransactionCategory(
     companion object {
 
         fun getDefault() = OTHER
-
         fun fromId(id: Int): TransactionCategory {
             return when (id) {
                 0 -> OTHER

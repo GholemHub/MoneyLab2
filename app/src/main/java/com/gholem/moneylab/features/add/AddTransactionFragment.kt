@@ -18,7 +18,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter()
+        AddTransactionsAdapter {
+            showCategoryBottomSheet()
+        }
     }
 
     override fun constructViewBinding(): FragmentAddBinding =
@@ -42,6 +44,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     override fun setupNavigation() {
         navigation = AddTransactionNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, navigation::navigate)
+    }
+
+    private fun showCategoryBottomSheet() {
+        viewModel.navigateToCategoryBottomSheet()
     }
 
     private fun observeActions() {

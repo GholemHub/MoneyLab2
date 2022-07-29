@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.databinding.ActivityMainBinding
+import com.gholem.moneylab.features.add.BottomSheetCategoryFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         showBottomNavigation(
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
         )
+
+
     }
 
     //Can change stuff when screen is rotating(or when screen is reloaded)
