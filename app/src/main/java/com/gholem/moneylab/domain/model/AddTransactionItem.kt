@@ -13,7 +13,6 @@ sealed class AddTransactionItem {
     object NewTransaction : AddTransactionItem()
 
     companion object {
-
         fun getDefaultItems(): List<AddTransactionItem> =
             listOf(
                 Category(TransactionCategory.getDefault()),

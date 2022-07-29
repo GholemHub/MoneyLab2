@@ -12,8 +12,11 @@ import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import com.gholem.moneylab.util.timestampToString
+import timber.log.Timber.d
 
-class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() {
+//Listener(val categoryClickListener: () -> Unit)
+class AddTransactionsAdapter(val categoryClickListener: () -> Unit) :
+    RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
@@ -72,23 +75,39 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         }
     }
 
-    private fun createCategoryViewHolder(parent: ViewGroup) =
-        AddTransactionViewHolder.CategoryViewHolder(
-            ItemCategoryBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    private fun createCategoryViewHolder(
+        parent: ViewGroup
+    ): AddTransactionViewHolder.CategoryViewHolder {
+        val binding = ItemCategoryBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+        //Listener
+        binding.categoryButton.setOnClickListener {
+            categoryClickListener.invoke()
+        }
 
-    private fun createTransactionViewHolder(parent: ViewGroup) =
-        AddTransactionViewHolder.TransactionViewHolder(
-            ItemTransactionBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        return AddTransactionViewHolder.CategoryViewHolder(binding)
+    }
+
+    private fun createTransactionViewHolder(
+        parent: ViewGroup
+    ): AddTransactionViewHolder.TransactionViewHolder {
+        val binding = ItemTransactionBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+        return AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
+            binding.removeCategoryFromRecycler.setOnClickListener {
+                val position = viewHolder.adapterPosition
+                adapterData.removeAt(position)
+
+                notifyItemRangeChanged(position, adapterData.size - 1)
+            }
+        }
+    }
 
     private fun createNewTransactionViewHolder(
         parent: ViewGroup
@@ -102,6 +121,7 @@ class AddTransactionsAdapter : RecyclerView.Adapter<AddTransactionViewHolder>() 
         return AddTransactionViewHolder.NewTransactionViewHolder(binding)
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
+                    d("Start At: ${adapterData.size}")
                     val startPosition = viewHolder.adapterPosition
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
                     notifyItemRangeChanged(startPosition, 2)
