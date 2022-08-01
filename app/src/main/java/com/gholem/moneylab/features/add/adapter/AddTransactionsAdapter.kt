@@ -14,8 +14,9 @@ import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHol
 import com.gholem.moneylab.util.timestampToString
 import timber.log.Timber.d
 
-//Listener(val categoryClickListener: () -> Unit)
-class AddTransactionsAdapter(val categoryClickListener: () -> Unit) :
+//Listener for the data to push it from adapter to fragment
+class AddTransactionsAdapter(
+    val categoryClickListener: () -> Unit) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
@@ -83,7 +84,7 @@ class AddTransactionsAdapter(val categoryClickListener: () -> Unit) :
             parent,
             false
         )
-        //Listener
+        //here is using listener to push it from adapter to fragment
         binding.categoryButton.setOnClickListener {
             categoryClickListener.invoke()
         }
@@ -121,10 +122,9 @@ class AddTransactionsAdapter(val categoryClickListener: () -> Unit) :
         return AddTransactionViewHolder.NewTransactionViewHolder(binding)
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
-                    d("Start At: ${adapterData.size}")
                     val startPosition = viewHolder.adapterPosition
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
-                    notifyItemRangeChanged(startPosition, 2)
+                    notifyItemRangeChanged(startPosition, adapterData.size - 1)
                 }
             }
     }
