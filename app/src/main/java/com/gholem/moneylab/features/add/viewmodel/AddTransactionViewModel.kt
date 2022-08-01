@@ -8,7 +8,6 @@ import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
-import com.gholem.moneylab.features.template.navigation.TemplateNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -42,6 +41,10 @@ class AddTransactionViewModel @Inject constructor(
         Action.GetTransactionsData.send()
     }
 
+    fun navigateToCategoryBottomSheet() = viewModelScope.launch {
+        navigation.emit(AddNavigationEvent.ToCategoryBottomSheetDialog)
+    }
+
     fun saveTransaction(transactions: List<Transaction>) = viewModelScope.launch {
         insertTransactionsModelUseCase.run(transactions)
         getTransactionListUseCase.run(Unit).forEach {
@@ -56,7 +59,6 @@ class AddTransactionViewModel @Inject constructor(
         }
 
     sealed class Action {
-
         object GetTransactionsData : Action()
     }
 }
