@@ -16,12 +16,18 @@ class BottomSheetCategoryFragment :
     BaseBottomSheetFragment<BottomsheetCategoryFragmentBinding, BottomSheetCategoryViewModel>() {
 
     private val viewModel: BottomSheetCategoryViewModel by viewModels()
+    lateinit var navigation: BottomSheetCategoryNavigation
+
 
     override fun constructViewBinding(): BottomsheetCategoryFragmentBinding =
         BottomsheetCategoryFragmentBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: BottomsheetCategoryFragmentBinding) {
         initCategoryViews(viewBinding)
+    }
+
+    private fun navigateToAddTransaction() {
+        viewModel.navigateToAddTransaction()
     }
 
     private fun initCategoryViews(viewBinding: BottomsheetCategoryFragmentBinding) {
@@ -35,24 +41,21 @@ class BottomSheetCategoryFragment :
             categoryViewBinding.categoryName.text = getString(category.categoryName)
 
             categoryViewBinding.root.setOnClickListener {
-
                 findNavController().previousBackStackEntry?.savedStateHandle?.set(
                     KEY_CATEGORY,
                     category.id
                 )
-                //navigation by event
-                dismiss()
+                navigateToAddTransaction()
             }
 
             viewBinding.bottomSheetCategoriesContainer.addView(categoryViewBinding.root)
         }
     }
 
-    lateinit var bottomSheetCategoryNavigation: BottomSheetCategoryNavigation
 
     override fun setupNavigation() {
-        bottomSheetCategoryNavigation = BottomSheetCategoryNavigation(navControllerWrapper)
-        viewModel.navigation.observe(this, bottomSheetCategoryNavigation::navigate)
+        navigation = BottomSheetCategoryNavigation(navControllerWrapper)
+        viewModel.navigation.observe(this, navigation::navigate)
     }
 
     companion object {
