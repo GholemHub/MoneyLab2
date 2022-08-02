@@ -18,7 +18,6 @@ class BottomSheetCategoryFragment :
     private val viewModel: BottomSheetCategoryViewModel by viewModels()
     lateinit var navigation: BottomSheetCategoryNavigation
 
-
     override fun constructViewBinding(): BottomsheetCategoryFragmentBinding =
         BottomsheetCategoryFragmentBinding.inflate(layoutInflater)
 
@@ -52,7 +51,6 @@ class BottomSheetCategoryFragment :
         }
     }
 
-
     override fun setupNavigation() {
         navigation = BottomSheetCategoryNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, navigation::navigate)
@@ -61,5 +59,4 @@ class BottomSheetCategoryFragment :
     companion object {
         const val KEY_CATEGORY = "KEY_CATEGORY"
     }
-
 }

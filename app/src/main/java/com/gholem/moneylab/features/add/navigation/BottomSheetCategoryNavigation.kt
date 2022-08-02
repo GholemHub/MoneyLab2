@@ -9,12 +9,9 @@ class BottomSheetCategoryNavigation @Inject constructor (
     private val navControllerWrapper: NavControllerWrapper<Any?>
 ) : NavigationController<BottomSheetCategoryEvent>{
     override fun navigate(event: BottomSheetCategoryEvent) {
-
         when(event){
             BottomSheetCategoryEvent.ToPreviousScreen ->
                 navControllerWrapper.navigateUp()
         }
-
     }
-
 }
