@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+//logika zmiana danych
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase,

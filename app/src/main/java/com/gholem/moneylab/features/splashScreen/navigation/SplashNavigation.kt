@@ -6,7 +6,7 @@ import com.gholem.moneylab.features.splashScreen.SplashFragmentDirections.Compan
 import javax.inject.Inject
 
 class SplashNavigation @Inject constructor(
-    private val navControllerWrapper: NavControllerWrapper
+    private val navControllerWrapper: NavControllerWrapper<Any?>
 ) : NavigationController<SplashNavigationEvent> {
 
     override fun navigate(event: SplashNavigationEvent) {

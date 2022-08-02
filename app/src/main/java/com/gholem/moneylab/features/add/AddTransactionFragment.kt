@@ -1,9 +1,11 @@
 package com.gholem.moneylab.features.add
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentAddBinding
+import com.gholem.moneylab.features.add.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.add.adapter.AddTransactionsAdapter
 import com.gholem.moneylab.features.add.navigation.AddTransactionNavigation
 import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
@@ -14,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionViewModel>() {
 
     lateinit var navigation: AddTransactionNavigation
-
+    //ViewModel for parse data into
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
@@ -30,12 +32,22 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         observeActions()
         viewModel.init()
 
+        val navController = findNavController();
+
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(KEY_CATEGORY)
+            ?.observe(
+                viewLifecycleOwner
+            ) { result ->
+                dataAdapter.setCategory(result)
+            }
+
         viewBinding.transactionsRecyclerView
             .apply {
                 layoutManager = LinearLayoutManager(context)
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
+
         viewBinding.doneBtn.setOnClickListener {
             viewModel.onDoneButtonClick()
         }

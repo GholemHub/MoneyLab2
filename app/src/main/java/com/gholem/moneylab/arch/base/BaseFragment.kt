@@ -13,7 +13,7 @@ import javax.inject.Inject
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>() : Fragment() {
 
     @Inject
-    lateinit var navControllerWrapper: NavControllerWrapper
+    lateinit var navControllerWrapper: NavControllerWrapper<Any?>
 
     private var viewBinding: ViewBinding? = null
 

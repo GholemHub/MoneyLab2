@@ -9,6 +9,7 @@ import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
 
+//przedstawienia danych widoku w adapterze dla 1 elementu
 sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 

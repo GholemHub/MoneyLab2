@@ -12,11 +12,13 @@ import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import com.gholem.moneylab.util.timestampToString
-import timber.log.Timber.d
+
+//Adapter = widok
 
 //Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
-    val categoryClickListener: () -> Unit) :
+    val categoryClickListener: () -> Unit
+) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
@@ -41,6 +43,15 @@ class AddTransactionsAdapter(
             is AddTransactionItem.Transaction -> R.layout.item_transaction
             is AddTransactionItem.NewTransaction -> R.layout.item_new_transaction
         }
+    }
+
+    fun setCategory(categoryId: Int) {
+        val cat = adapterData.first {
+            it is AddTransactionItem.Category
+        } as AddTransactionItem.Category
+        cat.category = TransactionCategory.fromId(categoryId)
+
+        notifyItemChanged(adapterData.indexOf(cat))
     }
 
     fun getData(): List<Transaction> =

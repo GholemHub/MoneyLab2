@@ -6,7 +6,7 @@ import com.gholem.moneylab.features.add.AddTransactionFragmentDirections.Compani
 import javax.inject.Inject
 
 class AddTransactionNavigation @Inject constructor(
-    private val navControllerWrapper: NavControllerWrapper
+    private val navControllerWrapper: NavControllerWrapper<Any?>
 ) : NavigationController<AddNavigationEvent> {
 
     override fun navigate(event: AddNavigationEvent) {
