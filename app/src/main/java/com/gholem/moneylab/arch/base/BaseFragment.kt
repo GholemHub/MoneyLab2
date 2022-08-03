@@ -14,7 +14,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>() : Fragment() {
 
     @Inject
     lateinit var navControllerWrapper: NavControllerWrapper
-
     private var viewBinding: ViewBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

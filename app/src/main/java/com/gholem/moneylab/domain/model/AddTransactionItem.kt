@@ -2,7 +2,7 @@ package com.gholem.moneylab.domain.model
 
 sealed class AddTransactionItem {
     data class Category(
-        val category: TransactionCategory
+        var category: TransactionCategory
     ) : AddTransactionItem()
 
     data class Transaction(

@@ -18,7 +18,11 @@
 
     <dialog
         android:id="@+id/category_bottom_sheet_dialog"
-        android:name="com.gholem.moneylab.features.add.BottomSheetCategoryFragment"
+        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment"
         android:label="CategoryBottomSheet"
-        tools:layout="@layout/bottomsheet_category_fragment" />
+        tools:layout="@layout/bottomsheet_category_fragment" >
+        <action
+            android:id="@+id/action_category_bottom_sheet_dialog_to_add_fragment"
+            app:destination="@id/add_fragment" />
+    </dialog>
 </navigation>
