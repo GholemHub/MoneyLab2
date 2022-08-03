@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import javax.inject.Inject
 
-class NavControllerWrapper<T> @Inject constructor() {
+class NavControllerWrapper @Inject constructor() {
 
     private lateinit var fragment: Fragment
 

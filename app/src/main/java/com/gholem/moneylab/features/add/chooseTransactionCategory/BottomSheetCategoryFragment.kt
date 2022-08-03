@@ -1,4 +1,4 @@
-package com.gholem.moneylab.features.add
+package com.gholem.moneylab.features.add.chooseTransactionCategory
 
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
@@ -7,8 +7,8 @@ import com.gholem.moneylab.arch.base.BaseBottomSheetFragment
 import com.gholem.moneylab.databinding.BottomsheetCategoryFragmentBinding
 import com.gholem.moneylab.databinding.ItemBottomSheetCategoryBinding
 import com.gholem.moneylab.domain.model.TransactionCategory
-import com.gholem.moneylab.features.add.navigation.BottomSheetCategoryNavigation
-import com.gholem.moneylab.features.add.viewmodel.BottomSheetCategoryViewModel
+import com.gholem.moneylab.features.add.chooseTransactionCategory.navigation.BottomSheetCategoryNavigation
+import com.gholem.moneylab.features.add.chooseTransactionCategory.viewmodel.BottomSheetCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

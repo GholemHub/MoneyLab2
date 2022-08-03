@@ -6,7 +6,7 @@ import com.gholem.moneylab.R
 
 enum class TransactionCategory(
     val id: Int,
-    @StringRes var categoryName: Int,
+    @StringRes val categoryName: Int,
     @DrawableRes val image: Int
 ) {
     OTHER(0, R.string.category_other, R.drawable.ic_category_other),

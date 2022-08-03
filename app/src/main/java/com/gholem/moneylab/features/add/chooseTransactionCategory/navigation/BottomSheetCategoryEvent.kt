@@ -1,4 +1,4 @@
-package com.gholem.moneylab.features.add.navigation
+package com.gholem.moneylab.features.add.chooseTransactionCategory.navigation
 
 sealed class BottomSheetCategoryEvent {
     object ToPreviousScreen : BottomSheetCategoryEvent()

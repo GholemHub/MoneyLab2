@@ -14,7 +14,7 @@ abstract class BaseBottomSheetFragment<VB : ViewBinding, VM : ViewModel>() :
     BottomSheetDialogFragment() {
 
     @Inject
-    lateinit var navControllerWrapper: NavControllerWrapper<Any?>
+    lateinit var navControllerWrapper: NavControllerWrapper
 
     private var viewBinding: ViewBinding? = null
 

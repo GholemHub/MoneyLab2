@@ -9,7 +9,7 @@ import com.gholem.moneylab.features.template.navigation.TemplateNavigationEvent.
 import javax.inject.Inject
 
 class TemplateNavigation @Inject constructor(
-    private val navControllerWrapper: NavControllerWrapper<Any?>
+    private val navControllerWrapper: NavControllerWrapper
 ) : NavigationController<TemplateNavigationEvent> {
     override fun navigate(event: TemplateNavigationEvent) {
         when (event) {

@@ -18,7 +18,7 @@
 
     <dialog
         android:id="@+id/category_bottom_sheet_dialog"
-        android:name="com.gholem.moneylab.features.add.BottomSheetCategoryFragment"
+        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment"
         android:label="CategoryBottomSheet"
         tools:layout="@layout/bottomsheet_category_fragment" >
         <action
