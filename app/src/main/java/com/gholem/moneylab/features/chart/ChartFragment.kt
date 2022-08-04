@@ -1,22 +1,36 @@
 package com.gholem.moneylab.features.chart
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.gholem.moneylab.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.gholem.moneylab.arch.base.BaseFragment
+import com.gholem.moneylab.databinding.FragmentChartBinding
+import com.gholem.moneylab.features.chart.adapter.ChartAdapter
+import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
+class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
 
-class ChartFragment : Fragment() {
+    private val viewModel: ChartViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chart, container, false)
+    private val dataAdapter = ChartAdapter()
+
+    override fun constructViewBinding(): FragmentChartBinding  =
+        FragmentChartBinding.inflate(layoutInflater)
+
+    override fun init(viewBinding: FragmentChartBinding) {
+        viewModel.reedDataFromRoom()
+        viewModel.createRoomDate()
+
+        viewBinding.chartRecyclerview
+            .apply {
+                layoutManager = LinearLayoutManager(context)
+                hasFixedSize()
+                this.adapter = dataAdapter
+            }
     }
 
+    override fun setupNavigation() {
+
+    }
 }
