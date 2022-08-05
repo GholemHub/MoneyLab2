@@ -6,6 +6,7 @@ import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentChartBinding
 import com.gholem.moneylab.features.chart.adapter.ChartAdapter
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
+import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,8 +20,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
         FragmentChartBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentChartBinding) {
-        viewModel.reedDataFromRoom()
-        viewModel.createRoomDate()
+        observeActions()
 
         viewBinding.chartRecyclerview
             .apply {
@@ -28,6 +28,21 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.createRoomDate()
+    }
+
+    private fun observeActions() {
+        viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
+            when (action) {
+                is ChartViewModel.Action.ShowData -> {
+                    dataAdapter.updateData(action.list)
+                }
+            }
+        }
     }
 
     override fun setupNavigation() {

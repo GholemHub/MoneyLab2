@@ -4,38 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/margin_default"
-    android:paddingEnd="@dimen/margin_default">
+    android:padding="@dimen/margin_default">
 
     <TextView
         android:id="@+id/item_chart_transaction_header"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/transaction_details"
-        android:textSize="@dimen/app_text_size_micro"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/transaction_amount_hint"
+        android:textSize="@dimen/app_text_size_default"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/chart_transaction_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/item_chart_transaction_header"
-        app:srcCompat="@drawable/ic_baseline_close_24"
-        app:tint="@color/silver" />
-
-    <com.google.android.material.textfield.TextInputEditText
+    <TextView
         android:id="@+id/amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_default"
-        android:background="@drawable/bg_edit_text"
-        android:hint="@string/transaction_amount_hint"
         android:textSize="@dimen/app_text_size_default"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/chart_transaction_image"
-        app:layout_constraintTop_toBottomOf="@id/item_chart_transaction_header" />
+        app:layout_constraintEnd_toStartOf="@id/category_icon"
+        app:layout_constraintStart_toEndOf="@id/item_chart_transaction_header"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="750" />
+
+    <ImageView
+        android:id="@+id/category_icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_category_food" />
 </androidx.constraintlayout.widget.ConstraintLayout>

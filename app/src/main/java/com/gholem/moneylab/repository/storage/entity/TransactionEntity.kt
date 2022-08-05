@@ -9,7 +9,7 @@ import com.gholem.moneylab.domain.model.TransactionCategory
 data class TransactionEntity(
     val categoryId: Int,
     val amount: Int,
-    val date: String,
+    val date: Long,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 ) {
 

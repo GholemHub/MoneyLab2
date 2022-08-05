@@ -10,21 +10,4 @@ sealed class ChartTransactionItem {
         var amount: String = ""
 
     ) : ChartTransactionItem()
-
-    object ChartEmpty : ChartTransactionItem()
-
-    companion object {
-        var listOfChartTransaction : List<ChartTransactionItem> = emptyList()
-
-        fun getRoomData(): List<ChartTransactionItem> {
-            return listOfChartTransaction
-        }
-
-        fun getDefaultItems(): List<ChartTransactionItem> =
-            listOf(
-                ChartEmpty
-                //ChartDate(),
-                //ChartTransactionItem.ChartTransaction(TransactionCategory.getDefault()),
-            )
-    }
 }

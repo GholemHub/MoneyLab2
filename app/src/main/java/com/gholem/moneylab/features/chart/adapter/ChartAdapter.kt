@@ -14,13 +14,12 @@ import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 
 class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
 
-    private var adapterData = ChartTransactionItem.getRoomData()
+    private var adapterData: List<ChartTransactionItem> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChartViewHolder {
         return when (viewType) {
             R.layout.item_chart_date -> createChartDateHolder(parent)
             R.layout.item_chart_transaction -> createChartTransactionHolder(parent)
-            R.layout.item_chart_empty -> createChartEmptyHolder(parent)
 
             else -> throw IllegalArgumentException("Invalid view type $viewType, size ${adapterData.size}")
         }
@@ -47,16 +46,11 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
         return ChartViewHolder.ChartDateViewHolder(binding)
     }
 
-    private fun createChartEmptyHolder(
-        parent: ViewGroup
-    ): ChartViewHolder.ChartEmptyViewHolder {
-        val binding = ItemChartEmptyBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-
-        return ChartViewHolder.ChartEmptyViewHolder(binding)
+    override fun getItemViewType(position: Int): Int {
+        return when (adapterData[position]) {
+            is ChartTransactionItem.ChartDate -> R.layout.item_chart_date
+            is ChartTransactionItem.ChartTransaction -> R.layout.item_chart_transaction
+        }
     }
 
     private fun createChartTransactionHolder(
@@ -69,5 +63,10 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
         )
 
         return ChartViewHolder.ChartTransactionViewHolder(binding)
+    }
+
+    fun updateData(listOfTransaction: List<ChartTransactionItem>) {
+        adapterData = listOfTransaction
+        notifyDataSetChanged()
     }
 }

@@ -11,7 +11,6 @@ import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import com.gholem.moneylab.util.timestampToString
 
 //Adapter = widok
 
@@ -75,7 +74,7 @@ class AddTransactionsAdapter(
     ) = Transaction(
         category = category ?: TransactionCategory.getDefault(),
         amount = item.amount.toInt(),
-        date = item.date.timestampToString()
+        date = item.date
     )
 
     private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {

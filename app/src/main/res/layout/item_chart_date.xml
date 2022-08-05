@@ -9,17 +9,18 @@
 
     <TextView
         android:id="@+id/chart_date_tv"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/app_text_size_micro"
-        app:icon="@drawable/ic_calendar"
-        app:iconPadding="@dimen/margin_0.5x"
+        android:drawablePadding="@dimen/margin_0.5x"
+        android:paddingTop="@dimen/margin_0.5x"
+        android:paddingBottom="@dimen/margin_0.5x"
+        android:textSize="@dimen/app_text_size_small"
+        app:drawableStartCompat="@drawable/ic_calendar"
         app:iconSize="@dimen/image_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="25.07.22" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
