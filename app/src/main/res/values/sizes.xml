@@ -19,6 +19,7 @@
 
     <dimen name="app_text_size_header">18sp</dimen>
     <dimen name="app_text_size_micro">12sp</dimen>
+    <dimen name="app_text_size_macro">10sp</dimen>
     <dimen name="app_text_size_small">14sp</dimen>
     <dimen name="app_text_size_default">16sp</dimen>
 

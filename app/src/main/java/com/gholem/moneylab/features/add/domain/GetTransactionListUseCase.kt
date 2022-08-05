@@ -11,5 +11,4 @@ class GetTransactionListUseCase @Inject constructor(
 
     override suspend fun run(input: Unit): List<Transaction> =
         repository.getAll()
-
 }
