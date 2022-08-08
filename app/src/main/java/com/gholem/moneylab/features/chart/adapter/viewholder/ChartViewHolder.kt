@@ -5,6 +5,7 @@ import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.databinding.ItemChartDateBinding
 import com.gholem.moneylab.databinding.ItemChartTransactionBinding
 import com.gholem.moneylab.domain.model.ChartTransactionItem
+import java.util.*
 
 sealed class ChartViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -13,7 +14,10 @@ sealed class ChartViewHolder(binding: ViewBinding) :
         private val binding: ItemChartDateBinding
     ) : ChartViewHolder(binding) {
         fun bind(category: ChartTransactionItem.ChartDate) {
-            binding.chartDateTv.text = category.date.toString()
+            val rightNow: Calendar = Calendar.getInstance()
+            rightNow.timeInMillis = category.date
+            val string = "${rightNow.get(Calendar.DAY_OF_MONTH)}.${rightNow.get(Calendar.MONTH)}.${rightNow.get(Calendar.YEAR)}"
+            binding.chartDateTv.text = string
         }
     }
 

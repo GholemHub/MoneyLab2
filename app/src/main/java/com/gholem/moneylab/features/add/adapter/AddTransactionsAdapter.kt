@@ -11,12 +11,15 @@ import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import timber.log.Timber
+import java.util.*
 
 //Adapter = widok
 
 //Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
-    val categoryClickListener: () -> Unit
+    val categoryClickListener: () -> Unit,
+    val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
@@ -44,6 +47,26 @@ class AddTransactionsAdapter(
         }
     }
 
+    fun setDate(position: Int, day: Int, month: Int, year: Int) {
+        val transaction = adapterData[position]
+                as? AddTransactionItem.Transaction
+
+        val rightNow: Calendar = Calendar.getInstance()
+        rightNow.set(Calendar.MILLISECOND, 0)
+        rightNow.set(Calendar.SECOND, 0)
+        rightNow.set(Calendar.MINUTE, 0)
+        rightNow.set(Calendar.HOUR, 0)
+        rightNow.set(Calendar.DAY_OF_MONTH, day)
+        rightNow.set(Calendar.MONTH, month)
+        rightNow.set(Calendar.YEAR, year)
+
+        transaction?.date = rightNow.timeInMillis
+
+        transaction?.let {
+            notifyItemChanged(adapterData.indexOf(it))
+        }
+    }
+
     fun setCategory(categoryId: Int) {
         val cat = adapterData.first {
             it is AddTransactionItem.Category
@@ -53,7 +76,7 @@ class AddTransactionsAdapter(
         notifyItemChanged(adapterData.indexOf(cat))
     }
 
-    fun getData(): List<Transaction> =
+    fun getTransactionListData(): List<Transaction> =
         mutableListOf<Transaction>().apply {
             var currentCategory: TransactionCategory? = null
 
@@ -110,7 +133,8 @@ class AddTransactionsAdapter(
             parent,
             false
         )
-        return AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
+
+        val viewHolder = AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
             binding.removeCategoryFromRecycler.setOnClickListener {
                 val position = viewHolder.adapterPosition
                 adapterData.removeAt(position)
@@ -118,6 +142,13 @@ class AddTransactionsAdapter(
                 notifyItemRangeChanged(position, adapterData.size - 1)
             }
         }
+
+        binding.setDateBtn.setOnClickListener {
+            dateClickListener.invoke(viewHolder.adapterPosition)
+            notifyItemRangeChanged(viewHolder.adapterPosition, adapterData.size - 1)
+        }
+
+        return viewHolder
     }
 
     private fun createNewTransactionViewHolder(
