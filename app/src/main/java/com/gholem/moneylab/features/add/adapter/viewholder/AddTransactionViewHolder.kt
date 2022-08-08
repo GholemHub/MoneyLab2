@@ -28,7 +28,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
     ) : AddTransactionViewHolder(binding) {
 
         fun bind(transaction: AddTransactionItem.Transaction) {
-            binding.setDataBtn.text = transaction.date.timestampToString()
+            binding.setDateBtn.text = transaction.date.timestampToString()
             binding.amount.doAfterTextChanged {
                 transaction.amount = it?.toString() ?: ""
             }
