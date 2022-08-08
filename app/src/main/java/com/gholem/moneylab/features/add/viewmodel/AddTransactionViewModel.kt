@@ -59,14 +59,12 @@ class AddTransactionViewModel @Inject constructor(
         navigation.emit(AddNavigationEvent.ToPreviousScreen)
     }
 
-    fun getDateCalendar(){
+    fun getDateCalendar() {
         val cal = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
         year = cal.get(Calendar.YEAR)
     }
-
-
 
     private fun Action.send() =
         viewModelScope.launch {
@@ -75,9 +73,5 @@ class AddTransactionViewModel @Inject constructor(
 
     sealed class Action {
         object GetTransactionsData : Action()
-    }
-
-    companion object {
-        const val KEY_DATE = "KEY_DATE"
     }
 }

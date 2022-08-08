@@ -20,6 +20,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     DatePickerDialog.OnDateSetListener {
 
     lateinit var navigation: AddTransactionNavigation
+
     //ViewModel for parse data into
     private val viewModel: AddTransactionViewModel by viewModels()
 
@@ -52,13 +53,12 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         navigation = AddTransactionNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, navigation::navigate)
     }
-//only: fragment back to fragment\\ savedStateHandle
+
+    //only: fragment back to fragment\\ savedStateHandle
     private fun observeCategoryChange() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(KEY_CATEGORY)
             ?.observe(viewLifecycleOwner) { result -> dataAdapter.setCategory(result) }
     }
-
-
 
     private fun showDateDialog(_position: Int) {
         viewModel.getDateCalendar()
@@ -68,12 +68,12 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
         var contextOfActivity = this.context
         if (contextOfActivity != null) {
-           DatePickerDialog(
+            DatePickerDialog(
                 contextOfActivity,
                 this,
-               rightNow.get(Calendar.YEAR),
-               rightNow.get(Calendar.MONTH),
-               rightNow.get(Calendar.DAY_OF_MONTH)
+                rightNow.get(Calendar.YEAR),
+                rightNow.get(Calendar.MONTH),
+                rightNow.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
     }
@@ -93,6 +93,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dataAdapter.setDate(position, p3,p2,p1)
+        dataAdapter.setDate(position, p3, p2, p1)
     }
 }

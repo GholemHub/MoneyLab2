@@ -11,7 +11,6 @@ import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber
 import java.util.*
 
 //Adapter = widok
@@ -133,15 +132,15 @@ class AddTransactionsAdapter(
             parent,
             false
         )
+        val viewHolder =
+            AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
+                binding.removeCategoryFromRecycler.setOnClickListener {
+                    val position = viewHolder.adapterPosition
+                    adapterData.removeAt(position)
 
-        val viewHolder = AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
-            binding.removeCategoryFromRecycler.setOnClickListener {
-                val position = viewHolder.adapterPosition
-                adapterData.removeAt(position)
-
-                notifyItemRangeChanged(position, adapterData.size - 1)
+                    notifyItemRangeChanged(position, adapterData.size - 1)
+                }
             }
-        }
 
         binding.setDateBtn.setOnClickListener {
             dateClickListener.invoke(viewHolder.adapterPosition)
