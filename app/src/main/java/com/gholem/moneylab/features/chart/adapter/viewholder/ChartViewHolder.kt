@@ -13,9 +13,9 @@ sealed class ChartViewHolder(binding: ViewBinding) :
     class ChartDateViewHolder(
         private val binding: ItemChartDateBinding
     ) : ChartViewHolder(binding) {
-        fun bind(category: ChartTransactionItem.ChartDate) {
+        fun bind(chartDate: ChartTransactionItem.ChartDate) {
             val rightNow: Calendar = Calendar.getInstance()
-            rightNow.timeInMillis = category.date
+            rightNow.timeInMillis = chartDate.date
             val string = "${rightNow.get(Calendar.DAY_OF_MONTH)}.${rightNow.get(Calendar.MONTH)}.${rightNow.get(Calendar.YEAR)}"
             binding.chartDateTv.text = string
         }

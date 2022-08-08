@@ -61,21 +61,19 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     }
 
     private fun showDateDialog(_position: Int) {
-        viewModel.getDateCalendar()
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-
-        var contextOfActivity = this.context
-        if (contextOfActivity != null) {
-            DatePickerDialog(
-                contextOfActivity,
+            var dataPicker = DatePickerDialog(
+                requireContext(),
                 this,
                 rightNow.get(Calendar.YEAR),
                 rightNow.get(Calendar.MONTH),
                 rightNow.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
+            )
+        dataPicker.datePicker.maxDate = rightNow.timeInMillis
+        dataPicker.show()
+
     }
 
     private fun showCategoryBottomSheet() {

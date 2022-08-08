@@ -40,5 +40,5 @@
         app:layout_anchor="@+id/bottom_app_bar"
         app:layout_anchorGravity="top|center"
         app:tint="@color/white"
-        android:visibility="invisible"/>
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,7 +13,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 //logika zmiana danych
@@ -26,10 +25,6 @@ class AddTransactionViewModel @Inject constructor(
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
-
-    var year = 0
-    var month = 0
-    var day = 0
 
     val navigation: NavigationLiveData<AddNavigationEvent> =
         NavigationLiveData()
@@ -57,13 +52,6 @@ class AddTransactionViewModel @Inject constructor(
             Timber.i("Transaction from db: Category: ${it.category.name}, amount: ${it.amount}")
         }
         navigation.emit(AddNavigationEvent.ToPreviousScreen)
-    }
-
-    fun getDateCalendar() {
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
     }
 
     private fun Action.send() =

@@ -14,7 +14,6 @@ import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHol
 import java.util.*
 
 //Adapter = widok
-
 //Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
     val categoryClickListener: () -> Unit,
@@ -62,7 +61,7 @@ class AddTransactionsAdapter(
         transaction?.date = rightNow.timeInMillis
 
         transaction?.let {
-            notifyItemChanged(adapterData.indexOf(it))
+            notifyItemChanged(position)
         }
     }
 
@@ -144,7 +143,6 @@ class AddTransactionsAdapter(
 
         binding.setDateBtn.setOnClickListener {
             dateClickListener.invoke(viewHolder.adapterPosition)
-            notifyItemRangeChanged(viewHolder.adapterPosition, adapterData.size - 1)
         }
 
         return viewHolder
