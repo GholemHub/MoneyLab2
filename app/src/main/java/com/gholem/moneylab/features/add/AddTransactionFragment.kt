@@ -73,7 +73,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             )
         dataPicker.datePicker.maxDate = rightNow.timeInMillis
         dataPicker.show()
-
     }
 
     private fun showCategoryBottomSheet() {
