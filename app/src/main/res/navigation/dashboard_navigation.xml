@@ -16,9 +16,23 @@
             app:destination="@id/chart_navigation"
             app:popUpTo="@id/dashboard_navigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_fragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment"
+            app:popUpTo="@id/dashboard_navigation"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <include app:graph="@navigation/chart_navigation" />
     <include app:graph="@navigation/add_navigation" />
     <include app:graph="@navigation/planning_navigation" />
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.gholem.moneylab.features.authentication.AuthenticationFragment"
+        android:label="AuthenticationFragment" >
+        <action
+            android:id="@+id/action_authenticationFragment_to_chart_navigation"
+            app:destination="@id/chart_navigation"
+            />
+    </fragment>
 </navigation>
