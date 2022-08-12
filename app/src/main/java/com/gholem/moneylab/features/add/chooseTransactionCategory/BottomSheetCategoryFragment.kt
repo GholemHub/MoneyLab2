@@ -22,6 +22,9 @@ class BottomSheetCategoryFragment :
         BottomsheetCategoryFragmentBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: BottomsheetCategoryFragmentBinding) {
+        viewBinding.createNewCategoryBtn.setOnClickListener {
+            
+        }
         initCategoryViews(viewBinding)
     }
 
