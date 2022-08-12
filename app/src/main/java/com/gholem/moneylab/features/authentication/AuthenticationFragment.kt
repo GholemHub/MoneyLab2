@@ -59,7 +59,6 @@ class AuthenticationFragment :
         viewModel.navigation.observe(this, authenticationNavigation::navigate)
     }
 
-
     private fun signIn() {
         val signInIntent = getGoogleSignInClient().signInIntent
         signInLauncher.launch(signInIntent)

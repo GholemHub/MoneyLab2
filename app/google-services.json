@@ -1,212 +1,33 @@
 {
   "project_info": {
-    "project_number": "292272453790",
-    "project_id": "moneylab-346914",
-    "storage_bucket": "moneylab-346914.appspot.com"
+    "project_number": "191590951059",
+    "project_id": "moneylab2-alex",
+    "storage_bucket": "moneylab2-alex.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:292272453790:android:d3995fdb75b67a42d6e38f",
-        "android_client_info": {
-          "package_name": "com.example.googlesignin_monolit"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "292272453790-tafic3a5sjlj2f11gbrctp37vis28d05.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.googlesignin_monolit",
-            "certificate_hash": "0772643921b46ac470e912ee385b56cda2b82a13"
-          }
-        },
-        {
-          "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0E1ymIvk5VQcvSusBFOVv0RnYYB7Sgfk"
-        },
-        {
-          "current_key": "AIzaSyBxB8jHz0sjqZlGF4MK4GzbcnLudjva21U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:292272453790:android:63f540fd4f6bb98cd6e38f",
-        "android_client_info": {
-          "package_name": "com.example.googletest2"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "292272453790-jr18no99a74uretmou3kgek6djsjue24.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.googletest2",
-            "certificate_hash": "0772643921b46ac470e912ee385b56cda2b82a13"
-          }
-        },
-        {
-          "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0E1ymIvk5VQcvSusBFOVv0RnYYB7Sgfk"
-        },
-        {
-          "current_key": "AIzaSyBxB8jHz0sjqZlGF4MK4GzbcnLudjva21U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:292272453790:android:fdc3ad40a4828e15d6e38f",
+        "mobilesdk_app_id": "1:191590951059:android:e6137aeb19e89658dec566",
         "android_client_info": {
           "package_name": "com.gholem.moneylab"
         }
       },
       "oauth_client": [
         {
-          "client_id": "292272453790-e28brkbsdu10nmco9dr7j6ojqkl4g027.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gholem.moneylab",
-            "certificate_hash": "6b30c40c0c86682a4435bf0a73bdbe8f2c67ec25"
-          }
-        },
-        {
-          "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
+          "client_id": "191590951059-rdh3tmo9e1q7balnvs0rur1pu1ndg913.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA0E1ymIvk5VQcvSusBFOVv0RnYYB7Sgfk"
-        },
-        {
-          "current_key": "AIzaSyBxB8jHz0sjqZlGF4MK4GzbcnLudjva21U"
+          "current_key": "AIzaSyBpUXOLQsm-0t8mWj06WA6L83vgdrKavfg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:292272453790:android:4dda28d09e367579d6e38f",
-        "android_client_info": {
-          "package_name": "com.gholem.moneylab.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "292272453790-rk37n67pi5h5jgvaojipa6b543603rat.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gholem.moneylab.debug",
-            "certificate_hash": "6b30c40c0c86682a4435bf0a73bdbe8f2c67ec25"
-          }
-        },
-        {
-          "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0E1ymIvk5VQcvSusBFOVv0RnYYB7Sgfk"
-        },
-        {
-          "current_key": "AIzaSyBxB8jHz0sjqZlGF4MK4GzbcnLudjva21U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:292272453790:android:4c0a7a192f533ec9d6e38f",
-        "android_client_info": {
-          "package_name": "com.gholemhub.moneylab"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "292272453790-n677qha315n0ovgmdn33162uajt0g4ge.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gholemhub.moneylab",
-            "certificate_hash": "0772643921b46ac470e912ee385b56cda2b82a13"
-          }
-        },
-        {
-          "client_id": "292272453790-rj7cr45tnb23phvirhtnr17hmr3ots7i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gholemhub.moneylab",
-            "certificate_hash": "b64af7775d8da6b4c72e22993c156ad82cea3777"
-          }
-        },
-        {
-          "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0E1ymIvk5VQcvSusBFOVv0RnYYB7Sgfk"
-        },
-        {
-          "current_key": "AIzaSyBxB8jHz0sjqZlGF4MK4GzbcnLudjva21U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "292272453790-7rao2g8lb5bdumjja84pmeutr6314hbt.apps.googleusercontent.com",
+              "client_id": "191590951059-rdh3tmo9e1q7balnvs0rur1pu1ndg913.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
