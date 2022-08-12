@@ -11,6 +11,7 @@
     <dimen name="btn_activity_add_text_size">24sp</dimen>
 
     <dimen name="text_size_edit_text_activity_add">36sp</dimen>
+    <dimen name="text_size_edit_text_authentication_fr">40sp</dimen>
 
     <dimen name="activity_add_layout_margin">4dp</dimen>
 

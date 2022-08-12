@@ -25,6 +25,8 @@ class SplashViewModel @Inject constructor(
 
     fun init() = viewModelScope.launch {
         _uiState.send(UiState.Loading)
+        delay(3000) { _uiState.send(UiState.Loaded) }
+        delay(1000) { _uiState.send(UiState.NavigateToDashboard) }
     }
 
     fun goToAuthentication() {
