@@ -24,5 +24,16 @@
         <action
             android:id="@+id/action_category_bottom_sheet_dialog_to_add_fragment"
             app:destination="@id/add_fragment" />
+        <action
+            android:id="@+id/actionToCategoryBottomSheetDialog"
+            app:destination="@id/createNewTransactionCategoryFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/createNewTransactionCategoryFragment"
+        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewTransactionCategory.CreateNewTransactionCategoryFragment"
+        android:label="CreateNewTransactionCategoryFragment" >
+        <action
+            android:id="@+id/action_createNewTransactionCategoryFragment_to_category_bottom_sheet_dialog"
+            app:destination="@id/category_bottom_sheet_dialog" />
     </dialog>
 </navigation>

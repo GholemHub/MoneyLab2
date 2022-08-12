@@ -2,7 +2,9 @@ package com.gholem.moneylab.features.add.chooseTransactionCategory
 
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseBottomSheetFragment
 import com.gholem.moneylab.databinding.BottomsheetCategoryFragmentBinding
 import com.gholem.moneylab.databinding.ItemBottomSheetCategoryBinding
@@ -23,13 +25,15 @@ class BottomSheetCategoryFragment :
 
     override fun init(viewBinding: BottomsheetCategoryFragmentBinding) {
         viewBinding.createNewCategoryBtn.setOnClickListener {
-            
+
         }
-        initCategoryViews(viewBinding)
     }
 
     private fun navigateToAddTransaction() {
         viewModel.navigateToAddTransaction()
+    }
+    private fun navigateToCreateNewTransaction() {
+        viewModel.navigateToCreateNewTransaction()
     }
 
     private fun initCategoryViews(viewBinding: BottomsheetCategoryFragmentBinding) {

@@ -11,6 +11,8 @@ class BottomSheetCategoryNavigation @Inject constructor (
         when(event){
             BottomSheetCategoryEvent.ToPreviousScreen ->
                 navControllerWrapper.navigateUp()
+            BottomSheetCategoryEvent.ToCreateNewCategory ->
+                //navControllerWrapper.navigate(actionToCategoryBottomSheetDialog())
         }
     }
 }
