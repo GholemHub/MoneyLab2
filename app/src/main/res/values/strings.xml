@@ -6,6 +6,7 @@
     <string name="planning_placeholder">Planning</string>
 
     <string name="transaction_amount_hint">Amount</string>
+    <string name="transaction_name_category_hint">Name category</string>
     <string name="transaction_add_next">Add next transaction</string>
 
     <string name="transaction_category">Category</string>

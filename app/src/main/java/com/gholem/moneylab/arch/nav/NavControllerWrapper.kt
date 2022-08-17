@@ -29,6 +29,10 @@ class NavControllerWrapper @Inject constructor() {
     private fun NavOptions?.withDefaults(): NavOptions =
         NavOptionsHelper.addDefaultsNavOptions(this)
 
+    fun navigate(ResId: Int) {
+        fragment.findNavController().navigate(ResId)
+    }
+
     fun navigateUp() {
         fragment.findNavController().navigateUp()
     }

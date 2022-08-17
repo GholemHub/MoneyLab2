@@ -25,15 +25,23 @@
             android:id="@+id/action_category_bottom_sheet_dialog_to_add_fragment"
             app:destination="@id/add_fragment" />
         <action
-            android:id="@+id/actionToCategoryBottomSheetDialog"
-            app:destination="@id/createNewTransactionCategoryFragment" />
+            android:id="@+id/action_category_bottom_sheet_dialog_to_createNewCategoryFragment"
+            app:destination="@id/createNewCategoryFragment" />
     </dialog>
-    <dialog
+    <fragment
         android:id="@+id/createNewTransactionCategoryFragment"
-        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewTransactionCategory.CreateNewTransactionCategoryFragment"
+        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewCategoryImage.CreateNewCategoryImageFragment"
         android:label="CreateNewTransactionCategoryFragment" >
         <action
-            android:id="@+id/action_createNewTransactionCategoryFragment_to_category_bottom_sheet_dialog"
-            app:destination="@id/category_bottom_sheet_dialog" />
-    </dialog>
+            android:id="@+id/action_createNewTransactionCategoryFragment_to_createNewCategoryFragment"
+            app:destination="@id/createNewCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createNewCategoryFragment"
+        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewCategory.CreateNewCategoryFragment"
+        android:label="CreateNewCategoryFragment" >
+        <action
+            android:id="@+id/action_createNewCategoryFragment_to_createNewTransactionCategoryFragment"
+            app:destination="@id/createNewTransactionCategoryFragment" />
+    </fragment>
 </navigation>

@@ -64,13 +64,13 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-            var dataPicker = DatePickerDialog(
-                requireContext(),
-                this,
-                rightNow.get(Calendar.YEAR),
-                rightNow.get(Calendar.MONTH),
-                rightNow.get(Calendar.DAY_OF_MONTH)
-            )
+        var dataPicker = DatePickerDialog(
+            requireContext(),
+            this,
+            rightNow.get(Calendar.YEAR),
+            rightNow.get(Calendar.MONTH),
+            rightNow.get(Calendar.DAY_OF_MONTH)
+        )
         dataPicker.datePicker.maxDate = rightNow.timeInMillis
         dataPicker.show()
     }
