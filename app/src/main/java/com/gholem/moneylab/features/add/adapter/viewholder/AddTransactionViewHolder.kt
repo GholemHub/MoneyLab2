@@ -9,6 +9,7 @@ import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
 
+
 //przedstawienia danych widoku w adapterze dla 1 elementu
 sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -17,6 +18,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
         private val binding: ItemCategoryBinding
     ) : AddTransactionViewHolder(binding) {
         fun bind(category: AddTransactionItem.Category) {
+
             binding.categoryButton.setText(category.category.categoryName)
             binding.categoryButton
                 .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.category.image, 0)

@@ -13,11 +13,17 @@ data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 ) {
 
-    fun toModel(): Transaction = Transaction(
-        category = TransactionCategory.fromId(categoryId),
-        amount = amount,
-        date = date
-    )
+
+    /*
+        var v = Transaction(
+            category = TransactionCategory.fromId(categoryId),
+            amount = amount,
+            date = date
+        )
+
+        return v
+        */
+
 
     companion object {
         fun from(transaction: Transaction): TransactionEntity =

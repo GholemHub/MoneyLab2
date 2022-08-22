@@ -7,12 +7,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentAddBinding
+import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.AddTransactionsAdapter
 import com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.add.navigation.AddTransactionNavigation
 import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 import java.util.*
 
 @AndroidEntryPoint
@@ -25,8 +27,28 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
+        i("In the add tr${viewModel.listOfCategories}")
+        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) }, take() )
     }
+
+private fun take(): List<TransactionCategory>{
+    var v :List<TransactionCategory> = mutableListOf()
+
+        viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
+            when (action) {
+                is AddTransactionViewModel.Action.ShowData -> {
+                    viewModel.listOfCategories = action.list as MutableList<TransactionCategory>
+                    v = viewModel.listOfCategories
+                    i("In the add tr222222 ${viewModel.listOfCategories}")
+                    //i("In the add tr2${action.list}")
+                }
+            }
+        }
+
+    return v
+
+}
+
     private var position = 0
 
     override fun constructViewBinding(): FragmentAddBinding =
@@ -35,6 +57,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     override fun init(viewBinding: FragmentAddBinding) {
         observeActions()
         viewModel.init()
+        viewModel.onTakeCategory()
 
         observeCategoryChange()
         viewBinding.transactionsRecyclerView
@@ -84,6 +107,15 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             when (action) {
                 AddTransactionViewModel.Action.GetTransactionsData -> {
                     viewModel.saveTransaction(dataAdapter.getTransactionListData())
+                }
+                AddTransactionViewModel.Action.GetCategoryData -> {
+                    viewModel.getCategory()
+                    i("In the add tr2${viewModel.listOfCategories}")
+                }
+                is AddTransactionViewModel.Action.ShowData -> {
+                    viewModel.listOfCategories = action.list as MutableList<TransactionCategory>
+                    dataAdapter.listOfCategory = viewModel.listOfCategories
+                    //i("In the add tr2${action.list}")
                 }
             }
         }

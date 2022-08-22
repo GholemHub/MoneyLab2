@@ -31,7 +31,6 @@ class CreateNewCategoryImageFragment :
             imageId
         )
         viewModel.navigateToPreviousScreen()
-        Timber.i("The position: $imageId")
     }
 
     override fun constructViewBinding(): FragmentNewCategoryImageBinding =
@@ -45,7 +44,6 @@ class CreateNewCategoryImageFragment :
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
-
     }
 
     override fun setupNavigation() {

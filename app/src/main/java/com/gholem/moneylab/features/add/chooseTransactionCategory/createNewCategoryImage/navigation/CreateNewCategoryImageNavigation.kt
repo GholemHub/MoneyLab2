@@ -11,9 +11,8 @@ class CreateNewCategoryImageNavigation @Inject constructor(
     override fun navigate(event: CreateNewCategoryImageEvent) {
         when (event) {
             CreateNewCategoryImageEvent.ToPreviousScreen ->{
-                navControllerWrapper.navigate(R.id.action_createNewTransactionCategoryFragment_to_createNewCategoryFragment)
+                navControllerWrapper.navigateUp()
             }
-
         }
     }
 }

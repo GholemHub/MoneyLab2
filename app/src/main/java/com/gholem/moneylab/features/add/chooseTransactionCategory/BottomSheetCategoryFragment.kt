@@ -6,10 +6,11 @@ import androidx.navigation.fragment.findNavController
 import com.gholem.moneylab.arch.base.BaseBottomSheetFragment
 import com.gholem.moneylab.databinding.BottomsheetCategoryFragmentBinding
 import com.gholem.moneylab.databinding.ItemBottomSheetCategoryBinding
-import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.chooseTransactionCategory.navigation.BottomSheetCategoryNavigation
 import com.gholem.moneylab.features.add.chooseTransactionCategory.viewmodel.BottomSheetCategoryViewModel
+import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class BottomSheetCategoryFragment :
@@ -22,10 +23,13 @@ class BottomSheetCategoryFragment :
         BottomsheetCategoryFragmentBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: BottomsheetCategoryFragmentBinding) {
+        viewModel.getCategoryFromRoom()
+
+        observeActions()
+
         viewBinding.createNewCategoryBtn.setOnClickListener {
             navigateToCreateNewTransaction()
         }
-        initCategoryViews(viewBinding)
     }
 
     private fun navigateToAddTransaction() {
@@ -36,25 +40,33 @@ class BottomSheetCategoryFragment :
         viewModel.navigateToCreateNewTransaction()
     }
 
-    private fun initCategoryViews(viewBinding: BottomsheetCategoryFragmentBinding) {
-        TransactionCategory.values().forEach { category ->
-            val categoryViewBinding = ItemBottomSheetCategoryBinding.inflate(
-                LayoutInflater.from(context),
-                viewBinding.root,
-                false
-            )
-            categoryViewBinding.imageOfCategory.setImageResource(category.image)
-            categoryViewBinding.categoryName.text = getString(category.categoryName)
+    private fun observeActions() {
+        viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
+            when (action) {
+                is BottomSheetCategoryViewModel.Action.ShowData -> {
+                    Timber.i("List3: ${action.list.size}")
+                    action.list.forEach { category ->
 
-            categoryViewBinding.root.setOnClickListener {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                    KEY_CATEGORY,
-                    category.id
-                )
-                navigateToAddTransaction()
+                        val categoryViewBinding = ItemBottomSheetCategoryBinding.inflate(
+                            LayoutInflater.from(context),
+                            getViewBinding().root,
+                            false
+                        )
+                        categoryViewBinding.imageOfCategory.setImageResource(category.image)
+                        categoryViewBinding.categoryName.text = category.categoryName
+
+                        categoryViewBinding.root.setOnClickListener {
+                            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                                KEY_CATEGORY,
+                                category.id
+                            )
+                            navigateToAddTransaction()
+                        }
+
+                        getViewBinding().bottomSheetCategoriesContainer.addView(categoryViewBinding.root)
+                    }
+                }
             }
-
-            viewBinding.bottomSheetCategoriesContainer.addView(categoryViewBinding.root)
         }
     }
 

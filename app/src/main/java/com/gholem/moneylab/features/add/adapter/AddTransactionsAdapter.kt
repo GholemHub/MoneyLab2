@@ -11,17 +11,22 @@ import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import timber.log.Timber
 import java.util.*
 
 //Adapter = widok
 //Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
     val categoryClickListener: () -> Unit,
-    val dateClickListener: (position: Int) -> Unit
+    val dateClickListener: (position: Int) -> Unit,
+    val listOfCategory1: List<TransactionCategory>
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
+    var listOfCategory: List<TransactionCategory> = mutableListOf()
+
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
+    //private val adapterData = listOfCategory.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return createViewHolders(parent, viewType)
@@ -69,9 +74,18 @@ class AddTransactionsAdapter(
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-        cat.category = TransactionCategory.fromId(categoryId)
 
+        cat.category = listOfCategory.get(findById(categoryId))
         notifyItemChanged(adapterData.indexOf(cat))
+    }
+
+    fun findById(categoryId: Int): Int{
+            for(i in 0..listOfCategory.size-1){
+                if(listOfCategory.get(i).id == categoryId){
+                    return i
+                }
+            }
+        return 2
     }
 
     fun getTransactionListData(): List<Transaction> =
@@ -89,11 +103,12 @@ class AddTransactionsAdapter(
             }
         }
 
+
     private fun mapToTransaction(
         category: TransactionCategory?,
         item: AddTransactionItem.Transaction
     ) = Transaction(
-        category = category ?: TransactionCategory.getDefault(),
+        category = category ?: listOfCategory.get(0),
         amount = item.amount.toInt(),
         date = item.date
     )

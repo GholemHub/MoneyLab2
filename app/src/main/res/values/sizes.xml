@@ -16,6 +16,8 @@
 
     <dimen name="image_add_fragment_size">60dp</dimen>
     <dimen name="image_small_size">50dp</dimen>
+    <dimen name="image_bottom_sheet_navigation">40dp</dimen>
+
 
     <dimen name="margin_recycler_add_fragment">4dp</dimen>
 

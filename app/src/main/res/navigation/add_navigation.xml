@@ -29,12 +29,9 @@
             app:destination="@id/createNewCategoryFragment" />
     </dialog>
     <fragment
-        android:id="@+id/createNewTransactionCategoryFragment"
+        android:id="@+id/createNewCategoryImageFragment"
         android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewCategoryImage.CreateNewCategoryImageFragment"
         android:label="CreateNewTransactionCategoryFragment" >
-        <action
-            android:id="@+id/action_createNewTransactionCategoryFragment_to_createNewCategoryFragment"
-            app:destination="@id/createNewCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/createNewCategoryFragment"
@@ -42,6 +39,6 @@
         android:label="CreateNewCategoryFragment" >
         <action
             android:id="@+id/action_createNewCategoryFragment_to_createNewTransactionCategoryFragment"
-            app:destination="@id/createNewTransactionCategoryFragment" />
+            app:destination="@id/createNewCategoryImageFragment" />
     </fragment>
 </navigation>
