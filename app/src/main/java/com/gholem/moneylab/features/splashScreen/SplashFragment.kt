@@ -24,7 +24,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
-        viewModel.getCategory()
     }
 
     override fun onResume() {

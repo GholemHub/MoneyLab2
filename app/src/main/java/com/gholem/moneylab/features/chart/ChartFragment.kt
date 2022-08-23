@@ -22,7 +22,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
     override fun init(viewBinding: FragmentChartBinding) {
         observeActions()
 
-
         viewBinding.chartRecyclerview
             .apply {
                 layoutManager = LinearLayoutManager(context)
@@ -34,13 +33,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.createRoomDate()
-        viewModel.getCategory()
     }
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
-                is ChartViewModel.Action.ShowDataChartTransactionItem -> {
+                is ChartViewModel.Action.ShowData -> {
                     dataAdapter.updateData(action.list)
                 }
             }
