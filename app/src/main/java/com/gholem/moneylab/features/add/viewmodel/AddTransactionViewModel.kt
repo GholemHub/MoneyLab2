@@ -5,22 +5,23 @@ import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
+import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
+import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import timber.log.Timber.i
 import javax.inject.Inject
 
 //logika zmiana danych
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
-    private val getTransactionListUseCase: GetTransactionListUseCase,
     private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
-    private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus
+    private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus,
+    private val getCategoryListUseCase: GetCategoryListUseCase,
 ) : ViewModel() {
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
@@ -29,13 +30,14 @@ class AddTransactionViewModel @Inject constructor(
     val navigation: NavigationLiveData<AddNavigationEvent> =
         NavigationLiveData()
 
-    override fun onCleared() {
-        bottomNavigationVisibilityBus.changeVisibility(true)
-        super.onCleared()
-    }
-
     fun init() {
         bottomNavigationVisibilityBus.changeVisibility(false)
+        updateCategories()
+    }
+
+    fun updateList(idCategory: Long) = viewModelScope.launch {
+        fetchCategories()
+        Action.SelectCategory(idCategory).send()
     }
 
     fun onDoneButtonClick() {
@@ -48,10 +50,22 @@ class AddTransactionViewModel @Inject constructor(
 
     fun saveTransaction(transactions: List<Transaction>) = viewModelScope.launch {
         insertTransactionsModelUseCase.run(transactions)
-        getTransactionListUseCase.run(Unit).forEach {
-            Timber.i("Transaction from db: Category: ${it.category.name}, amount: ${it.amount}")
-        }
         navigation.emit(AddNavigationEvent.ToPreviousScreen)
+    }
+
+    private fun updateCategories() = viewModelScope.launch {
+        fetchCategories()
+    }
+
+    override fun onCleared() {
+        bottomNavigationVisibilityBus.changeVisibility(true)
+        super.onCleared()
+    }
+
+    private suspend fun fetchCategories() {
+        val listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
+        i("listOfCategories.size : ${listOfCategories.size}")
+        Action.ShowData(listOfCategories).send()
     }
 
     private fun Action.send() =
@@ -61,5 +75,7 @@ class AddTransactionViewModel @Inject constructor(
 
     sealed class Action {
         object GetTransactionsData : Action()
+        data class ShowData(val list: List<TransactionCategory>) : Action()
+        data class SelectCategory(val categoryId: Long) : Action()
     }
 }

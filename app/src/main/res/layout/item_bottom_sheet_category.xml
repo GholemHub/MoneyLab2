@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageOfCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/image_bottom_sheet_navigation"
+        android:layout_height="@dimen/image_bottom_sheet_navigation"
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_0.5x"
         android:layout_marginBottom="@dimen/margin_0.5x"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toStartOf="@+id/category_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_category_food" />
+        tools:srcCompat="@drawable/ic_app_logo" />
 
     <TextView
         android:id="@+id/category_name"

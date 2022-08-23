@@ -1,5 +1,6 @@
 package com.gholem.moneylab.arch.nav
 
+import android.app.Dialog
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
@@ -10,9 +11,13 @@ import javax.inject.Inject
 class NavControllerWrapper @Inject constructor() {
 
     private lateinit var fragment: Fragment
+    private lateinit var dialog: Dialog
 
     fun init(fragment: Fragment) {
         this.fragment = fragment
+    }
+    fun init(dialog: Dialog) {
+        this.dialog = dialog
     }
 
     fun navigate(directions: NavDirections) = with(fragment.findNavController()) {
@@ -23,6 +28,10 @@ class NavControllerWrapper @Inject constructor() {
 
     private fun NavOptions?.withDefaults(): NavOptions =
         NavOptionsHelper.addDefaultsNavOptions(this)
+
+    fun navigate(ResId: Int) {
+        fragment.findNavController().navigate(ResId)
+    }
 
     fun navigateUp() {
         fragment.findNavController().navigateUp()
