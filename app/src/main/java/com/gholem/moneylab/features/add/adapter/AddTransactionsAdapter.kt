@@ -7,9 +7,9 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
+import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
-import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import java.util.*
 
@@ -20,8 +20,6 @@ class AddTransactionsAdapter(
     val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
-
-    private var listOfCategory: List<TransactionCategory> = mutableListOf()
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
@@ -47,11 +45,6 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun updateData(listOfTrCategory: List<TransactionCategory>) {
-        listOfCategory = listOfTrCategory
-        notifyDataSetChanged()
-    }
-
     fun setDate(position: Int, day: Int, month: Int, year: Int) {
         val transaction = adapterData[position]
                 as? AddTransactionItem.Transaction
@@ -72,12 +65,11 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun setCategory(categoryId: Long) {
+    fun setCategory(categoryId: Int) {
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-
-        cat.category = listOfCategory.get(categoryId.toInt() - 1)
+        cat.category = TransactionCategory.fromId(categoryId)
 
         notifyItemChanged(adapterData.indexOf(cat))
     }
@@ -101,7 +93,7 @@ class AddTransactionsAdapter(
         category: TransactionCategory?,
         item: AddTransactionItem.Transaction
     ) = Transaction(
-        category = category ?: listOfCategory.get(0),
+        category = category ?: TransactionCategory.getDefault(),
         amount = item.amount.toInt(),
         date = item.date
     )
