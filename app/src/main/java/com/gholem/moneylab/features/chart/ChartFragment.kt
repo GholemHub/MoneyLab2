@@ -40,9 +40,8 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
-                is ChartViewModel.Action.ShowData -> {
+                is ChartViewModel.Action.ShowDataChartTransactionItem -> {
                     dataAdapter.updateData(action.list)
-
                 }
             }
         }

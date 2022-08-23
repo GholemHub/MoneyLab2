@@ -4,17 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.R
 import com.gholem.moneylab.domain.model.ChartTransactionItem
-import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
-import com.gholem.moneylab.features.add.chooseTransactionCategory.domain.GetCategoryListUseCase
+import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,24 +31,8 @@ class ChartViewModel @Inject constructor(
 
     fun getCategory() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
-        checkIfCategoriesIsEmpty()
-        Action.ShowData2(listOfCategories).send()
-        //i("SHOW data: ${getCategoryListUseCase.run(Unit).get(0).categoryName}")
-    }
 
-    private fun checkIfCategoriesIsEmpty() {
-        if (listOfCategories.isEmpty()) {
-            listOfCategories.add(TransactionCategory(0, "Others", R.drawable.ic_category_other))
-            listOfCategories.add(
-                TransactionCategory(
-                    1,
-                    "Transport",
-                    R.drawable.ic_category_transport
-                )
-            )
-            listOfCategories.add(TransactionCategory(2, "Food", R.drawable.ic_category_food))
-            listOfCategories.add(TransactionCategory(3, "Sport", R.drawable.ic_category_sport))
-        }
+        Action.ShowDataTransactionCategory(listOfCategories).send()
     }
 
     fun createRoomDate() = viewModelScope.launch {
@@ -66,24 +47,22 @@ class ChartViewModel @Inject constructor(
             entry.value.forEach { transaction ->
                 list.add(
                     ChartTransactionItem.ChartTransaction(
-                        fromId(transaction.categoryId),
+                        fromId(transaction.id),
                         transaction.amount.toString()
                     )
                 )
             }
         }
-
-        Action.ShowData(list).send()
+        Action.ShowDataChartTransactionItem(list).send()
     }
 
-    fun fromId(id: Int): TransactionCategory {
+    fun fromId(id: Long): TransactionCategory {
         listOfCategories.forEach {
             if (it.id == id) {
                 return it
             }
         }
-
-        return TransactionCategory(0,"Empty", R.drawable.ic_category_food)
+        return TransactionCategory("Empty", R.drawable.ic_category_food)
     }
 
     private fun getMapOfTransactionsByDate(list: List<TransactionEntity>): Map<Long, List<TransactionEntity>> {
@@ -103,7 +82,7 @@ class ChartViewModel @Inject constructor(
         }
 
     sealed class Action {
-        data class ShowData(val list: List<ChartTransactionItem>) : Action()
-        data class ShowData2(val list: List<TransactionCategory>) : Action()
+        data class ShowDataChartTransactionItem(val list: List<ChartTransactionItem>) : Action()
+        data class ShowDataTransactionCategory(val list: List<TransactionCategory>) : Action()
     }
 }

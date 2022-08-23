@@ -6,9 +6,8 @@ import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.AddTransactionItem
+import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
-
 
 //przedstawienia danych widoku w adapterze dla 1 elementu
 sealed class AddTransactionViewHolder(binding: ViewBinding) :

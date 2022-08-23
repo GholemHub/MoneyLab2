@@ -7,26 +7,23 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber
 import java.util.*
 
 //Adapter = widok
 //Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
     val categoryClickListener: () -> Unit,
-    val dateClickListener: (position: Int) -> Unit,
-    val listOfCategory1: List<TransactionCategory>
+    val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
-    var listOfCategory: List<TransactionCategory> = mutableListOf()
+    private var listOfCategory: List<TransactionCategory> = mutableListOf()
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
-    //private val adapterData = listOfCategory.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return createViewHolders(parent, viewType)
@@ -50,6 +47,11 @@ class AddTransactionsAdapter(
         }
     }
 
+    fun updateData(listOfTrCategory: List<TransactionCategory>) {
+        listOfCategory = listOfTrCategory
+        notifyDataSetChanged()
+    }
+
     fun setDate(position: Int, day: Int, month: Int, year: Int) {
         val transaction = adapterData[position]
                 as? AddTransactionItem.Transaction
@@ -70,22 +72,14 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun setCategory(categoryId: Int) {
+    fun setCategory(categoryId: Long) {
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
 
-        cat.category = listOfCategory.get(findById(categoryId))
-        notifyItemChanged(adapterData.indexOf(cat))
-    }
+        cat.category = listOfCategory.get(categoryId.toInt() - 1)
 
-    fun findById(categoryId: Int): Int{
-            for(i in 0..listOfCategory.size-1){
-                if(listOfCategory.get(i).id == categoryId){
-                    return i
-                }
-            }
-        return 2
+        notifyItemChanged(adapterData.indexOf(cat))
     }
 
     fun getTransactionListData(): List<Transaction> =
@@ -102,7 +96,6 @@ class AddTransactionsAdapter(
                 }
             }
         }
-
 
     private fun mapToTransaction(
         category: TransactionCategory?,

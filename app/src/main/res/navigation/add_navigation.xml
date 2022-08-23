@@ -18,7 +18,7 @@
 
     <dialog
         android:id="@+id/category_bottom_sheet_dialog"
-        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment"
+        android:name="com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment"
         android:label="CategoryBottomSheet"
         tools:layout="@layout/bottomsheet_category_fragment" >
         <action
@@ -30,12 +30,12 @@
     </dialog>
     <fragment
         android:id="@+id/createNewCategoryImageFragment"
-        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewCategoryImage.CreateNewCategoryImageFragment"
+        android:name="com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment"
         android:label="CreateNewTransactionCategoryFragment" >
     </fragment>
     <fragment
         android:id="@+id/createNewCategoryFragment"
-        android:name="com.gholem.moneylab.features.add.chooseTransactionCategory.createNewCategory.CreateNewCategoryFragment"
+        android:name="com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment"
         android:label="CreateNewCategoryFragment" >
         <action
             android:id="@+id/action_createNewCategoryFragment_to_createNewTransactionCategoryFragment"

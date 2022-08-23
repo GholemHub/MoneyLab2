@@ -7,11 +7,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentAddBinding
-import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.adapter.AddTransactionsAdapter
-import com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.add.navigation.AddTransactionNavigation
 import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
+import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
+import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber.i
@@ -27,27 +27,8 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        i("In the add tr${viewModel.listOfCategories}")
-        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) }, take() )
+        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
     }
-
-private fun take(): List<TransactionCategory>{
-    var v :List<TransactionCategory> = mutableListOf()
-
-        viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
-            when (action) {
-                is AddTransactionViewModel.Action.ShowData -> {
-                    viewModel.listOfCategories = action.list as MutableList<TransactionCategory>
-                    v = viewModel.listOfCategories
-                    i("In the add tr222222 ${viewModel.listOfCategories}")
-                    //i("In the add tr2${action.list}")
-                }
-            }
-        }
-
-    return v
-
-}
 
     private var position = 0
 
@@ -57,9 +38,10 @@ private fun take(): List<TransactionCategory>{
     override fun init(viewBinding: FragmentAddBinding) {
         observeActions()
         viewModel.init()
-        viewModel.onTakeCategory()
 
         observeCategoryChange()
+        observer()
+
         viewBinding.transactionsRecyclerView
             .apply {
                 layoutManager = LinearLayoutManager(context)
@@ -79,8 +61,20 @@ private fun take(): List<TransactionCategory>{
 
     //only: fragment back to fragment\\ savedStateHandle
     private fun observeCategoryChange() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(KEY_CATEGORY)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(KEY_CATEGORY)
             ?.observe(viewLifecycleOwner) { result -> dataAdapter.setCategory(result) }
+
+    }
+
+    private fun observer() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(
+            KEY_CATEGORY_CHOOSE
+        )
+            ?.observe(viewLifecycleOwner) { result ->
+                i("result $result")
+                viewModel.updateList(result)
+            }
+
     }
 
     private fun showDateDialog(_position: Int) {
@@ -108,14 +102,11 @@ private fun take(): List<TransactionCategory>{
                 AddTransactionViewModel.Action.GetTransactionsData -> {
                     viewModel.saveTransaction(dataAdapter.getTransactionListData())
                 }
-                AddTransactionViewModel.Action.GetCategoryData -> {
-                    viewModel.getCategory()
-                    i("In the add tr2${viewModel.listOfCategories}")
-                }
                 is AddTransactionViewModel.Action.ShowData -> {
-                    viewModel.listOfCategories = action.list as MutableList<TransactionCategory>
-                    dataAdapter.listOfCategory = viewModel.listOfCategories
-                    //i("In the add tr2${action.list}")
+                    dataAdapter.updateData(action.list)
+                }
+                is AddTransactionViewModel.Action.SelectCategory -> {
+                    dataAdapter.setCategory(action.categoryId)
                 }
             }
         }

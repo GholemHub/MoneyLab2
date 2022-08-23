@@ -8,9 +8,8 @@ import com.gholem.moneylab.repository.storage.entity.CategoryEntity
 @Dao
 interface CategoryDao {
     @Insert
-    suspend fun insert(categoryEntity: CategoryEntity)
+    suspend fun insert(categoryEntity: CategoryEntity): Long
 
     @Query("SELECT * FROM category_table")
     suspend fun getAll(): List<CategoryEntity>
-
 }
