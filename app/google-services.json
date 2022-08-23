@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "191590951059",
+    "project_id": "moneylab2-alex",
+    "storage_bucket": "moneylab2-alex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191590951059:android:e6137aeb19e89658dec566",
+        "android_client_info": {
+          "package_name": "com.gholem.moneylab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191590951059-rdh3tmo9e1q7balnvs0rur1pu1ndg913.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpUXOLQsm-0t8mWj06WA6L83vgdrKavfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191590951059-rdh3tmo9e1q7balnvs0rur1pu1ndg913.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

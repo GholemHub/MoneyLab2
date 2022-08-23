@@ -21,4 +21,6 @@ class CodeExamples {
         coroutineChannel.trySend(GlobalScope.launch(start = CoroutineStart.LAZY) {
         })
     }
+
+    // To Get Data From Google Use: val account = completedTask.getResult(ApiException::class.java)
 }
