@@ -3,7 +3,6 @@ package com.gholem.moneylab.features.chooseTransactionCategory.domain
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.repository.storage.CategoryStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -19,7 +18,7 @@ class GetCategoryListUseCaseTest {
     )
 
     @Test
-    fun `verify if getAll method was triggered`() = runTest {
+    fun `verify invocations when run method is called`() = runTest {
         /* Given */
         `when`(categoryStorageRepositoryMock.getAll()).thenReturn(emptyList())
 
@@ -27,12 +26,11 @@ class GetCategoryListUseCaseTest {
         useCase.run(Unit)
 
         /* Then */
-        //Chech if it is used
         verify(categoryStorageRepositoryMock).getAll()
     }
 
     @Test
-    fun `verify if getAll method was used`() = runTest{
+    fun `verify result if run method is called`() = runTest {
         /* Given */
         val categoryList = listOf(
             TransactionCategory(
@@ -52,15 +50,17 @@ class GetCategoryListUseCaseTest {
         /* Then */
         assertEquals(2, result.size)
 
-        assertEquals(TransactionCategory(
-            categoryName = "Cat1",
-            image = 0
-        ), result.first())
-        assertEquals(TransactionCategory(
-            categoryName = "Cat2",
-            image = 1
-        ), result.last())
-
+        assertEquals(
+            TransactionCategory(
+                categoryName = "Cat1",
+                image = 0
+            ), result.first()
+        )
+        assertEquals(
+            TransactionCategory(
+                categoryName = "Cat2",
+                image = 1
+            ), result.last()
+        )
     }
-
 }

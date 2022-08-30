@@ -1,7 +1,5 @@
 package com.gholem.moneylab.features.add.viewmodel
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -11,27 +9,16 @@ import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
-import com.gholem.moneylab.repository.storage.MoneyLabDatabase
-import com.gholem.moneylab.repository.storage.dao.TransactionDao
-import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.Mockito.*
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddTransactionViewModelTest {
-    private lateinit var viewModel: AddTransactionViewModel
-    private lateinit var datebase: MoneyLabDatabase
-    private lateinit var dao: TransactionDao
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
@@ -45,6 +32,7 @@ class AddTransactionViewModelTest {
     private val navigationMock: NavigationLiveData<AddNavigationEvent> =
         mock(NavigationLiveData::class.java) as NavigationLiveData<AddNavigationEvent>
 
+    private lateinit var viewModel: AddTransactionViewModel
 
     @Before
     fun setup() {
@@ -54,70 +42,49 @@ class AddTransactionViewModelTest {
             getCategoryListUseCaseMock
         )
         viewModel.navigation = navigationMock
-        datebase = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            MoneyLabDatabase::class.java
-        ).allowMainThreadQueries().build()
-        dao = datebase.transactionDao()
-
     }
 
-    @After
-    fun teardown() {
-        datebase.close()
-    }
-
-    //TODO need review
     @Test
-    fun `navigateToCategoryBottomSheet trigger`() = runTest {
-        /* Given */
-
+    fun `verify invocations on navigateToCategoryBottomSheet method call`() = runTest {
         /* When */
         viewModel.navigateToCategoryBottomSheet()
 
         /* Then */
-        Mockito.verify(viewModel.navigation).emit(AddNavigationEvent.ToCategoryBottomSheetDialog)
+        verify(viewModel.navigation).emit(AddNavigationEvent.ToCategoryBottomSheetDialog)
     }
 
-    //TODO need review
     @Test
-    fun `saveTransaction trigger`() = runTest {
+    fun `verify invocations on saveTransaction method call`() = runTest {
         /* Given */
-        val transactionEntity = listOf(TransactionEntity(1, 2,1))
-        dao.insert(listOf(TransactionEntity(1, 2)))
-
-        `when`(
-            insertTransactionsModelUseCaseMock.run(
-                listOf(Transaction(TransactionCategory("1", 2, 3), 1, 2))
+        val transactionList = listOf(
+            Transaction(
+                TransactionCategory("1", 2, 3), 1, 2
             )
         )
-            .thenReturn(Unit)
+        `when`(insertTransactionsModelUseCaseMock.run(transactionList)).thenReturn(Unit)
+
         /* When */
-        viewModel.saveTransaction(listOf(Transaction(TransactionCategory("1", 2, 3), 1, 2)))
+        viewModel.saveTransaction(transactionList)
 
         /* Then */
-        assertEquals(dao.getAll(), transactionEntity)
+        verify(insertTransactionsModelUseCaseMock).run(transactionList)
         verify(viewModel.navigation).emit(AddNavigationEvent.ToPreviousScreen)
     }
 
-    //TODO Done need review
     @Test
-    fun `onDoneButtonClick trigger`() = runTest {
-        /* Given */
-
+    fun `verify invocations on onDoneButtonClick method call`() = runTest {
         /* When */
         viewModel.onDoneButtonClick()
 
         /* Then */
         viewModel.actions.test {
-            assertEquals(
-                AddTransactionViewModel.Action.GetTransactionsData, awaitItem()
-            )
+            assertEquals(AddTransactionViewModel.Action.GetTransactionsData, awaitItem())
+            expectNoEvents()
         }
     }
 
     @Test
-    fun `init updateCategories trigger`() = runTest {
+    fun `verify invocations on init method call`() = runTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
@@ -133,27 +100,27 @@ class AddTransactionViewModelTest {
         viewModel.actions.test {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
-                    listOf(
-                        TransactionCategory("123", 123, 123)
-                    )
+                    listOf(TransactionCategory("123", 123, 123))
                 ), awaitItem()
             )
+            expectNoEvents()
         }
     }
 
     @Test
-    fun `updateList trigger`() = runTest {
-        /* Given */ //podajemy to co bnam potrzebno dal testowania(Mocki, itemy, fun, var, val)
-        val item = 0L
-        //Action.ShowData(listOfCategories).send()
+    fun `verify invocations on updateList method call`() = runTest {
+        /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
                 TransactionCategory("123", 123, 123)
             )
         )
-        /* When */ //start testFun
-        viewModel.updateList(item)
-        /* Then */ //mozna sprawdzic czy poszlo testowanie
+
+        /* When */
+        viewModel.updateList(0L)
+
+        /* Then */
+        verify(getCategoryListUseCaseMock).run(Unit)
         viewModel.actions.test {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
@@ -163,6 +130,7 @@ class AddTransactionViewModelTest {
                 ), awaitItem()
             )
             assertEquals(AddTransactionViewModel.Action.SelectCategory(0L), awaitItem())
+            expectNoEvents()
         }
     }
 }

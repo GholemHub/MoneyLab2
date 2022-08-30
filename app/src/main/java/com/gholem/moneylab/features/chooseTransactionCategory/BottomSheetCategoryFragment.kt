@@ -10,7 +10,6 @@ import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomS
 import com.gholem.moneylab.features.chooseTransactionCategory.viewmodel.BottomSheetCategoryViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class BottomSheetCategoryFragment :
@@ -23,7 +22,7 @@ class BottomSheetCategoryFragment :
         BottomsheetCategoryFragmentBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: BottomsheetCategoryFragmentBinding) {
-        viewModel.getCategory()
+        viewModel.getCategories()
         observeActions()
 
         viewBinding.createNewCategoryBtn.setOnClickListener {
@@ -43,10 +42,7 @@ class BottomSheetCategoryFragment :
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 is BottomSheetCategoryViewModel.Action.ShowData -> {
-                    Timber.i("List3: ${action.list.size}")
-
                     action.list.forEach { category ->
-
                         val categoryViewBinding = ItemBottomSheetCategoryBinding.inflate(
                             LayoutInflater.from(context),
                             getViewBinding().root,
@@ -56,7 +52,6 @@ class BottomSheetCategoryFragment :
                         categoryViewBinding.categoryName.text = category.categoryName
 
                         categoryViewBinding.root.setOnClickListener {
-                            Timber.i("BTN3")
                             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                                 KEY_CATEGORY,
                                 category.id

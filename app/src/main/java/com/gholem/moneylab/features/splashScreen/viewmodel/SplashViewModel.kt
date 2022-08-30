@@ -7,7 +7,7 @@ import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
+import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoriesModelUseCase
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -15,14 +15,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus,
     private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val insertCategoryListUseCase: InsertCategoryModelUseCase
+    private val insertCategoriesModelUseCase: InsertCategoriesModelUseCase
 ) : ViewModel() {
 
     private val _uiState = Channel<UiState>(Channel.BUFFERED)
@@ -30,10 +29,7 @@ class SplashViewModel @Inject constructor(
 
     var navigation: NavigationLiveData<SplashNavigationEvent> = NavigationLiveData()
 
-    private var listOfCategories = mutableListOf<TransactionCategory>()
-
-    fun getCategory() = viewModelScope.launch {
-        listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
+    fun getCategories() = viewModelScope.launch {
         checkIfCategoriesIsEmpty()
     }
 
@@ -53,8 +49,10 @@ class SplashViewModel @Inject constructor(
         action.invoke()
     }
 
-    private fun checkIfCategoriesIsEmpty() {
-        if (listOfCategories.size == 0) {
+    private suspend fun checkIfCategoriesIsEmpty() {
+        val listOfCategories = getCategoryListUseCase.run(Unit).toMutableList()
+
+        if (listOfCategories.isEmpty()) {
             listOfCategories.add(TransactionCategory("Others", R.drawable.ic_category_other))
             listOfCategories.add(
                 TransactionCategory(
@@ -62,15 +60,14 @@ class SplashViewModel @Inject constructor(
                     R.drawable.ic_category_transport
                 )
             )
-            listOfCategories.add(TransactionCategory( "Food", R.drawable.ic_category_food))
-            listOfCategories.add(TransactionCategory( "Sport", R.drawable.ic_category_sport))
+            listOfCategories.add(TransactionCategory("Food", R.drawable.ic_category_food))
+            listOfCategories.add(TransactionCategory("Sport", R.drawable.ic_category_sport))
             saveCategories(listOfCategories)
         }
     }
-    private fun saveCategories(caregories: List<TransactionCategory>) = viewModelScope.launch {
-        caregories.forEach {
-            insertCategoryListUseCase.run(it)
-        }
+
+    private fun saveCategories(categories: List<TransactionCategory>) = viewModelScope.launch {
+        insertCategoriesModelUseCase.run(categories)
     }
 
     sealed class UiState() {

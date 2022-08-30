@@ -33,8 +33,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.createRoomDate()
-        viewModel.getCategory()
+        viewModel.fetchTransactionList()
     }
 
     private fun observeActions() {
