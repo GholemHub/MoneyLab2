@@ -1,5 +1,7 @@
-package com.gholem.moneylab.domain.model
+package com.gholem.moneylab.features.add.adapter.item
 
+import com.gholem.moneylab.R
+import com.gholem.moneylab.domain.model.TransactionCategory
 import java.util.*
 
 sealed class AddTransactionItem {
@@ -20,9 +22,10 @@ sealed class AddTransactionItem {
     object NewTransaction : AddTransactionItem()
 
     companion object {
+        //TODO
         fun getDefaultItems(): List<AddTransactionItem> =
             listOf(
-                Category(TransactionCategory.getDefault()),
+                Category(TransactionCategory("Other", R.drawable.ic_category_other)),
                 Transaction(),
                 NewTransaction
             )

@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentAddBinding
 import com.gholem.moneylab.features.add.adapter.AddTransactionsAdapter
-import com.gholem.moneylab.features.add.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.add.navigation.AddTransactionNavigation
 import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
+import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
+import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 import java.util.*
 
 @AndroidEntryPoint
@@ -27,6 +29,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val dataAdapter: AddTransactionsAdapter by lazy {
         AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
     }
+
     private var position = 0
 
     override fun constructViewBinding(): FragmentAddBinding =
@@ -37,6 +40,8 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.init()
 
         observeCategoryChange()
+        observer()
+
         viewBinding.transactionsRecyclerView
             .apply {
                 layoutManager = LinearLayoutManager(context)
@@ -54,23 +59,34 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.navigation.observe(this, navigation::navigate)
     }
 
-    //only: fragment back to fragment\\ savedStateHandle
+    //only: fragment back to fragment\\savedStateHandle
     private fun observeCategoryChange() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(KEY_CATEGORY)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(KEY_CATEGORY)
             ?.observe(viewLifecycleOwner) { result -> dataAdapter.setCategory(result) }
+
+    }
+
+    private fun observer() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(
+            KEY_CATEGORY_CHOOSE
+        )
+            ?.observe(viewLifecycleOwner) { result ->
+                i("result $result")
+                viewModel.updateList(result)
+            }
     }
 
     private fun showDateDialog(_position: Int) {
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-            var dataPicker = DatePickerDialog(
-                requireContext(),
-                this,
-                rightNow.get(Calendar.YEAR),
-                rightNow.get(Calendar.MONTH),
-                rightNow.get(Calendar.DAY_OF_MONTH)
-            )
+        var dataPicker = DatePickerDialog(
+            requireContext(),
+            this,
+            rightNow.get(Calendar.YEAR),
+            rightNow.get(Calendar.MONTH),
+            rightNow.get(Calendar.DAY_OF_MONTH)
+        )
         dataPicker.datePicker.maxDate = rightNow.timeInMillis
         dataPicker.show()
     }
@@ -84,6 +100,12 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             when (action) {
                 AddTransactionViewModel.Action.GetTransactionsData -> {
                     viewModel.saveTransaction(dataAdapter.getTransactionListData())
+                }
+                is AddTransactionViewModel.Action.ShowData -> {
+                    dataAdapter.updateData(action.list)
+                }
+                is AddTransactionViewModel.Action.SelectCategory -> {
+                    dataAdapter.setCategory(action.categoryId)
                 }
             }
         }
