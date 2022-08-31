@@ -1,6 +1,5 @@
 package com.gholem.moneylab.features.splashScreen.viewmodel
 
-import android.content.res.Resources
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.R
@@ -17,7 +16,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 
@@ -28,12 +26,12 @@ class SplashViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private val insertCategoriesModelUseCaseMock =
-        Mockito.mock(InsertCategoriesModelUseCase::class.java)
-    private val getCategoryListUseCaseMock = Mockito.mock(GetCategoryListUseCase::class.java)
+        mock(InsertCategoriesModelUseCase::class.java)
+    private val getCategoryListUseCaseMock = mock(GetCategoryListUseCase::class.java)
     private val bottomNavigationVisibilityBusMock =
-        Mockito.mock(BottomNavigationVisibilityBus::class.java)
+        mock(BottomNavigationVisibilityBus::class.java)
     private val navigationMock: NavigationLiveData<SplashNavigationEvent> =
-        Mockito.mock(NavigationLiveData::class.java)
+        mock(NavigationLiveData::class.java)
                 as NavigationLiveData<SplashNavigationEvent>
 
     private lateinit var viewModel: SplashViewModel
@@ -60,7 +58,7 @@ class SplashViewModelTest {
             )
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(transactionCategory)
             /* When */
-            viewModel.getCategories(transactionCategory)
+            viewModel.getCategoriesAndSetDefault(transactionCategory)
 
             /* Then */
             verify(getCategoryListUseCaseMock).run(Unit)
@@ -79,7 +77,7 @@ class SplashViewModelTest {
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(emptyList())
             //`when`(insertCategoriesModelUseCaseMock.run(transactionCategory)).thenReturn(Unit)
             /* When */
-            viewModel.getCategories(transactionCategory)
+            viewModel.getCategoriesAndSetDefault(transactionCategory)
 
             /* Then */
             verify(getCategoryListUseCaseMock).run(Unit)

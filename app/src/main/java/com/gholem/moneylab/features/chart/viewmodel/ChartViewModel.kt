@@ -4,14 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.domain.model.ChartTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,10 +22,6 @@ class ChartViewModel @Inject constructor(
     fun fetchTransactionList() = viewModelScope.launch {
         val transactions = getTransactionListUseCase.run(Unit)
         val result: MutableList<ChartTransactionItem> = arrayListOf()
-
-        transactions.forEach {
-            Timber.i("TRANSACTION: ${it.amount}, ${it.category.categoryName}, ${it.category.id}")
-        }
 
         val mapOfTransactions = getMapOfTransactionsByDate(transactions)
 
@@ -47,7 +40,6 @@ class ChartViewModel @Inject constructor(
 
         Action.ShowDataChartTransactionItem(result).send()
     }
-
 
     private fun getMapOfTransactionsByDate(list: List<Transaction>): Map<Long, List<Transaction>> {
         val result = mutableMapOf<Long, List<Transaction>>()

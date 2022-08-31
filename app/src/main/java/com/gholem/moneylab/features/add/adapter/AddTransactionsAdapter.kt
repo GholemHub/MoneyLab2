@@ -13,8 +13,6 @@ import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import java.util.*
 
-//Adapter = widok
-//Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
     val categoryClickListener: () -> Unit,
     val dateClickListener: (position: Int) -> Unit

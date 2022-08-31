@@ -14,7 +14,6 @@ import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategor
 import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber.i
 import java.util.*
 
 @AndroidEntryPoint
@@ -71,7 +70,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             KEY_CATEGORY_CHOOSE
         )
             ?.observe(viewLifecycleOwner) { result ->
-                i("result $result")
                 viewModel.updateList(result)
             }
     }

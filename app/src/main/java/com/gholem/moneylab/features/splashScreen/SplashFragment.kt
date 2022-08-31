@@ -25,16 +25,23 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
-        getCategories()
+        setDefaultCategories()
 
     }
-    private fun getCategories(){
-        val l = listOf(TransactionCategory(getString(R.string.category_others),R.drawable.ic_category_other),
-            TransactionCategory(getString(R.string.category_transport),R.drawable.ic_category_transport),
-            TransactionCategory(getString(R.string.category_food),R.drawable.ic_category_food),
-            TransactionCategory(getString(R.string.category_sport),R.drawable.ic_category_sport))
-        viewModel.getCategories(l)
+
+    private fun setDefaultCategories() {
+        val listOfDefaultCategories = listOf(
+            TransactionCategory(getString(R.string.category_others), R.drawable.ic_category_other),
+            TransactionCategory(
+                getString(R.string.category_transport),
+                R.drawable.ic_category_transport
+            ),
+            TransactionCategory(getString(R.string.category_food), R.drawable.ic_category_food),
+            TransactionCategory(getString(R.string.category_sport), R.drawable.ic_category_sport)
+        )
+        viewModel.getCategoriesAndSetDefault(listOfDefaultCategories)
     }
+
     override fun onResume() {
         super.onResume()
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
