@@ -7,7 +7,7 @@ import com.gholem.moneylab.domain.model.TransactionCategory
 @Entity(tableName = "category_table")
 data class CategoryEntity(
 
-    val name: String,
+    val name: Int,
     val image: Int,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 ) {

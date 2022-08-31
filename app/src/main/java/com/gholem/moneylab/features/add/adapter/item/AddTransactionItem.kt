@@ -22,10 +22,9 @@ sealed class AddTransactionItem {
     object NewTransaction : AddTransactionItem()
 
     companion object {
-        //TODO
         fun getDefaultItems(): List<AddTransactionItem> =
             listOf(
-                Category(TransactionCategory("Other", R.drawable.ic_category_other)),
+                Category(TransactionCategory(R.string.category_others, R.drawable.ic_category_other)),
                 Transaction(),
                 NewTransaction
             )

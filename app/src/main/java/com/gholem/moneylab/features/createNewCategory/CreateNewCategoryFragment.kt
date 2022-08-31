@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentNewCategoryBinding
 import com.gholem.moneylab.domain.model.TransactionCategory
-import com.gholem.moneylab.features.createNewCategory.navigaion.CreateNewCategoryNavigation
+import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigation
 import com.gholem.moneylab.features.createNewCategory.viewmodel.CreateNewCategoryViewModel
 import com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment.Companion.KEY_IMAGE
 import com.gholem.moneylab.util.observeWithLifecycle
@@ -53,7 +53,7 @@ class CreateNewCategoryFragment :
 
     private fun createNewCategory(viewBinding: FragmentNewCategoryBinding) {
         val categoryName = viewBinding.nameOfNewCategory.text.toString()
-        viewModel.saveCategoryAndFinish(TransactionCategory(categoryName, categoryImageResource))
+        viewModel.saveCategoryAndFinish(TransactionCategory(categoryName.toInt(), categoryImageResource))
     }
 
     private fun navigateToImagePicker() {

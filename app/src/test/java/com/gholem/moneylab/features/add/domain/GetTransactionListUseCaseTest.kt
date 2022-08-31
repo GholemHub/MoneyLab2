@@ -4,14 +4,17 @@ import com.gholem.moneylab.repository.storage.TransactionStorageRepository
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetTransactionListUseCaseTest {
     private val transactionStorageRepositoryMock =
         Mockito.mock(TransactionStorageRepository::class.java)
+
     private var useCase = GetTransactionListUseCase(
         transactionStorageRepositoryMock
     )
@@ -19,11 +22,13 @@ class GetTransactionListUseCaseTest {
     @Test
     fun `verify if getAll method was triggered`() = runTest {
         /* Given */
-        Mockito.`when`(transactionStorageRepositoryMock.getAll()).thenReturn(emptyList())
+        `when`(transactionStorageRepositoryMock.getAll()).thenReturn(emptyList())
+
         /* When */
         useCase.run(Unit)
+
         /* Then */
-        Mockito.verify(transactionStorageRepositoryMock).getAll()
+        verify(transactionStorageRepositoryMock).getAll()
     }
 
     @Test
@@ -33,15 +38,16 @@ class GetTransactionListUseCaseTest {
             TransactionEntity(1, 2, 3),
             TransactionEntity(4, 5, 6)
         )
-        Mockito.`when`(transactionStorageRepositoryMock.getAll()).thenReturn(transactionList)
+        `when`(transactionStorageRepositoryMock.getAll()).thenReturn(transactionList)
+
         /* When */
         val result = useCase.run(Unit)
         /* Then */
-        Assert.assertEquals(2, result.size)
-        Assert.assertEquals(
+        assertEquals(2, result.size)
+        assertEquals(
             transactionList.first(), result.first()
         )
-        Assert.assertEquals(
+        assertEquals(
             transactionList.last(), result.last()
         )
     }

@@ -12,7 +12,6 @@ import com.gholem.moneylab.features.createNewCategoryImage.viewmodel.CreateNewCa
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-
 class CreateNewCategoryImageFragment :
     BaseFragment<FragmentNewCategoryImageBinding, CreateNewCategoryImageViewModel>() {
 
@@ -20,10 +19,10 @@ class CreateNewCategoryImageFragment :
     lateinit var navigation: CreateNewCategoryImageNavigation
 
     private val dataAdapter: CreateNewCategoryImageAdapter by lazy {
-        CreateNewCategoryImageAdapter {imagePickerResult(it)}
+        CreateNewCategoryImageAdapter { imagePickerResult(it) }
     }
 
-    private fun imagePickerResult(imageId: Int){
+    private fun imagePickerResult(imageId: Int) {
         findNavController().previousBackStackEntry?.savedStateHandle?.set(
             KEY_IMAGE,
             imageId
@@ -35,10 +34,9 @@ class CreateNewCategoryImageFragment :
         FragmentNewCategoryImageBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentNewCategoryImageBinding) {
-        //observeCategoryChange()
         viewBinding.createNewCategoryRecyclerview
             .apply {
-                layoutManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
+                layoutManager = GridLayoutManager(context, SPAN_COUNT, RecyclerView.VERTICAL, false)
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
@@ -51,5 +49,6 @@ class CreateNewCategoryImageFragment :
 
     companion object {
         const val KEY_IMAGE = "KEY_IMAGE"
+        const val SPAN_COUNT = 4
     }
 }

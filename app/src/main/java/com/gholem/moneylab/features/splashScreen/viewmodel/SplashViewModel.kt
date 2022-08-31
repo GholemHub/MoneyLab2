@@ -15,7 +15,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +33,7 @@ class SplashViewModel @Inject constructor(
 
     fun getCategory() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
-        checkIfCategoriesIsEmpty()
+        initializeCategoriesIfEmpty()
     }
 
     fun init() = viewModelScope.launch {
@@ -53,17 +52,12 @@ class SplashViewModel @Inject constructor(
         action.invoke()
     }
 
-    private fun checkIfCategoriesIsEmpty() {
+    private fun initializeCategoriesIfEmpty() {
         if (listOfCategories.size == 0) {
-            listOfCategories.add(TransactionCategory("Others", R.drawable.ic_category_other))
-            listOfCategories.add(
-                TransactionCategory(
-                    "Transport",
-                    R.drawable.ic_category_transport
-                )
-            )
-            listOfCategories.add(TransactionCategory( "Food", R.drawable.ic_category_food))
-            listOfCategories.add(TransactionCategory( "Sport", R.drawable.ic_category_sport))
+            listOfCategories.add(TransactionCategory(R.string.category_others, R.drawable.ic_category_other))
+            listOfCategories.add(TransactionCategory(R.string.category_transport,R.drawable.ic_category_transport))
+            listOfCategories.add(TransactionCategory( R.string.category_food, R.drawable.ic_category_food))
+            listOfCategories.add(TransactionCategory( R.string.category_sport, R.drawable.ic_category_sport))
             saveCategories(listOfCategories)
         }
     }

@@ -40,7 +40,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.init()
 
         observeCategoryChange()
-        observer()
+        observeNewCategories()
 
         viewBinding.transactionsRecyclerView
             .apply {
@@ -66,7 +66,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
     }
 
-    private fun observer() {
+    private fun observeNewCategories() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(
             KEY_CATEGORY_CHOOSE
         )

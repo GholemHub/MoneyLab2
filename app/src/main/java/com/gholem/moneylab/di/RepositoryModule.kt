@@ -12,12 +12,10 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindTemplateStorageRepository(templateStorageRepositoryImpl: TemplateStorageRepositoryImpl): TemplateStorageRepository
+
     @Binds
     abstract fun bindTransactionStorageRepository(transactionStorageRepositoryImpl: TransactionStorageRepositoryImpl): TransactionStorageRepository
+
     @Binds
     abstract fun bindCategoryStorageRepository(categoryStorageRepositoryImpl: CategoryStorageRepositoryImpl): CategoryStorageRepository
-
-
-
-
 }

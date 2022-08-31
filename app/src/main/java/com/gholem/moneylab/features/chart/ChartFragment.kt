@@ -22,7 +22,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
     override fun init(viewBinding: FragmentChartBinding) {
         observeActions()
 
-
         viewBinding.chartRecyclerview
             .apply {
                 layoutManager = LinearLayoutManager(context)

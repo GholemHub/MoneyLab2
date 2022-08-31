@@ -2,7 +2,7 @@ package com.gholem.moneylab.features.createNewCategoryImage.viewmodel
 
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.features.createNewCategoryImage.navigation.CreateNewCategoryImageEvent
+import com.gholem.moneylab.features.createNewCategoryImage.navigation.CreateNewCategoryImageNavigationEvent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -15,9 +15,9 @@ class CreateNewCategoryImageViewModelTest {
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
-    private val navigationMock: NavigationLiveData<CreateNewCategoryImageEvent> =
+    private val navigationMock: NavigationLiveData<CreateNewCategoryImageNavigationEvent> =
         Mockito.mock(NavigationLiveData::class.java)
-                as NavigationLiveData<CreateNewCategoryImageEvent>
+                as NavigationLiveData<CreateNewCategoryImageNavigationEvent>
 
     @Before
     fun setup() {
@@ -33,6 +33,6 @@ class CreateNewCategoryImageViewModelTest {
         viewModel.navigateToPreviousScreen()
 
         /* Then */
-        Mockito.verify(viewModel.navigation).emit(CreateNewCategoryImageEvent.ToPreviousScreen)
+        Mockito.verify(viewModel.navigation).emit(CreateNewCategoryImageNavigationEvent.ToPreviousScreen)
     }
 }

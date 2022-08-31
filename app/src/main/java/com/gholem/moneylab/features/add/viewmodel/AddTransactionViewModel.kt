@@ -62,7 +62,7 @@ class AddTransactionViewModel @Inject constructor(
     }
 
     private suspend fun fetchCategories() {
-        val listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
+        val listOfCategories = getCategoryListUseCase.run(Unit)
         Action.ShowData(listOfCategories).send()
     }
 

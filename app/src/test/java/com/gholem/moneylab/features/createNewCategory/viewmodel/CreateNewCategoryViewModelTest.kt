@@ -3,12 +3,11 @@ package com.gholem.moneylab.features.createNewCategory.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavControllerWrapper
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
-import com.gholem.moneylab.features.createNewCategory.navigaion.CreateNewCategoryEvent
-import com.gholem.moneylab.features.createNewCategory.navigaion.CreateNewCategoryNavigation
+import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
+import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigation
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,9 +28,9 @@ class CreateNewCategoryViewModelTest {
     private val insertCategoryModelUseCaseMock: InsertCategoryModelUseCase =
         Mockito.mock(InsertCategoryModelUseCase::class.java)
 
-    private val navigationMock: NavigationLiveData<CreateNewCategoryEvent> =
+    private val navigationMock: NavigationLiveData<CreateNewCategoryNavigationEvent> =
         Mockito.mock(NavigationLiveData::class.java)
-                as NavigationLiveData<CreateNewCategoryEvent>
+                as NavigationLiveData<CreateNewCategoryNavigationEvent>
 
     @Before
     fun setup() {
@@ -50,7 +49,7 @@ class CreateNewCategoryViewModelTest {
         viewModel.navigateToImagePicker()
 
         /* Then */
-        Mockito.verify(viewModel.navigation).emit(CreateNewCategoryEvent.ToImagePicker)
+        Mockito.verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToImagePicker)
     }
 
     @Test

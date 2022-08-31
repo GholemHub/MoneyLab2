@@ -17,6 +17,7 @@ class CreateNewCategoryImageAdapter(val imageClickListener: (position: Int) -> U
     private val adapterData = getImages().toMutableList()
 
     private fun createNewTransaction(parent: ViewGroup): CreateNewCategoryViewHolder {
+
         val binding = ItemNewCategoryImageBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -26,8 +27,8 @@ class CreateNewCategoryImageAdapter(val imageClickListener: (position: Int) -> U
             CreateNewCategoryViewHolder.NewCategoryImage(binding).also { viewHolder ->
                 binding.newCategoryImage.setOnClickListener {
                     val position = viewHolder.adapterPosition
-                    var v = adapterData[position] as NewCategoryImageItem.Image
-                    imageClickListener.invoke(v.image)
+                    var categoryImageItem = adapterData[position] as NewCategoryImageItem.Image
+                    imageClickListener.invoke(categoryImageItem.image)
                 }
             }
 

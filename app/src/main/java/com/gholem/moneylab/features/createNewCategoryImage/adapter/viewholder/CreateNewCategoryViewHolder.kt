@@ -8,12 +8,11 @@ import com.gholem.moneylab.domain.model.NewCategoryImageItem
 sealed class CreateNewCategoryViewHolder(binding: ViewBinding) :
 RecyclerView.ViewHolder(binding.root){
     class NewCategoryImage(
+
         private val binding: ItemNewCategoryImageBinding
     ): CreateNewCategoryViewHolder(binding){
         fun bind(image: NewCategoryImageItem.Image) {
-
             binding.newCategoryImage.setImageResource(image.image)
-
         }
     }
 }

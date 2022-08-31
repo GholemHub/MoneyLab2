@@ -6,10 +6,11 @@ import javax.inject.Inject
 
 class CreateNewCategoryImageNavigation @Inject constructor(
     private val navControllerWrapper: NavControllerWrapper
-) : NavigationController<CreateNewCategoryImageEvent> {
-    override fun navigate(event: CreateNewCategoryImageEvent) {
+) : NavigationController<CreateNewCategoryImageNavigationEvent> {
+    override fun navigate(event: CreateNewCategoryImageNavigationEvent) {
+
         when (event) {
-            CreateNewCategoryImageEvent.ToPreviousScreen ->{
+            CreateNewCategoryImageNavigationEvent.ToPreviousScreen ->{
                 navControllerWrapper.navigateUp()
             }
         }

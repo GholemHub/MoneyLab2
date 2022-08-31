@@ -55,9 +55,7 @@ class SplashViewModelTest {
             TransactionCategory( "Sport", R.drawable.ic_category_sport)
         )
 
-        Mockito.`when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
-            mutableListOf()
-        )
+
         /* When */
         viewModel.getCategory()
         /* Then */

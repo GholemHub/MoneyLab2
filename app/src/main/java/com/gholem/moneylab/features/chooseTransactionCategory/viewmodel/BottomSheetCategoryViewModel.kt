@@ -19,15 +19,13 @@ class BottomSheetCategoryViewModel @Inject constructor(
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
-
     var listOfCategories = mutableListOf<TransactionCategory>()
+    var navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
 
     fun getCategory() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
         Action.ShowData(listOfCategories).send()
     }
-
-    var navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
 
     fun navigateToAddTransaction() = viewModelScope.launch {
         navigation.emit(BottomSheetCategoryEvent.ToPreviousScreen)

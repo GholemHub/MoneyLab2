@@ -53,7 +53,7 @@ class BottomSheetCategoryFragment :
                             false
                         )
                         categoryViewBinding.imageOfCategory.setImageResource(category.image)
-                        categoryViewBinding.categoryName.text = category.categoryName
+                        categoryViewBinding.categoryName.text = resources.getText(category.categoryName)
 
                         categoryViewBinding.root.setOnClickListener {
                             Timber.i("BTN3")
