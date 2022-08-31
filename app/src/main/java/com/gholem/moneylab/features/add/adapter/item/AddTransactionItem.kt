@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.add.adapter.item
 
+import android.content.res.Resources
 import com.gholem.moneylab.R
 import com.gholem.moneylab.domain.model.TransactionCategory
 import java.util.*

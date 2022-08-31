@@ -6,13 +6,8 @@ import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
-<<<<<<< HEAD
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
-import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigation
-=======
-import com.gholem.moneylab.features.createNewCategory.navigaion.CreateNewCategoryEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
->>>>>>> d18a1fcf761df6ad1ea6d9b898275b0dbf65fa6e
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -34,14 +29,11 @@ class CreateNewCategoryViewModelTest {
 
     private val insertCategoryModelUseCaseMock: InsertCategoryModelUseCase =
         Mockito.mock(InsertCategoryModelUseCase::class.java)
-<<<<<<< HEAD
-
     private val navigationMock: NavigationLiveData<CreateNewCategoryNavigationEvent> =
-=======
-    private val navigationMock: NavigationLiveData<CreateNewCategoryEvent> =
->>>>>>> d18a1fcf761df6ad1ea6d9b898275b0dbf65fa6e
-        Mockito.mock(NavigationLiveData::class.java)
-                as NavigationLiveData<CreateNewCategoryNavigationEvent>
+
+    Mockito.mock(NavigationLiveData::
+    class.java)
+    as NavigationLiveData<CreateNewCategoryNavigationEvent>
 
     private lateinit var viewModel: CreateNewCategoryViewModel
 
@@ -59,11 +51,7 @@ class CreateNewCategoryViewModelTest {
         viewModel.navigateToImagePicker()
 
         /* Then */
-<<<<<<< HEAD
-        Mockito.verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToImagePicker)
-=======
-        verify(viewModel.navigation).emit(CreateNewCategoryEvent.ToImagePicker)
->>>>>>> d18a1fcf761df6ad1ea6d9b898275b0dbf65fa6e
+        verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToImagePicker)
     }
 
     @Test
@@ -82,6 +70,6 @@ class CreateNewCategoryViewModelTest {
                 CreateNewCategoryViewModel.Action.ReturnCategoryId(1L), awaitItem()
             )
         }
-        verify(viewModel.navigation).emit(CreateNewCategoryEvent.ToPreviousScreen)
+        verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToPreviousScreen)
     }
 }

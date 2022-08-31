@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.splashScreen.viewmodel
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.R
@@ -31,9 +32,9 @@ class SplashViewModel @Inject constructor(
 
     private var listOfCategories = mutableListOf<TransactionCategory>()
 
-    fun getCategories() = viewModelScope.launch {
-        listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
-        initializeCategoriesIfEmpty()
+    fun getCategories(l :List<TransactionCategory>) = viewModelScope.launch {
+        listOfCategories = getCategoryListUseCase.run(Unit).toMutableList()
+        initializeCategoriesIfEmpty(l)
     }
 
     fun init() = viewModelScope.launch {
@@ -51,13 +52,10 @@ class SplashViewModel @Inject constructor(
         delay(timeMillis)
         action.invoke()
     }
-    private fun initializeCategoriesIfEmpty() {
-        if (listOfCategories.size == 0) {
-            listOfCategories.add(TransactionCategory("Other", R.drawable.ic_category_other))
-            listOfCategories.add(TransactionCategory("Transport",R.drawable.ic_category_transport))
-            listOfCategories.add(TransactionCategory("Food", R.drawable.ic_category_food))
-            listOfCategories.add(TransactionCategory( "Sport", R.drawable.ic_category_sport))
 
+    private fun initializeCategoriesIfEmpty(l: List<TransactionCategory>) {
+        if (listOfCategories.size == 0) {
+            listOfCategories.addAll(l)
             saveCategories(listOfCategories)
         }
     }

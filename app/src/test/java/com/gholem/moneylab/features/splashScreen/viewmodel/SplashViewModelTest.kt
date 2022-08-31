@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.splashScreen.viewmodel
 
+import android.content.res.Resources
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.R
@@ -17,8 +18,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SplashViewModelTest {
@@ -58,22 +59,12 @@ class SplashViewModelTest {
                 TransactionCategory("Sport", R.drawable.ic_category_sport)
             )
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(transactionCategory)
-
-<<<<<<< HEAD
-
-        /* When */
-        viewModel.getCategory()
-        /* Then */
-        Assert.assertEquals(getCategoryListUseCaseMock.run(Unit), transactionCategory)
-    }
-=======
             /* When */
-            viewModel.getCategories()
+            viewModel.getCategories(transactionCategory)
 
             /* Then */
             verify(getCategoryListUseCaseMock).run(Unit)
         }
->>>>>>> d18a1fcf761df6ad1ea6d9b898275b0dbf65fa6e
 
     @Test
     fun `verify invocations when getCategories method is called and there are no categories`() =
@@ -86,9 +77,9 @@ class SplashViewModelTest {
                 TransactionCategory("Sport", R.drawable.ic_category_sport)
             )
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(emptyList())
-
+            //`when`(insertCategoriesModelUseCaseMock.run(transactionCategory)).thenReturn(Unit)
             /* When */
-            viewModel.getCategories()
+            viewModel.getCategories(transactionCategory)
 
             /* Then */
             verify(getCategoryListUseCaseMock).run(Unit)
