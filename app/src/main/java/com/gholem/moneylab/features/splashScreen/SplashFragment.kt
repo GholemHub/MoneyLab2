@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.gholem.moneylab.R
-
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentSplashBinding
 import com.gholem.moneylab.domain.model.TransactionCategory
