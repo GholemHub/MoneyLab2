@@ -7,7 +7,7 @@ import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
+import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoriesModelUseCase
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus,
     private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val insertCategoryListUseCase: InsertCategoryModelUseCase
+    private val insertCategoriesModelUseCase: InsertCategoriesModelUseCase
 ) : ViewModel() {
 
     private val _uiState = Channel<UiState>(Channel.BUFFERED)
@@ -31,7 +31,7 @@ class SplashViewModel @Inject constructor(
 
     private var listOfCategories = mutableListOf<TransactionCategory>()
 
-    fun getCategory() = viewModelScope.launch {
+    fun getCategories() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
         initializeCategoriesIfEmpty()
     }
@@ -51,20 +51,19 @@ class SplashViewModel @Inject constructor(
         delay(timeMillis)
         action.invoke()
     }
-
     private fun initializeCategoriesIfEmpty() {
         if (listOfCategories.size == 0) {
-            listOfCategories.add(TransactionCategory(R.string.category_others, R.drawable.ic_category_other))
-            listOfCategories.add(TransactionCategory(R.string.category_transport,R.drawable.ic_category_transport))
-            listOfCategories.add(TransactionCategory( R.string.category_food, R.drawable.ic_category_food))
-            listOfCategories.add(TransactionCategory( R.string.category_sport, R.drawable.ic_category_sport))
+            listOfCategories.add(TransactionCategory("Other", R.drawable.ic_category_other))
+            listOfCategories.add(TransactionCategory("Transport",R.drawable.ic_category_transport))
+            listOfCategories.add(TransactionCategory("Food", R.drawable.ic_category_food))
+            listOfCategories.add(TransactionCategory( "Sport", R.drawable.ic_category_sport))
+
             saveCategories(listOfCategories)
         }
     }
-    private fun saveCategories(caregories: List<TransactionCategory>) = viewModelScope.launch {
-        caregories.forEach {
-            insertCategoryListUseCase.run(it)
-        }
+
+    private fun saveCategories(categories: List<TransactionCategory>) = viewModelScope.launch {
+        insertCategoriesModelUseCase.run(categories)
     }
 
     sealed class UiState() {

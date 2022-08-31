@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class GetTransactionListUseCase @Inject constructor(
     private val repository: TransactionStorageRepository
-) : UseCase<Unit, List<TransactionEntity>> {
+) : UseCase<Unit, List<Transaction>> {
 
-    override suspend fun run(input: Unit): List<TransactionEntity> =
+    override suspend fun run(input: Unit): List<Transaction> =
         repository.getAll()
 }

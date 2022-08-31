@@ -13,6 +13,10 @@ class CategoryStorageRepositoryImpl @Inject constructor(
         return categoryDao.insert(CategoryEntity.from(category))
     }
 
+    override suspend fun insert(categories: List<TransactionCategory>) {
+        return categoryDao.insert(categories.map { CategoryEntity.from(it) })
+    }
+
     override suspend fun getAll(): List<TransactionCategory> =
         categoryDao.getAll().map { it.toModel() }
 }

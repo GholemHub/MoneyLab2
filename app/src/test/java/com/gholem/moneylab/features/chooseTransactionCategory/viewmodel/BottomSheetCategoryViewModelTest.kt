@@ -18,15 +18,17 @@ import org.mockito.Mockito.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BottomSheetCategoryViewModelTest {
-    private lateinit var viewModel: BottomSheetCategoryViewModel
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
     private val getCategoryListUseCaseMock: GetCategoryListUseCase =
         Mockito.mock(GetCategoryListUseCase::class.java)
     private val navigationMock: NavigationLiveData<BottomSheetCategoryEvent> =
         Mockito.mock(NavigationLiveData::class.java)
                 as NavigationLiveData<BottomSheetCategoryEvent>
+
+    private lateinit var viewModel: BottomSheetCategoryViewModel
 
     @Before
     fun setup() {
@@ -37,54 +39,46 @@ class BottomSheetCategoryViewModelTest {
     }
 
     @Test
-    fun `navigateToAddTransaction trigger`() = runTest {
-        /* Given */
-
+    fun `verify invocations when navigateToAddTransaction method is called`() = runTest {
         /* When */
         viewModel.navigateToAddTransaction()
 
         /* Then */
         verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToPreviousScreen)
-
     }
 
-
     @Test
-    fun `navigateToCreateNewTransaction trigger`() = runTest {
-        /* Given */
-
+    fun `verify invocations when navigateToCreateNewTransaction method is called`() = runTest {
         /* When */
         viewModel.navigateToCreateNewTransaction()
 
         /* Then */
-        Mockito.verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToCreateNewCategory)
-
+        verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToCreateNewCategory)
     }
 
     @Test
-    fun `viewModel getCategory trigger`() = runTest {
+    fun `verify invocations when getCategory method is called`() = runTest {
         /* Given */
         val transactionCategory = TransactionCategory(
             "123",
             1
         )
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
-            listOf(
-                transactionCategory
-            )
+            listOf(transactionCategory)
         )
+
         /* When */
-        viewModel.getCategory()
+        viewModel.getCategories()
+
         /* Then */
         verify(getCategoryListUseCaseMock).run(Unit)
         viewModel.actions.test {
             assertEquals(
                 BottomSheetCategoryViewModel.Action.ShowData(
-                    listOf(
-                        transactionCategory
-                    )
+                    listOf(transactionCategory)
                 ), awaitItem()
             )
+            expectNoEvents()
         }
     }
 }

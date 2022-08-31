@@ -26,7 +26,7 @@ class AddTransactionViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    var navigation: NavigationLiveData<AddNavigationEvent> =
+    val navigation: NavigationLiveData<AddNavigationEvent> =
         NavigationLiveData()
 
     fun init() {

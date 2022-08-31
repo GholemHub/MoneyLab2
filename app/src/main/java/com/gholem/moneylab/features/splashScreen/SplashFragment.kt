@@ -3,7 +3,6 @@ package com.gholem.moneylab.features.splashScreen
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentSplashBinding
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigation
@@ -24,7 +23,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
-        viewModel.getCategory()
+        viewModel.getCategories()
     }
 
     override fun onResume() {

@@ -22,7 +22,7 @@ class BottomSheetCategoryViewModel @Inject constructor(
     var listOfCategories = mutableListOf<TransactionCategory>()
     var navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
 
-    fun getCategory() = viewModelScope.launch {
+    fun getCategories() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
         Action.ShowData(listOfCategories).send()
     }

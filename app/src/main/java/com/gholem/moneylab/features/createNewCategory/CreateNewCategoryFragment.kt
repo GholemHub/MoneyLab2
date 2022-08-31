@@ -2,6 +2,7 @@ package com.gholem.moneylab.features.createNewCategory
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentNewCategoryBinding
 import com.gholem.moneylab.domain.model.TransactionCategory
@@ -10,7 +11,6 @@ import com.gholem.moneylab.features.createNewCategory.viewmodel.CreateNewCategor
 import com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment.Companion.KEY_IMAGE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber.i
 
 @AndroidEntryPoint
 class CreateNewCategoryFragment :
@@ -19,14 +19,13 @@ class CreateNewCategoryFragment :
     private val viewModel: CreateNewCategoryViewModel by viewModels()
     lateinit var navigation: CreateNewCategoryNavigation
 
-    private var categoryImageResource: Int = 0
+    private var categoryImageResource: Int = R.drawable.ic_category_food
 
     override fun constructViewBinding(): FragmentNewCategoryBinding =
         FragmentNewCategoryBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentNewCategoryBinding) {
         observeCategoryImageChange(viewBinding)
-
         observeActions()
 
         viewBinding.imageOfNewCategory.setOnClickListener {
@@ -35,7 +34,6 @@ class CreateNewCategoryFragment :
         viewBinding.doneNewCategoryBtn.setOnClickListener {
             createNewCategory(viewBinding)
         }
-
     }
 
     override fun setupNavigation() {
@@ -53,7 +51,7 @@ class CreateNewCategoryFragment :
 
     private fun createNewCategory(viewBinding: FragmentNewCategoryBinding) {
         val categoryName = viewBinding.nameOfNewCategory.text.toString()
-        viewModel.saveCategoryAndFinish(TransactionCategory(categoryName.toInt(), categoryImageResource))
+        viewModel.saveCategoryAndFinish(TransactionCategory(categoryName, categoryImageResource))
     }
 
     private fun navigateToImagePicker() {
@@ -62,16 +60,13 @@ class CreateNewCategoryFragment :
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
-            i("BTN2.3")
             when (action) {
                 is CreateNewCategoryViewModel.Action.ReturnCategoryId -> {
-                    i("BTN2")
                     findNavController().previousBackStackEntry?.savedStateHandle?.set(
                         KEY_CATEGORY_CHOOSE,
                         action.id
                     )
                 }
-
             }
         }
     }

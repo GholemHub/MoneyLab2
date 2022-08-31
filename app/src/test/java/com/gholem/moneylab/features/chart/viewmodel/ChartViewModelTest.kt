@@ -3,92 +3,94 @@ package com.gholem.moneylab.features.chart.viewmodel
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.domain.model.ChartTransactionItem
+import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
-import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChartViewModelTest {
-    private lateinit var viewModel: ChartViewModel
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
     private val getTransactionListUseCaseMock: GetTransactionListUseCase =
         mock(GetTransactionListUseCase::class.java)
-    private val getCategoryListUseCaseMock: GetCategoryListUseCase =
-        mock(GetCategoryListUseCase::class.java)
+
+    private lateinit var viewModel: ChartViewModel
 
     @Before
     fun setup() {
         viewModel = ChartViewModel(
-            getTransactionListUseCaseMock,
-            getCategoryListUseCaseMock
+            getTransactionListUseCaseMock
         )
     }
 
     @Test
-    fun `viewModel createRoomDate trigger`() = runTest {
-        /* Given */
-        val list: List<ChartTransactionItem> = listOf(
-            ChartTransactionItem.ChartDate()
-        )
+    fun `verify invocations when fetchTransactionList method is called with transactions`() =
+        runTest {
+            /* Given */
+            `when`(getTransactionListUseCaseMock.run(Unit)).thenReturn(transactionList)
 
-        Mockito.`when`(
-            getTransactionListUseCaseMock.run(Unit)
-        )
-            .thenReturn(
-                listOf(
-                    TransactionEntity(
-                        1,
-                        123L
-                    )
+            /* When */
+            viewModel.fetchTransactionList()
+
+            /* Then */
+            verify(getTransactionListUseCaseMock).run(Unit)
+            viewModel.actions.test {
+                assertEquals(
+                    ChartViewModel.Action.ShowDataChartTransactionItem(chartTransactionItems),
+                    awaitItem()
                 )
-            )
-
-        /* When */
-        viewModel.createRoomDate()
-
-        /* Then */
-        verify(getCategoryListUseCaseMock).run(Unit)
-        viewModel.actions.test {
-            Assert.assertEquals(
-                ChartViewModel.Action.ShowDataChartTransactionItem(
-                    list
-                ), awaitItem()
-            )
+                expectNoEvents()
+            }
         }
-    }
 
     @Test
-    fun `viewModel getCategory trigger`() = runTest {
-        /* Given */
-        Mockito.`when`(
-            getCategoryListUseCaseMock.run(Unit)
-        )
-            .thenReturn(listOf(TransactionCategory("123", 1)))
+    fun `verify invocations when fetchTransactionList method is called without transactions`() =
+        runTest {
+            /* Given */
+            `when`(getTransactionListUseCaseMock.run(Unit)).thenReturn(emptyList())
 
-        /* When */
-        viewModel.getCategory()
+            /* When */
+            viewModel.fetchTransactionList()
 
-        /* Then */
-        verify(getCategoryListUseCaseMock).run(Unit)
-        viewModel.actions.test {
-            Assert.assertEquals(
-                ChartViewModel.Action.ShowDataTransactionCategory(
-                    listOf(
-                        TransactionCategory("123", 1)
-                    )
-                ), awaitItem()
-            )
+            /* Then */
+            verify(getTransactionListUseCaseMock).run(Unit)
+            viewModel.actions.test {
+                assertEquals(
+                    ChartViewModel.Action.ShowDataChartTransactionItem(emptyList()),
+                    awaitItem()
+                )
+                expectNoEvents()
+            }
         }
-    }
+
+    private val transactionCategory = TransactionCategory(
+        categoryName = "categoryName",
+        image = 1,
+        id = 5
+    )
+
+    private val transactionList = listOf(
+        Transaction(
+            category = transactionCategory,
+            amount = 123,
+            date = 321
+        )
+    )
+
+    private val chartTransactionItems: List<ChartTransactionItem> = listOf(
+        ChartTransactionItem.ChartDate(date = 321L),
+        ChartTransactionItem.ChartTransaction(
+            category = transactionCategory,
+            amount = "123"
+        )
+    )
 }
