@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.gholem.moneylab.R
+
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentSplashBinding
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigation
 import com.gholem.moneylab.features.splashScreen.viewmodel.SplashViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +27,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
+        googleSignInOptions()
         setDefaultCategories()
 
     }
@@ -55,6 +58,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun setupNavigation() {
         splashNavigation = SplashNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, splashNavigation::navigate)
+    }
+
+    fun googleSignInOptions() {
+        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+        if (account == null) {
+            viewModel.goToAuthentication()
+        } else {
+            viewModel.goToDashboard()
+        }
     }
 
     private fun observeData() {

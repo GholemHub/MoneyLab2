@@ -23,7 +23,8 @@
         app:layout_constraintBottom_toBottomOf="@id/splash_guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/splash_guideline_top" />
+        app:layout_constraintTop_toTopOf="@id/splash_guideline_top"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/splash_guideline_bottom"

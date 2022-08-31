@@ -38,6 +38,10 @@ class SplashViewModel @Inject constructor(
         delay(1000) { _uiState.send(UiState.NavigateToDashboard) }
     }
 
+    fun goToAuthentication() {
+        navigation.emit(SplashNavigationEvent.ToAuthentication)
+    }
+
     fun goToDashboard() {
         navigation.emit(SplashNavigationEvent.ToDashboard)
         bottomNavigationVisibilityBus.changeVisibility(true)
