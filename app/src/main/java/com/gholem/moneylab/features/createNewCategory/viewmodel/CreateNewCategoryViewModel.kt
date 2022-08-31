@@ -20,7 +20,7 @@ class CreateNewCategoryViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    var navigation: NavigationLiveData<CreateNewCategoryNavigationEvent> = NavigationLiveData()
+    val navigation: NavigationLiveData<CreateNewCategoryNavigationEvent> = NavigationLiveData()
 
     fun navigateToImagePicker() = viewModelScope.launch {
         navigation.emit(CreateNewCategoryNavigationEvent.ToImagePicker)

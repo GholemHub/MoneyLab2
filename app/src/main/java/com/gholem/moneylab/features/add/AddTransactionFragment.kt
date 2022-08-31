@@ -62,7 +62,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private fun observeCategoryChange() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(KEY_CATEGORY)
             ?.observe(viewLifecycleOwner) { result -> dataAdapter.setCategory(result) }
-
     }
 
     private fun observeNewCategories() {

@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomSheetCategoryEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,7 +36,6 @@ class BottomSheetCategoryViewModelTest {
         viewModel = BottomSheetCategoryViewModel(
             getCategoryListUseCaseMock
         )
-        viewModel.navigation = navigationMock
     }
 
     @Test
@@ -44,7 +44,7 @@ class BottomSheetCategoryViewModelTest {
         viewModel.navigateToAddTransaction()
 
         /* Then */
-        verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToPreviousScreen)
+        assertEquals(AddNavigationEvent.ToPreviousScreen , viewModel.navigation.value?.getAndForget())
     }
 
     @Test
@@ -53,7 +53,7 @@ class BottomSheetCategoryViewModelTest {
         viewModel.navigateToCreateNewTransaction()
 
         /* Then */
-        verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToCreateNewCategory)
+        assertEquals(BottomSheetCategoryEvent.ToCreateNewCategory, viewModel.navigation.value?.getAndForget())
     }
 
     @Test

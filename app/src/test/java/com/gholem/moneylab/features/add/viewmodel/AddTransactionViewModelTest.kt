@@ -65,7 +65,7 @@ class AddTransactionViewModelTest {
 
         /* Then */
         verify(insertTransactionsModelUseCaseMock).run(transactionList)
-        verify(viewModel.navigation).emit(AddNavigationEvent.ToPreviousScreen)
+        assertEquals(AddNavigationEvent.ToCategoryBottomSheetDialog, viewModel.navigation.value?.getAndForget())
     }
 
     @Test
