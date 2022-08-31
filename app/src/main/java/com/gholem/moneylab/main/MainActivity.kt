@@ -9,6 +9,7 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,11 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.bottomNavigationView.background = null
         setupBottomNavigation()
         showBottomNavigation(
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
@@ -57,8 +56,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showBottomNavigation(isVisible: Boolean) {
+        binding.bottomNavigationFab.isEnabled = false
         binding.bottomAppBar.isVisible = isVisible
         binding.bottomNavigationFab.isVisible = isVisible
+        binding.bottomNavigationFab.isEnabled = true
     }
 
     private fun setupFabButton() {
