@@ -7,19 +7,19 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.AddTransactionItem
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import java.util.*
 
-//Adapter = widok
-//Listener for the data to push it from adapter to fragment
 class AddTransactionsAdapter(
     val categoryClickListener: () -> Unit,
     val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
+
+    private var listOfCategory: List<TransactionCategory> = mutableListOf()
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
@@ -45,6 +45,11 @@ class AddTransactionsAdapter(
         }
     }
 
+    fun updateData(listOfTrCategory: List<TransactionCategory>) {
+        listOfCategory = listOfTrCategory
+        notifyDataSetChanged()
+    }
+
     fun setDate(position: Int, day: Int, month: Int, year: Int) {
         val transaction = adapterData[position]
                 as? AddTransactionItem.Transaction
@@ -65,11 +70,12 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun setCategory(categoryId: Int) {
+    fun setCategory(categoryId: Long) {
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-        cat.category = TransactionCategory.fromId(categoryId)
+
+        cat.category = listOfCategory.get(categoryId.toInt() - 1)
 
         notifyItemChanged(adapterData.indexOf(cat))
     }
@@ -93,7 +99,7 @@ class AddTransactionsAdapter(
         category: TransactionCategory?,
         item: AddTransactionItem.Transaction
     ) = Transaction(
-        category = category ?: TransactionCategory.getDefault(),
+        category = category ?: listOfCategory.get(0),
         amount = item.amount.toInt(),
         date = item.date
     )

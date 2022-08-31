@@ -19,17 +19,17 @@ class ChartViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    fun createRoomDate() = viewModelScope.launch {
-        val transactionsFromDB = getTransactionListUseCase.run(Unit)
-        val list: MutableList<ChartTransactionItem> = arrayListOf()
+    fun fetchTransactionList() = viewModelScope.launch {
+        val transactions = getTransactionListUseCase.run(Unit)
+        val result: MutableList<ChartTransactionItem> = arrayListOf()
 
-        val mapOfTransactions = getMapOfTransactionsByDate(transactionsFromDB)
+        val mapOfTransactions = getMapOfTransactionsByDate(transactions)
 
         mapOfTransactions.forEach { entry ->
-            list.add(ChartTransactionItem.ChartDate(entry.key.toLong()))
+            result.add(ChartTransactionItem.ChartDate(entry.key))
 
             entry.value.forEach { transaction ->
-                list.add(
+                result.add(
                     ChartTransactionItem.ChartTransaction(
                         transaction.category,
                         transaction.amount.toString()
@@ -38,11 +38,11 @@ class ChartViewModel @Inject constructor(
             }
         }
 
-        Action.ShowData(list).send()
+        Action.ShowDataChartTransactionItem(result).send()
     }
 
     private fun getMapOfTransactionsByDate(list: List<Transaction>): Map<Long, List<Transaction>> {
-        var result = mutableMapOf<Long, List<Transaction>>()
+        val result = mutableMapOf<Long, List<Transaction>>()
         val dateSet = list.map { it.date }.sortedDescending().toSet()
 
         dateSet.forEach { uniqueDate ->
@@ -58,6 +58,6 @@ class ChartViewModel @Inject constructor(
         }
 
     sealed class Action {
-        data class ShowData(val list: List<ChartTransactionItem>) : Action()
+        data class ShowDataChartTransactionItem(val list: List<ChartTransactionItem>) : Action()
     }
 }
