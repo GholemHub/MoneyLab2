@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
-import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
+import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,7 +20,7 @@ class CreateNewCategoryViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    var navigation: NavigationLiveData<CreateNewCategoryNavigationEvent> = NavigationLiveData()
+    val navigation: NavigationLiveData<CreateNewCategoryNavigationEvent> = NavigationLiveData()
 
     fun navigateToImagePicker() = viewModelScope.launch {
         navigation.emit(CreateNewCategoryNavigationEvent.ToImagePicker)

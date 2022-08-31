@@ -3,7 +3,6 @@ package com.gholem.moneylab.features.createNewCategory.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
@@ -29,11 +28,6 @@ class CreateNewCategoryViewModelTest {
 
     private val insertCategoryModelUseCaseMock: InsertCategoryModelUseCase =
         Mockito.mock(InsertCategoryModelUseCase::class.java)
-    private val navigationMock: NavigationLiveData<CreateNewCategoryNavigationEvent> =
-
-    Mockito.mock(NavigationLiveData::
-    class.java)
-    as NavigationLiveData<CreateNewCategoryNavigationEvent>
 
     private lateinit var viewModel: CreateNewCategoryViewModel
 
@@ -42,7 +36,6 @@ class CreateNewCategoryViewModelTest {
         viewModel = CreateNewCategoryViewModel(
             insertCategoryModelUseCaseMock
         )
-        viewModel.navigation = navigationMock
     }
 
     @Test
@@ -51,7 +44,10 @@ class CreateNewCategoryViewModelTest {
         viewModel.navigateToImagePicker()
 
         /* Then */
-        verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToImagePicker)
+        assertEquals(
+            CreateNewCategoryNavigationEvent.ToImagePicker,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test
@@ -70,6 +66,9 @@ class CreateNewCategoryViewModelTest {
                 CreateNewCategoryViewModel.Action.ReturnCategoryId(1L), awaitItem()
             )
         }
-        verify(viewModel.navigation).emit(CreateNewCategoryNavigationEvent.ToPreviousScreen)
+        assertEquals(
+            CreateNewCategoryNavigationEvent.ToPreviousScreen,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 }
