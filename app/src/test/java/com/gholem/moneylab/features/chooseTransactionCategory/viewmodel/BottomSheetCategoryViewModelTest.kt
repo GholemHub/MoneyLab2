@@ -2,7 +2,6 @@ package com.gholem.moneylab.features.chooseTransactionCategory.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategory
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomSheetCategoryEvent
@@ -24,9 +23,6 @@ class BottomSheetCategoryViewModelTest {
 
     private val getCategoryListUseCaseMock: GetCategoryListUseCase =
         Mockito.mock(GetCategoryListUseCase::class.java)
-    private val navigationMock: NavigationLiveData<BottomSheetCategoryEvent> =
-        Mockito.mock(NavigationLiveData::class.java)
-                as NavigationLiveData<BottomSheetCategoryEvent>
 
     private lateinit var viewModel: BottomSheetCategoryViewModel
 
@@ -35,7 +31,6 @@ class BottomSheetCategoryViewModelTest {
         viewModel = BottomSheetCategoryViewModel(
             getCategoryListUseCaseMock
         )
-        viewModel.navigation = navigationMock
     }
 
     @Test
@@ -44,7 +39,10 @@ class BottomSheetCategoryViewModelTest {
         viewModel.navigateToAddTransaction()
 
         /* Then */
-        verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToPreviousScreen)
+        assertEquals(
+            BottomSheetCategoryEvent.ToPreviousScreen,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test
@@ -53,7 +51,10 @@ class BottomSheetCategoryViewModelTest {
         viewModel.navigateToCreateNewTransaction()
 
         /* Then */
-        verify(viewModel.navigation).emit(BottomSheetCategoryEvent.ToCreateNewCategory)
+        assertEquals(
+            BottomSheetCategoryEvent.ToCreateNewCategory,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test

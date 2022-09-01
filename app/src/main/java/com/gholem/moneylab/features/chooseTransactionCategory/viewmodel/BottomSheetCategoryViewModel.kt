@@ -20,7 +20,7 @@ class BottomSheetCategoryViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
     var listOfCategories = mutableListOf<TransactionCategory>()
-    var navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
+    val navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
 
     fun getCategories() = viewModelScope.launch {
         listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
