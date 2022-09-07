@@ -2,10 +2,9 @@ package com.gholem.moneylab.features.add.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -54,8 +53,8 @@ class AddTransactionViewModelTest {
     fun `verify invocations on saveTransaction method call`() = runTest {
         /* Given */
         val transactionList = listOf(
-            Transaction(
-                TransactionCategory("1", 2, 3), 1, 2
+            TransactionModel(
+                TransactionCategoryModel("1", 2, 3), 1, 2
             )
         )
         `when`(insertTransactionsModelUseCaseMock.run(transactionList)).thenReturn(Unit)
@@ -85,7 +84,7 @@ class AddTransactionViewModelTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
-                TransactionCategory("123", 123, 123)
+                TransactionCategoryModel("123", 123, 123)
             )
         )
         /* When */
@@ -97,7 +96,7 @@ class AddTransactionViewModelTest {
         viewModel.actions.test {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
-                    listOf(TransactionCategory("123", 123, 123))
+                    listOf(TransactionCategoryModel("123", 123, 123))
                 ), awaitItem()
             )
             expectNoEvents()
@@ -109,7 +108,7 @@ class AddTransactionViewModelTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
-                TransactionCategory("123", 123, 123)
+                TransactionCategoryModel("123", 123, 123)
             )
         )
 
@@ -122,7 +121,7 @@ class AddTransactionViewModelTest {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
                     listOf(
-                        TransactionCategory("123", 123, 123)
+                        TransactionCategoryModel("123", 123, 123)
                     )
                 ), awaitItem()
             )

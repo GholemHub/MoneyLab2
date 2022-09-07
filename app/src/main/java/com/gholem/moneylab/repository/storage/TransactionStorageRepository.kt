@@ -1,9 +1,9 @@
 package com.gholem.moneylab.repository.storage
 
-import com.gholem.moneylab.domain.model.Transaction
+import com.gholem.moneylab.domain.model.TransactionModel
 
 interface TransactionStorageRepository {
 
-    suspend fun insert(transactions: List<Transaction>)
-    suspend fun getAll(): List<Transaction>
+    suspend fun insert(transactions: List<TransactionModel>)
+    suspend fun getAll(): List<TransactionModel>
 }

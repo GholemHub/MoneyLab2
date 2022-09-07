@@ -7,8 +7,8 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
 import java.util.*
@@ -19,7 +19,7 @@ class AddTransactionsAdapter(
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
-    private var listOfCategory: List<TransactionCategory> = mutableListOf()
+    private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
 
     private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
@@ -45,7 +45,7 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun updateData(listOfTrCategory: List<TransactionCategory>) {
+    fun updateData(listOfTrCategory: List<TransactionCategoryModel>) {
         listOfCategory = listOfTrCategory
         notifyDataSetChanged()
     }
@@ -80,9 +80,9 @@ class AddTransactionsAdapter(
         notifyItemChanged(adapterData.indexOf(cat))
     }
 
-    fun getTransactionListData(): List<Transaction> =
-        mutableListOf<Transaction>().apply {
-            var currentCategory: TransactionCategory? = null
+    fun getTransactionListData(): List<TransactionModel> =
+        mutableListOf<TransactionModel>().apply {
+            var currentCategory: TransactionCategoryModel? = null
 
             adapterData.forEach { item ->
                 when (item) {
@@ -96,9 +96,9 @@ class AddTransactionsAdapter(
         }
 
     private fun mapToTransaction(
-        category: TransactionCategory?,
+        category: TransactionCategoryModel?,
         item: AddTransactionItem.Transaction
-    ) = Transaction(
+    ) = TransactionModel(
         category = category ?: listOfCategory.get(0),
         amount = item.amount.toInt(),
         date = item.date

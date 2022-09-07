@@ -5,7 +5,7 @@ import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoriesModelUseCase
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
@@ -51,10 +51,10 @@ class SplashViewModelTest {
         runTest {
             /* Given */
             val transactionCategory = mutableListOf(
-                TransactionCategory("Others", R.drawable.ic_category_other),
-                TransactionCategory("Transport", R.drawable.ic_category_transport),
-                TransactionCategory("Food", R.drawable.ic_category_food),
-                TransactionCategory("Sport", R.drawable.ic_category_sport)
+                TransactionCategoryModel("Others", R.drawable.ic_category_other),
+                TransactionCategoryModel("Transport", R.drawable.ic_category_transport),
+                TransactionCategoryModel("Food", R.drawable.ic_category_food),
+                TransactionCategoryModel("Sport", R.drawable.ic_category_sport)
             )
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(transactionCategory)
             /* When */
@@ -69,10 +69,10 @@ class SplashViewModelTest {
         runTest {
             /* Given */
             val transactionCategory = mutableListOf(
-                TransactionCategory("Others", R.drawable.ic_category_other),
-                TransactionCategory("Transport", R.drawable.ic_category_transport),
-                TransactionCategory("Food", R.drawable.ic_category_food),
-                TransactionCategory("Sport", R.drawable.ic_category_sport)
+                TransactionCategoryModel("Others", R.drawable.ic_category_other),
+                TransactionCategoryModel("Transport", R.drawable.ic_category_transport),
+                TransactionCategoryModel("Food", R.drawable.ic_category_food),
+                TransactionCategoryModel("Sport", R.drawable.ic_category_sport)
             )
             `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(emptyList())
             //`when`(insertCategoriesModelUseCaseMock.run(transactionCategory)).thenReturn(Unit)

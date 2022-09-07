@@ -2,8 +2,8 @@ package com.gholem.moneylab.repository.storage.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 
 @Entity(tableName = "transaction_table")
 data class TransactionEntity(
@@ -14,9 +14,9 @@ data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 ) {
 
-    fun map(categoryEntity: CategoryEntity): Transaction =
-        Transaction(
-            category = TransactionCategory(
+    fun map(categoryEntity: CategoryEntity): TransactionModel =
+        TransactionModel(
+            category = TransactionCategoryModel(
                 categoryName = categoryEntity.name,
                 image = categoryEntity.image,
                 id = categoryEntity.id
@@ -26,7 +26,7 @@ data class TransactionEntity(
         )
 
     companion object {
-        fun from(transaction: Transaction): TransactionEntity =
+        fun from(transaction: TransactionModel): TransactionEntity =
             TransactionEntity(
                 transaction.amount,
                 transaction.date,

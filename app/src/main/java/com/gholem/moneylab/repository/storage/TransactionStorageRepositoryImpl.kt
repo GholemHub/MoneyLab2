@@ -1,6 +1,6 @@
 package com.gholem.moneylab.repository.storage
 
-import com.gholem.moneylab.domain.model.Transaction
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.dao.CategoryDao
 import com.gholem.moneylab.repository.storage.dao.TransactionDao
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
@@ -11,10 +11,10 @@ class TransactionStorageRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao
 ) : TransactionStorageRepository {
 
-    override suspend fun insert(transactions: List<Transaction>) =
+    override suspend fun insert(transactions: List<TransactionModel>) =
         transactionDao.insert(transactions.map { TransactionEntity.from(it) })
 
-    override suspend fun getAll(): List<Transaction> {
+    override suspend fun getAll(): List<TransactionModel> {
         val transactions = transactionDao.getAll()
 
         return transactions.map { transaction ->

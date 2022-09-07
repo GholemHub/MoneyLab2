@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -47,7 +47,7 @@ class AddTransactionViewModel @Inject constructor(
         navigation.emit(AddNavigationEvent.ToCategoryBottomSheetDialog)
     }
 
-    fun saveTransaction(transactions: List<Transaction>) = viewModelScope.launch {
+    fun saveTransaction(transactions: List<TransactionModel>) = viewModelScope.launch {
         insertTransactionsModelUseCase.run(transactions)
         navigation.emit(AddNavigationEvent.ToPreviousScreen)
     }
@@ -73,7 +73,7 @@ class AddTransactionViewModel @Inject constructor(
 
     sealed class Action {
         object GetTransactionsData : Action()
-        data class ShowData(val list: List<TransactionCategory>) : Action()
+        data class ShowData(val list: List<TransactionCategoryModel>) : Action()
         data class SelectCategory(val categoryId: Long) : Action()
     }
 }

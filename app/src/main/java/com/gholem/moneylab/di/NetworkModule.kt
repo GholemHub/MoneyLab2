@@ -1,5 +1,6 @@
 package com.gholem.moneylab.di
 
+import com.gholem.moneylab.repository.network.api.TransactionApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -7,15 +8,16 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "template.url"
+    private const val BASE_URL = "https://api.coincap.io"
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
@@ -26,13 +28,21 @@ object NetworkModule {
             .build()
     }
 
+    @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun getTransactionApi(retrofit: Retrofit): TransactionApi {
+        return retrofit.create(TransactionApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun getRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .baseUrl(BASE_URL)
             .build()
     }
+
+
 }
