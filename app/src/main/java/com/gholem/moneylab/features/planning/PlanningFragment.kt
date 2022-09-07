@@ -29,6 +29,8 @@ class PlanningFragment : BaseFragment<FragmentPlanningBinding, PlanningViewModel
 
     private val viewModel: PlanningViewModel by viewModels()
 
+    lateinit var planningNavigation: PlanningNavigation
+
     override fun constructViewBinding(): FragmentPlanningBinding =
         FragmentPlanningBinding.inflate(layoutInflater)
 
@@ -38,56 +40,21 @@ class PlanningFragment : BaseFragment<FragmentPlanningBinding, PlanningViewModel
         viewBinding.planningRecyclerview.adapter = dataAdapter
 
         observeActions()
-        initViewModel(viewBinding)
+        initViewModel()
     }
 
-    private fun initViewModel(viewBinding: FragmentPlanningBinding) {
+    private fun initViewModel() {
         viewModel.fetchTransactions()
-        //getData(viewBinding)
     }
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 is PlanningViewModel.Action.ShowTransactions ->
-
                     dataAdapter.setListData(action.transactions)
             }
         }
-
     }
-
-    /*fun getData2(viewBinding: FragmentPlanningBinding){
-        val retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.coincap.io/v2/")
-            .build()
-            .create(TransactionApi::class.java)
-
-        val retData = retrofit.getData()
-
-        retData.enqueue(object : Callback<PersonsItem> {
-            override fun onResponse(call: Call<PersonsItem>, response: Response<PersonsItem>) {
-                Timber.i("adapterData")
-                val response = response.body()!!
-
-                /*val adapterInit: PlanningAdapter by lazy {
-                    PlanningAdapter(response) //{ backToChart() }
-                }
-                dataAdapter = adapterInit*/
-                dataAdapter.setListData2(response)
-                dataAdapter.notifyDataSetChanged()
-                viewBinding.planningRecyclerview.adapter = dataAdapter
-            }
-
-            override fun onFailure(call: Call<PersonsItem>, t: Throwable) {
-                d("onFailure: ${t.message}")
-            }
-        })
-    }*/
-
-
-    lateinit var planningNavigation: PlanningNavigation
 
     override fun setupNavigation() {
         planningNavigation = PlanningNavigation(navControllerWrapper)

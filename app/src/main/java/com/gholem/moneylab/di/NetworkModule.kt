@@ -30,19 +30,15 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun getTransactionApi(retrofit: Retrofit): TransactionApi {
-        return retrofit.create(TransactionApi::class.java)
-    }
+    fun provideTransactionApi(retrofit: Retrofit): TransactionApi =
+        retrofit.create(TransactionApi::class.java)
 
     @Singleton
     @Provides
-    fun getRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
+    fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .build()
-    }
-
-
 }

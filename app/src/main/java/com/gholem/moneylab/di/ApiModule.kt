@@ -1,9 +1,11 @@
 package com.gholem.moneylab.di
 
+import com.gholem.moneylab.common.IsFake
 import com.gholem.moneylab.repository.network.TemplateApiRepository
 import com.gholem.moneylab.repository.network.TransactionApiRepository
 import com.gholem.moneylab.repository.network.api.TemplateApi
 import com.gholem.moneylab.repository.network.api.TransactionApi
+import com.gholem.moneylab.repository.network.fake.TemplateApiFakeRepository
 import com.gholem.moneylab.repository.network.real.TemplateApiNetworkRepository
 import com.gholem.moneylab.repository.network.real.TransactionApiNetworkRepositoryImpl
 import dagger.Module
@@ -17,6 +19,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
+    @Provides
+    @IsFake
+    fun provideIsFake() = false
+
     @Singleton
     @Provides
     fun provideTemplateApi(retrofit: Retrofit): TemplateApi =
@@ -25,13 +31,14 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideTemplateApiRepository(
+        @IsFake isFake: Boolean,
         templateApi: TemplateApi
     ): TemplateApiRepository =
-//        if(isFake){
-//            TemplateApiFakeRepository()
-//        }else{
-        TemplateApiNetworkRepository(templateApi)
-    // }
+        if (isFake) {
+            TemplateApiFakeRepository()
+        } else {
+            TemplateApiNetworkRepository(templateApi)
+        }
 
     @Singleton
     @Provides

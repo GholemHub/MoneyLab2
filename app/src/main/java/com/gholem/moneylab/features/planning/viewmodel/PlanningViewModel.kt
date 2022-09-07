@@ -13,13 +13,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanningViewModel @Inject constructor(
     private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
-    private val getCategoryListUseCase: GetCategoryListUseCase,
     private val fetchTransactionModelUseCase: FetchTransactionModelUseCase
 ) : ViewModel() {
 
@@ -39,13 +37,7 @@ class PlanningViewModel @Inject constructor(
     }
 
     fun saveNewTransactionFromPerson(data: Data) = viewModelScope.launch {
-        insertTransactionsModelUseCase.run(
-            listOf(
-
-            )
-        )
-
-        i("DATA merge: ${getCategoryListUseCase.run(Unit)}")
+        insertTransactionsModelUseCase.run(listOf())
     }
 
     private fun Action.send() =

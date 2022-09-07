@@ -14,8 +14,7 @@ class TransactionApiNetworkRepositoryImpl @Inject constructor(
 
     override suspend fun getTransaction(): Response<PersonsItem> {
         try {
-            val response = transactionApi.getData()
-            return response
+            return transactionApi.getData()
         } catch (e: Exception) {
             Timber.e(e.stackTraceToString())
             throw e
