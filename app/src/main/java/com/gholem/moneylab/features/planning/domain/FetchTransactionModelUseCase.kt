@@ -18,13 +18,13 @@ class FetchTransactionModelUseCase @Inject constructor(
         val categories = getCategoryListUseCase.run(Unit)
 
         return transactionApiRepository.getTransaction()?.body()?.data?.map { person ->
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val date = dateFormat.parse(person.updated.toString())
+            //val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            //val date = .toString()//dateFormat.parse(person.updated.toString())
 
             TransactionModel(
                 category = categories.first { it.id == (person.rank.toInt() % categories.size).toLong() },
                 amount = person.tradingPairs.toInt(),
-                date = date.time
+                date = person.updated
             )
         } ?: emptyList()
     }
