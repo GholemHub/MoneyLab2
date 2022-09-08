@@ -16,7 +16,7 @@ class ChartViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase
 ) : ViewModel() {
 
-    private val _actions = Channel<Action>(Channel.BUFFERED)
+        private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
     fun fetchTransactionList() = viewModelScope.launch {

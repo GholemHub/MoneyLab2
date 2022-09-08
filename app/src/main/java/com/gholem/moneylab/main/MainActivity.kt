@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+    }
+
     private fun setupBottomNavigation() {
         val bottomNavigationView = binding.bottomNavigationView
         val navHostFragment = supportFragmentManager

@@ -11,9 +11,12 @@ import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import timber.log.Timber
+import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
+    var adapterData: MutableList<AddTransactionItem>,
     val categoryClickListener: () -> Unit,
     val dateClickListener: (position: Int) -> Unit
 ) :
@@ -21,13 +24,12 @@ class AddTransactionsAdapter(
 
     private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
 
-    private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return createViewHolders(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
+
         when (holder) {
             is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
             is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Transaction)
@@ -100,9 +102,23 @@ class AddTransactionsAdapter(
         item: AddTransactionItem.Transaction
     ) = TransactionModel(
         category = category ?: listOfCategory.get(0),
-        amount = item.amount.toInt(),
+        amount = getAmount(item),
         date = item.date
     )
+
+    private fun getAmount(item: AddTransactionItem.Transaction): Int {
+        try{
+            if(item.amount == "" || item.amount.isEmpty()){
+                return 0
+            }else{
+                return item.amount.toInt()
+            }
+        }catch (e: Exception){
+            Timber.e(e.stackTraceToString())
+            throw e
+        }
+
+    }
 
     private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return when (viewType) {
@@ -167,7 +183,9 @@ class AddTransactionsAdapter(
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
                     val startPosition = viewHolder.adapterPosition
+
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
+
                     notifyItemRangeChanged(startPosition, adapterData.size - 1)
                 }
             }

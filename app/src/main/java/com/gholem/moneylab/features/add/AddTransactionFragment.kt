@@ -1,6 +1,7 @@
 package com.gholem.moneylab.features.add
 
 import android.app.DatePickerDialog
+import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -22,11 +23,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
     lateinit var navigation: AddTransactionNavigation
 
-    //ViewModel for parse data into
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
+        AddTransactionsAdapter(viewModel.adapterData, { showCategoryBottomSheet() }, { showDateDialog(it) })
     }
 
     private var position = 0
@@ -56,6 +56,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     override fun setupNavigation() {
         navigation = AddTransactionNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, navigation::navigate)
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        dataAdapter.setDate(position, p3, p2, p1)
     }
 
     //only: fragment back to fragment\\savedStateHandle
@@ -106,9 +110,5 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 }
             }
         }
-    }
-
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dataAdapter.setDate(position, p3, p2, p1)
     }
 }

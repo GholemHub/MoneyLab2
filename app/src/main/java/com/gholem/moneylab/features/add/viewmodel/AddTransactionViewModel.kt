@@ -6,6 +6,7 @@ import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -14,8 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-//logika zmiana danych
+    
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
@@ -25,6 +25,7 @@ class AddTransactionViewModel @Inject constructor(
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
+    val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
 
     val navigation: NavigationLiveData<AddNavigationEvent> =
         NavigationLiveData()
@@ -37,6 +38,7 @@ class AddTransactionViewModel @Inject constructor(
     fun updateList(idCategory: Long) = viewModelScope.launch {
         fetchCategories()
         Action.SelectCategory(idCategory).send()
+
     }
 
     fun onDoneButtonClick() {
@@ -62,6 +64,7 @@ class AddTransactionViewModel @Inject constructor(
     }
 
     private suspend fun fetchCategories() {
+        //updateTransactionsData()
         val listOfCategories = getCategoryListUseCase.run(Unit)
         Action.ShowData(listOfCategories).send()
     }
