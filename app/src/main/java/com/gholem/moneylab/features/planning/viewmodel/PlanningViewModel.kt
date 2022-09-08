@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
-import com.gholem.moneylab.features.planning.adapter.item.Data
 import com.gholem.moneylab.features.planning.domain.FetchTransactionModelUseCase
 import com.gholem.moneylab.features.planning.navigation.PlanningNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PlanningViewModel @Inject constructor(
     private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
-    private val getCategoryListUseCase: GetCategoryListUseCase,
     private val fetchTransactionModelUseCase: FetchTransactionModelUseCase
 ) : ViewModel() {
 
@@ -38,14 +35,11 @@ class PlanningViewModel @Inject constructor(
         navigation.emit(PlanningNavigationEvent.ToChartScreen)
     }
 
-    fun saveNewTransactionFromPerson(data: Data) = viewModelScope.launch {
-        insertTransactionsModelUseCase.run(
-            listOf(
-
-            )
-        )
-
-        i("DATA merge: ${getCategoryListUseCase.run(Unit)}")
+    fun saveNewTransactionFromPerson(positon: Int) = viewModelScope.launch {
+        val transactions = fetchTransactionModelUseCase.run(Unit)
+        insertTransactionsModelUseCase.run(listOf(
+            transactions.get(positon)
+        ))
     }
 
     private fun Action.send() =

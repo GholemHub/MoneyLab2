@@ -5,14 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemPlanningBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
-import com.gholem.moneylab.features.planning.adapter.item.PersonsItem
 import com.gholem.moneylab.features.planning.adapter.viewholder.PlanningViewHolder
 import timber.log.Timber.i
-import java.text.SimpleDateFormat
 
-class PlanningAdapter : RecyclerView.Adapter<PlanningViewHolder>() {
+class PlanningAdapter(val positionClickListener: (position: Int) -> Unit) :
+    RecyclerView.Adapter<PlanningViewHolder>() {
 
     private var adapterData: List<TransactionModel> = emptyList()
 
@@ -24,18 +22,6 @@ class PlanningAdapter : RecyclerView.Adapter<PlanningViewHolder>() {
                         "size ${adapterData.size}"
             )
         }
-    }
-
-    private fun creativeViewHolder(
-        parent: ViewGroup
-    ): PlanningViewHolder.PlanningDataViewHolder {
-        val binding = ItemPlanningBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-
-        return PlanningViewHolder.PlanningDataViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlanningViewHolder, position: Int) {
@@ -55,22 +41,24 @@ class PlanningAdapter : RecyclerView.Adapter<PlanningViewHolder>() {
 
     override fun getItemCount(): Int = adapterData.size
 
-/*
-    fun setListData2(listData: PersonsItem) {
+    private fun creativeViewHolder(
+        parent: ViewGroup
+    ): PlanningViewHolder.PlanningDataViewHolder {
+        val binding = ItemPlanningBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
 
-        var list = mutableListOf<TransactionModel>()
-        listData.data.forEach {
-            var v = it.rank.toInt() % 6
-            list.add( TransactionModel(
-                category = TransactionCategoryModel("123",R.drawable.ic_category_other),
-                amount = it.tradingPairs.toInt(),
-                date = it.updated
-            ))
+        val viewHolder = PlanningViewHolder.PlanningDataViewHolder(binding).also { viewHolder ->
+            binding.root.setOnClickListener {
+                val position = viewHolder.adapterPosition
+                positionClickListener.invoke(position)
+            }
         }
-        this.adapterData = list
-        notifyDataSetChanged()
+        return viewHolder
     }
-*/
+
     fun setListData(listData: List<TransactionModel>) {
         this.adapterData = listData
         notifyDataSetChanged()

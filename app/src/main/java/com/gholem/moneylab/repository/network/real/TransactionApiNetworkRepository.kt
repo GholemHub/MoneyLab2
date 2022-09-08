@@ -8,14 +8,13 @@ import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
 
-class TransactionApiNetworkRepositoryImpl @Inject constructor(
+class TransactionApiNetworkRepository @Inject constructor(
     private val transactionApi: TransactionApi
 ) : TransactionApiRepository {
 
     override suspend fun getTransaction(): Response<PersonsItem> {
         try {
-            val response = transactionApi.getData()
-            return response
+            return transactionApi.getData()
         } catch (e: Exception) {
             Timber.e(e.stackTraceToString())
             throw e

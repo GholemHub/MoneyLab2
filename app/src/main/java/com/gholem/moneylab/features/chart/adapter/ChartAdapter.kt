@@ -31,6 +31,13 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
 
     override fun getItemCount(): Int = adapterData.size
 
+    override fun getItemViewType(position: Int): Int {
+        return when (adapterData[position]) {
+            is ChartTransactionItem.ChartDate -> R.layout.item_chart_date
+            is ChartTransactionItem.ChartTransaction -> R.layout.item_chart_transaction
+        }
+    }
+
     private fun createChartDateHolder(
         parent: ViewGroup
     ): ChartViewHolder.ChartDateViewHolder {
@@ -41,13 +48,6 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
         )
 
         return ChartViewHolder.ChartDateViewHolder(binding)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
-            is ChartTransactionItem.ChartDate -> R.layout.item_chart_date
-            is ChartTransactionItem.ChartTransaction -> R.layout.item_chart_transaction
-        }
     }
 
     private fun createChartTransactionHolder(

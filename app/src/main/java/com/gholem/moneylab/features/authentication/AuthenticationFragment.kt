@@ -14,7 +14,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import timber.log.Timber.i
 
 
 @AndroidEntryPoint
@@ -32,7 +31,7 @@ class AuthenticationFragment :
                     GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 if (signInTask.isSuccessful) {
                     Timber.i("Logged on account: ${signInTask.getResult(ApiException::class.java).email}")
-                    viewModel.goToDashboard ()
+                    viewModel.goToDashboard()
                 } else {
                     Timber.i("Login failed: ${signInTask.exception?.message}")
                 }
