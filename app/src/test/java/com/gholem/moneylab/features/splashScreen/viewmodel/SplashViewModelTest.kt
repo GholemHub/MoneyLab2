@@ -3,7 +3,6 @@ package com.gholem.moneylab.features.splashScreen.viewmodel
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.R
-import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -30,9 +29,7 @@ class SplashViewModelTest {
     private val getCategoryListUseCaseMock = mock(GetCategoryListUseCase::class.java)
     private val bottomNavigationVisibilityBusMock =
         mock(BottomNavigationVisibilityBus::class.java)
-    private val navigationMock: NavigationLiveData<SplashNavigationEvent> =
-        mock(NavigationLiveData::class.java)
-                as NavigationLiveData<SplashNavigationEvent>
+
 
     private lateinit var viewModel: SplashViewModel
 
@@ -43,7 +40,6 @@ class SplashViewModelTest {
             getCategoryListUseCaseMock,
             insertCategoriesModelUseCaseMock
         )
-        viewModel.navigation = navigationMock
     }
 
     @Test
@@ -114,6 +110,6 @@ class SplashViewModelTest {
 
         /* Then */
         verify(bottomNavigationVisibilityBusMock).changeVisibility(true)
-        verify(viewModel.navigation).emit(SplashNavigationEvent.ToDashboard)
+        assertEquals(SplashNavigationEvent.ToDashboard, viewModel.navigation.value?.getAndForget())
     }
 }

@@ -46,7 +46,10 @@ class AddTransactionViewModelTest {
         viewModel.navigateToCategoryBottomSheet()
 
         /* Then */
-        assertEquals(AddNavigationEvent.ToCategoryBottomSheetDialog, viewModel.navigation.value?.getAndForget())
+        assertEquals(
+            AddNavigationEvent.ToCategoryBottomSheetDialog,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test

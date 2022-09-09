@@ -6,6 +6,7 @@ import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
+import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

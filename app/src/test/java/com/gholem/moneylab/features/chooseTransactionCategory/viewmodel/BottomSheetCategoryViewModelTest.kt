@@ -25,9 +25,6 @@ class BottomSheetCategoryViewModelTest {
 
     private val getCategoryListUseCaseMock: GetCategoryListUseCase =
         Mockito.mock(GetCategoryListUseCase::class.java)
-    private val navigationMock: NavigationLiveData<BottomSheetCategoryEvent> =
-        Mockito.mock(NavigationLiveData::class.java)
-                as NavigationLiveData<BottomSheetCategoryEvent>
 
     private lateinit var viewModel: BottomSheetCategoryViewModel
 
