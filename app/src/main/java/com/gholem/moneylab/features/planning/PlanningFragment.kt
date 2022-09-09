@@ -40,7 +40,7 @@ class PlanningFragment : BaseFragment<FragmentPlanningBinding, PlanningViewModel
     }
 
     private fun saveTransaction(item: TransactionModel) {
-        viewModel.saveNewTransactionFromCoinCap(item)
+        viewModel.saveNewTransaction(item)
     }
 
     private fun initViewModel() {

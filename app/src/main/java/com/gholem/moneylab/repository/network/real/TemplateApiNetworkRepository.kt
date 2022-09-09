@@ -3,7 +3,7 @@ package com.gholem.moneylab.repository.network.real
 import com.gholem.moneylab.domain.model.TemplateModel
 import com.gholem.moneylab.repository.network.TemplateApiRepository
 import com.gholem.moneylab.repository.network.api.TemplateApi
-import com.gholem.moneylab.repository.network.dto.TemplateRequest
+import com.gholem.moneylab.repository.network.dto.template.TemplateRequest
 import javax.inject.Inject
 
 class TemplateApiNetworkRepository @Inject constructor(

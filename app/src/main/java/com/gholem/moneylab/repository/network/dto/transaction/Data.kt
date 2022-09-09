@@ -1,4 +1,4 @@
-package com.gholem.moneylab.features.planning.adapter.item
+package com.gholem.moneylab.repository.network.dto.transaction
 
 data class Data(
     val exchangeId: String,

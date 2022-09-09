@@ -59,9 +59,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomNavigation(isVisible: Boolean) {
         binding.bottomNavigationFab.isEnabled = false
-        binding.bottomAppBar.isGone = !isVisible
-        binding.bottomNavigationFab.isGone = !isVisible
-        binding.bottomNavigationView.isGone = !isVisible
+        binding.bottomAppBar.isVisible = isVisible
+        binding.bottomNavigationFab.isVisible = isVisible
+        binding.bottomNavigationView.isVisible = isVisible
         binding.bottomNavigationFab.isEnabled = true
     }
 

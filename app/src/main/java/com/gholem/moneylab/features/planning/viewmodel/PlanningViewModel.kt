@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.planning.domain.FetchTransactionModelUseCase
 import com.gholem.moneylab.features.planning.navigation.PlanningNavigationEvent
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlanningViewModel @Inject constructor(
-    private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
+    private val insertTransactionModelUseCase: InsertTransactionModelUseCase,
     private val fetchTransactionModelUseCase: FetchTransactionModelUseCase
 ) : ViewModel() {
 
@@ -31,10 +32,8 @@ class PlanningViewModel @Inject constructor(
         Action.ShowTransactions(transactions).send()
     }
 
-    fun saveNewTransactionFromCoinCap(item: TransactionModel) = viewModelScope.launch {
-        insertTransactionsModelUseCase.run(listOf(
-            item
-        ))
+    fun saveNewTransaction(item: TransactionModel) = viewModelScope.launch {
+        insertTransactionModelUseCase.run(item)
     }
 
     private fun Action.send() =

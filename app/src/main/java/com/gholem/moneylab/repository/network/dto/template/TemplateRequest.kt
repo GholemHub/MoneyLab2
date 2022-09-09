@@ -1,4 +1,4 @@
-package com.gholem.moneylab.repository.network.dto
+package com.gholem.moneylab.repository.network.dto.template
 
 import com.gholem.moneylab.domain.model.TemplateModel
 
