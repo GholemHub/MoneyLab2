@@ -8,8 +8,8 @@ import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
+import timber.log.Timber.i
 
-//przedstawienia danych widoku w adapterze dla 1 elementu
 sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
@@ -30,6 +30,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
 
         fun bind(transaction: AddTransactionItem.Transaction) {
             binding.setDateBtn.text = transaction.date.timestampToString()
+            binding.amount.setText(transaction.amount)
             binding.amount.doAfterTextChanged {
                 transaction.amount = it?.toString() ?: ""
             }

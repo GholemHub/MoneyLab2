@@ -15,7 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-    
+
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val insertTransactionsModelUseCase: InsertTransactionsModelUseCase,
@@ -38,7 +38,6 @@ class AddTransactionViewModel @Inject constructor(
     fun updateList(idCategory: Long) = viewModelScope.launch {
         fetchCategories()
         Action.SelectCategory(idCategory).send()
-
     }
 
     fun onDoneButtonClick() {
@@ -64,7 +63,6 @@ class AddTransactionViewModel @Inject constructor(
     }
 
     private suspend fun fetchCategories() {
-        //updateTransactionsData()
         val listOfCategories = getCategoryListUseCase.run(Unit)
         Action.ShowData(listOfCategories).send()
     }

@@ -31,14 +31,9 @@ class PlanningViewModel @Inject constructor(
         Action.ShowTransactions(transactions).send()
     }
 
-    fun navigateToCategoryBottomSheet() = viewModelScope.launch {
-        navigation.emit(PlanningNavigationEvent.ToChartScreen)
-    }
-
-    fun saveNewTransactionFromPerson(positon: Int) = viewModelScope.launch {
-        val transactions = fetchTransactionModelUseCase.run(Unit)
+    fun saveNewTransactionFromCoinCap(item: TransactionModel) = viewModelScope.launch {
         insertTransactionsModelUseCase.run(listOf(
-            transactions.get(positon)
+            item
         ))
     }
 
@@ -49,6 +44,5 @@ class PlanningViewModel @Inject constructor(
 
     sealed class Action {
         data class ShowTransactions(val transactions: List<TransactionModel>) : Action()
-        data class SelectPerson(val personId: Int) : Action()
     }
 }

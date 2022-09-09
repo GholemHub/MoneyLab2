@@ -23,12 +23,12 @@ class InsertTransactionsModelUseCaseTest {
             TransactionModel(category, 1, 2),
             TransactionModel(category, 3, 4)
         )
-        `when`(transactionStorageRepositoryMock.insert(item)).thenReturn(Unit)
+        `when`(transactionStorageRepositoryMock.insertList(item)).thenReturn(Unit)
 
         /* When */
         useCase.run(item)
 
         /* Then */
-        verify(transactionStorageRepositoryMock).insert(item)
+        verify(transactionStorageRepositoryMock).insertList(item)
     }
 }

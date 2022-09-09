@@ -11,8 +11,12 @@ class TransactionStorageRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao
 ) : TransactionStorageRepository {
 
-    override suspend fun insert(transactions: List<TransactionModel>) =
-        transactionDao.insert(transactions.map { TransactionEntity.from(it) })
+    override suspend fun insertList(transactions: List<TransactionModel>) =
+        transactionDao.insertList(transactions.map { TransactionEntity.from(it) })
+
+    override suspend fun insertItem(transaction: TransactionModel) {
+        transactionDao.insertItem(TransactionEntity.from(transaction))
+    }
 
     override suspend fun getAll(): List<TransactionModel> {
         val transactions = transactionDao.getAll()

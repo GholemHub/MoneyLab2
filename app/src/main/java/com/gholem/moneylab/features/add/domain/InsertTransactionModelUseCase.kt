@@ -5,11 +5,11 @@ import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.TransactionStorageRepository
 import javax.inject.Inject
 
-class InsertTransactionsModelUseCase @Inject constructor(
+class InsertTransactionModelUseCase @Inject constructor(
     private val transactionStorageRepository: TransactionStorageRepository
-) : UseCase<List<TransactionModel>, Unit> {
+) : UseCase<TransactionModel, Unit> {
 
-    override suspend fun run(input: List<TransactionModel>) {
-        transactionStorageRepository.insertList(input)
+    override suspend fun run(input: TransactionModel) {
+        transactionStorageRepository.insertItem(input)
     }
 }

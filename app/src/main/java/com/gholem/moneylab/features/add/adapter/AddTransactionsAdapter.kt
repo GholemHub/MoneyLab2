@@ -11,8 +11,6 @@ import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber
-import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
@@ -102,23 +100,9 @@ class AddTransactionsAdapter(
         item: AddTransactionItem.Transaction
     ) = TransactionModel(
         category = category ?: listOfCategory.get(0),
-        amount = getAmount(item),
+        amount = item.amount.toInt(),
         date = item.date
     )
-
-    private fun getAmount(item: AddTransactionItem.Transaction): Int {
-        try{
-            if(item.amount == "" || item.amount.isEmpty()){
-                return 0
-            }else{
-                return item.amount.toInt()
-            }
-        }catch (e: Exception){
-            Timber.e(e.stackTraceToString())
-            throw e
-        }
-
-    }
 
     private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return when (viewType) {

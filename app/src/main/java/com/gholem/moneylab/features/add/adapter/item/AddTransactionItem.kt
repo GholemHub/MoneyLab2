@@ -28,8 +28,5 @@ sealed class AddTransactionItem {
                 Transaction(),
                 NewTransaction
             )
-        fun addItemsToList(){
-
-        }
     }
 }

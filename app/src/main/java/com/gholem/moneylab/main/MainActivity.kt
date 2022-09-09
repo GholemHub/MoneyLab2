@@ -2,7 +2,9 @@ package com.gholem.moneylab.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
@@ -40,11 +42,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-    }
-
     private fun setupBottomNavigation() {
         val bottomNavigationView = binding.bottomNavigationView
         val navHostFragment = supportFragmentManager
@@ -62,8 +59,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomNavigation(isVisible: Boolean) {
         binding.bottomNavigationFab.isEnabled = false
-        binding.bottomAppBar.isVisible = isVisible
-        binding.bottomNavigationFab.isVisible = isVisible
+        binding.bottomAppBar.isGone = !isVisible
+        binding.bottomNavigationFab.isGone = !isVisible
+        binding.bottomNavigationView.isGone = !isVisible
         binding.bottomNavigationFab.isEnabled = true
     }
 
