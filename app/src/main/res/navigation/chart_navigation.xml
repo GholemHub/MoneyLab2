@@ -9,5 +9,14 @@
         android:id="@+id/chart_fragment"
         android:name="com.gholem.moneylab.features.chart.ChartFragment"
         android:label="Chart"
-        tools:layout="@layout/fragment_chart" />
+        tools:layout="@layout/fragment_chart" >
+        <action
+            android:id="@+id/actionChartFragmentToEditTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.gholem.moneylab.features.editTransaction.EditTransactionFragment"
+        android:label="fragment_edit_transaction"
+        tools:layout="@layout/fragment_edit_transaction" />
 </navigation>

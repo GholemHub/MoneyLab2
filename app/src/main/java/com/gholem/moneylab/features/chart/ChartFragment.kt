@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentChartBinding
 import com.gholem.moneylab.features.chart.adapter.ChartAdapter
+import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,8 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
 
     private val viewModel: ChartViewModel by viewModels()
-
-    private val dataAdapter = ChartAdapter()
+    lateinit var navigation: ChartNavigation
+    private val dataAdapter : ChartAdapter by lazy {
+        ChartAdapter{ navigateToEditTransaction() }
+    }
 
     override fun constructViewBinding(): FragmentChartBinding  =
         FragmentChartBinding.inflate(layoutInflater)
@@ -28,6 +31,10 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
+    }
+
+    private fun navigateToEditTransaction() {
+        viewModel.navigateToEditTransaction()
     }
 
     override fun onResume() {
@@ -46,6 +53,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
     }
 
     override fun setupNavigation() {
+        navigation = ChartNavigation(navControllerWrapper)
+        viewModel.navigation.observe(this, navigation::navigate)
+    }
+
+    companion object {
+        const val EDIT_ITEM = "EDIT_ITEM"
 
     }
 }

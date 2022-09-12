@@ -9,7 +9,7 @@ import com.gholem.moneylab.databinding.ItemChartTransactionBinding
 import com.gholem.moneylab.domain.model.ChartTransactionItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 
-class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
+class ChartAdapter(val navigateToEditTransaction: () -> Unit) : RecyclerView.Adapter<ChartViewHolder>() {
 
     private var adapterData: List<ChartTransactionItem> = emptyList()
 
@@ -31,6 +31,13 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
 
     override fun getItemCount(): Int = adapterData.size
 
+    override fun getItemViewType(position: Int): Int {
+        return when (adapterData[position]) {
+            is ChartTransactionItem.ChartDate -> R.layout.item_chart_date
+            is ChartTransactionItem.ChartTransaction -> R.layout.item_chart_transaction
+        }
+    }
+
     private fun createChartDateHolder(
         parent: ViewGroup
     ): ChartViewHolder.ChartDateViewHolder {
@@ -43,13 +50,6 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
         return ChartViewHolder.ChartDateViewHolder(binding)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
-            is ChartTransactionItem.ChartDate -> R.layout.item_chart_date
-            is ChartTransactionItem.ChartTransaction -> R.layout.item_chart_transaction
-        }
-    }
-
     private fun createChartTransactionHolder(
         parent: ViewGroup
     ): ChartViewHolder.ChartTransactionViewHolder {
@@ -59,7 +59,11 @@ class ChartAdapter : RecyclerView.Adapter<ChartViewHolder>() {
             false
         )
 
-        return ChartViewHolder.ChartTransactionViewHolder(binding)
+        return ChartViewHolder.ChartTransactionViewHolder(binding).also {
+            binding.root.setOnClickListener {
+                navigateToEditTransaction.invoke()
+            }
+        }
     }
 
     fun updateData(listOfTransaction: List<ChartTransactionItem>) {
