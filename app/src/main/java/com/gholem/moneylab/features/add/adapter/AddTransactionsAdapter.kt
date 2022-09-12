@@ -7,10 +7,11 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
@@ -21,16 +22,25 @@ class AddTransactionsAdapter(
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
     private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
+    private var listOfInvalidItemsIndexes = listOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return createViewHolders(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
+        val isInvalidData = listOfInvalidItemsIndexes.contains(position)
+        i("DDD ADAPTER isInvalidData ${listOfInvalidItemsIndexes}")
 
         when (holder) {
             is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
-            is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Transaction)
+            is AddTransactionViewHolder.TransactionViewHolder -> {
+                holder.bind(
+                    adapterData[position] as AddTransactionItem.Transaction,
+                    isInvalidData
+                )
+                i("DDD ADAPTER adapterData ${adapterData}")
+            }
             is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.NewTransaction)
         }
     }
@@ -66,7 +76,8 @@ class AddTransactionsAdapter(
         transaction?.date = rightNow.timeInMillis
 
         transaction?.let {
-            notifyItemChanged(position)
+            notifyDataSetChanged()
+            //notifyItemChanged(position)
         }
     }
 
@@ -80,31 +91,53 @@ class AddTransactionsAdapter(
         notifyItemChanged(adapterData.indexOf(cat))
     }
 
-    fun getTransactionListData(): List<TransactionModel> =
-        mutableListOf<TransactionModel>().apply {
+    fun getTransactionListData(): List<TransactionModel> {
+        var listTransactionModel = mutableListOf<TransactionModel>().apply {
             var currentCategory: TransactionCategoryModel? = null
 
+            i("DDD Adapter   : ${adapterData}")
+            i("DDD this1.size: ${this.size}")
             adapterData.forEach { item ->
                 when (item) {
-                    is AddTransactionItem.Category -> currentCategory = item.category
+                    is AddTransactionItem.Category -> {
+                        currentCategory = item.category
+                        i("DDD this2.1.size: ${this.size}")
+                    }
                     is AddTransactionItem.Transaction -> {
                         this.add(mapToTransaction(currentCategory, item))
+                        i("DDD this2.size: ${this.size} + ${item}")
                     }
                     else -> Unit // Do nothing
                 }
             }
+            i("DDD this3.size: ${this.size}")
         }
+
+        return listTransactionModel
+    }
+
+    fun setInvalidData(listOfIndexes: List<Int>) {
+        listOfInvalidItemsIndexes = listOfIndexes
+        notifyDataSetChanged()
+        /*listOfInvalidItemsIndexes.forEach {
+            notifyItemChanged(it)
+        }*/
+    }
 
     private fun mapToTransaction(
         category: TransactionCategoryModel?,
         item: AddTransactionItem.Transaction
-    ) = TransactionModel(
-        category = category ?: listOfCategory.get(0),
-        amount = item.amount.toInt(),
-        date = item.date
-    )
+    ) =
+        TransactionModel(
+            category = category ?: listOfCategory[0],
+            amount = item.amount.ifBlank { "0" }.toInt(),
+            date = item.date
+        )
 
-    private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
+    private fun createViewHolders(
+        parent: ViewGroup,
+        viewType: Int
+    ): AddTransactionViewHolder {
         return when (viewType) {
             R.layout.item_category -> createCategoryViewHolder(parent)
             R.layout.item_transaction -> createTransactionViewHolder(parent)
@@ -132,6 +165,7 @@ class AddTransactionsAdapter(
     private fun createTransactionViewHolder(
         parent: ViewGroup
     ): AddTransactionViewHolder.TransactionViewHolder {
+
         val binding = ItemTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -143,7 +177,7 @@ class AddTransactionsAdapter(
                     val position = viewHolder.adapterPosition
                     adapterData.removeAt(position)
 
-                    notifyItemRangeChanged(position, adapterData.size - 1)
+                    notifyDataSetChanged()
                 }
             }
 
@@ -169,8 +203,8 @@ class AddTransactionsAdapter(
                     val startPosition = viewHolder.adapterPosition
 
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
-
-                    notifyItemRangeChanged(startPosition, adapterData.size - 1)
+                    notifyDataSetChanged()
+                    //notifyItemRangeChanged(startPosition, adapterData.size - 1)
                 }
             }
     }

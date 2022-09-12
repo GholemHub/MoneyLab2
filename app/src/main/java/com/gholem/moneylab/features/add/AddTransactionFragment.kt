@@ -15,6 +15,7 @@ import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategor
 import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -100,6 +101,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 AddTransactionViewModel.Action.GetTransactionsData -> {
+                    Timber.i("DDD Fragment: ${dataAdapter}")
                     viewModel.saveTransaction(dataAdapter.getTransactionListData())
                 }
                 is AddTransactionViewModel.Action.ShowData -> {
@@ -107,6 +109,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 }
                 is AddTransactionViewModel.Action.SelectCategory -> {
                     dataAdapter.setCategory(action.categoryId)
+                }
+                is AddTransactionViewModel.Action.InvalidData -> {
+                    dataAdapter.setInvalidData(action.listOfIndexes)
                 }
             }
         }
