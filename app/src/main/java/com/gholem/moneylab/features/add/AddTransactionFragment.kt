@@ -1,7 +1,6 @@
 package com.gholem.moneylab.features.add
 
 import android.app.DatePickerDialog
-import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategor
 import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -27,7 +25,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter(viewModel.adapterData, { showCategoryBottomSheet() }, { showDateDialog(it) })
+        AddTransactionsAdapter(
+            viewModel.adapterData,
+            { showCategoryBottomSheet() },
+            { showDateDialog(it) })
     }
 
     private var position = 0
@@ -82,7 +83,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-        var dataPicker = DatePickerDialog(
+        val dataPicker = DatePickerDialog(
             requireContext(),
             this,
             rightNow.get(Calendar.YEAR),
@@ -101,7 +102,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 AddTransactionViewModel.Action.GetTransactionsData -> {
-                    Timber.i("DDD Fragment: ${dataAdapter}")
                     viewModel.saveTransaction(dataAdapter.getTransactionListData())
                 }
                 is AddTransactionViewModel.Action.ShowData -> {

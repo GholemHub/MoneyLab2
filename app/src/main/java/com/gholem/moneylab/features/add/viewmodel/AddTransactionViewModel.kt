@@ -52,7 +52,6 @@ class AddTransactionViewModel @Inject constructor(
 
     fun saveTransaction(transactions: List<TransactionModel>) = viewModelScope.launch {
         val listOfEmpty = checkTransactionAmount()
-        i("DDD transactions: ${transactions}")
         if (listOfEmpty.isEmpty()) {
             insertTransactionsModelUseCase.run(transactions)
             navigation.emit(AddNavigationEvent.ToPreviousScreen)

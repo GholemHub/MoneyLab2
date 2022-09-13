@@ -2,6 +2,7 @@ package com.gholem.moneylab.features.add.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
@@ -15,9 +16,9 @@ import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
-    var adapterData: MutableList<AddTransactionItem>,
-    val categoryClickListener: () -> Unit,
-    val dateClickListener: (position: Int) -> Unit
+    private var adapterData: MutableList<AddTransactionItem>,
+    private val categoryClickListener: () -> Unit,
+    private val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
@@ -30,7 +31,6 @@ class AddTransactionsAdapter(
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
         val isInvalidData = listOfInvalidItemsIndexes.contains(position)
-        i("DDD ADAPTER isInvalidData ${listOfInvalidItemsIndexes}")
 
         when (holder) {
             is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
@@ -39,9 +39,8 @@ class AddTransactionsAdapter(
                     adapterData[position] as AddTransactionItem.Transaction,
                     isInvalidData
                 )
-                i("DDD ADAPTER adapterData ${adapterData}")
             }
-            is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.NewTransaction)
+            is AddTransactionViewHolder.NewTransactionViewHolder -> Unit // Do nothing
         }
     }
 
@@ -76,8 +75,7 @@ class AddTransactionsAdapter(
         transaction?.date = rightNow.timeInMillis
 
         transaction?.let {
-            notifyDataSetChanged()
-            //notifyItemChanged(position)
+            notifyItemChanged(position)
         }
     }
 
@@ -92,25 +90,20 @@ class AddTransactionsAdapter(
     }
 
     fun getTransactionListData(): List<TransactionModel> {
-        var listTransactionModel = mutableListOf<TransactionModel>().apply {
+        val listTransactionModel = mutableListOf<TransactionModel>().apply {
             var currentCategory: TransactionCategoryModel? = null
 
-            i("DDD Adapter   : ${adapterData}")
-            i("DDD this1.size: ${this.size}")
             adapterData.forEach { item ->
                 when (item) {
                     is AddTransactionItem.Category -> {
                         currentCategory = item.category
-                        i("DDD this2.1.size: ${this.size}")
                     }
                     is AddTransactionItem.Transaction -> {
                         this.add(mapToTransaction(currentCategory, item))
-                        i("DDD this2.size: ${this.size} + ${item}")
                     }
                     else -> Unit // Do nothing
                 }
             }
-            i("DDD this3.size: ${this.size}")
         }
 
         return listTransactionModel
@@ -119,9 +112,6 @@ class AddTransactionsAdapter(
     fun setInvalidData(listOfIndexes: List<Int>) {
         listOfInvalidItemsIndexes = listOfIndexes
         notifyDataSetChanged()
-        /*listOfInvalidItemsIndexes.forEach {
-            notifyItemChanged(it)
-        }*/
     }
 
     private fun mapToTransaction(
@@ -171,18 +161,23 @@ class AddTransactionsAdapter(
             parent,
             false
         )
-        val viewHolder =
-            AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
-                binding.removeCategoryFromRecycler.setOnClickListener {
-                    val position = viewHolder.adapterPosition
-                    adapterData.removeAt(position)
 
-                    notifyDataSetChanged()
-                }
-            }
+        val viewHolder = AddTransactionViewHolder.TransactionViewHolder(binding)
+
+        binding.removeCategoryFromRecycler.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            adapterData.removeAt(position)
+
+            notifyDataSetChanged()
+        }
 
         binding.setDateBtn.setOnClickListener {
             dateClickListener.invoke(viewHolder.adapterPosition)
+        }
+
+        binding.amountEditText.doAfterTextChanged {
+            val item = adapterData[viewHolder.adapterPosition]
+            (item as AddTransactionItem.Transaction).amount = it?.toString() ?: ""
         }
 
         return viewHolder
@@ -204,7 +199,6 @@ class AddTransactionsAdapter(
 
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
                     notifyDataSetChanged()
-                    //notifyItemRangeChanged(startPosition, adapterData.size - 1)
                 }
             }
     }
