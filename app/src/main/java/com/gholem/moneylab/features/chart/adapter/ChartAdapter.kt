@@ -8,8 +8,11 @@ import com.gholem.moneylab.databinding.ItemChartDateBinding
 import com.gholem.moneylab.databinding.ItemChartTransactionBinding
 import com.gholem.moneylab.domain.model.ChartTransactionItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
+import timber.log.Timber.i
 
-class ChartAdapter(val navigateToEditTransaction: () -> Unit) : RecyclerView.Adapter<ChartViewHolder>() {
+class ChartAdapter(
+   val editItemPosition: (position: Int) -> Unit
+) : RecyclerView.Adapter<ChartViewHolder>() {
 
     private var adapterData: List<ChartTransactionItem> = emptyList()
 
@@ -59,15 +62,19 @@ class ChartAdapter(val navigateToEditTransaction: () -> Unit) : RecyclerView.Ada
             false
         )
 
-        return ChartViewHolder.ChartTransactionViewHolder(binding).also {
-            binding.root.setOnClickListener {
-                navigateToEditTransaction.invoke()
-            }
+        val viewHolder =
+            ChartViewHolder.ChartTransactionViewHolder(binding)
+
+        binding.root.setOnClickListener {
+            editItemPosition.invoke(viewHolder.adapterPosition)
         }
+
+        return viewHolder
     }
 
     fun updateData(listOfTransaction: List<ChartTransactionItem>) {
         adapterData = listOfTransaction
+        i("DDD ${adapterData}")
         notifyDataSetChanged()
     }
 }

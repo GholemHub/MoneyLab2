@@ -50,7 +50,7 @@ class BottomSheetCategoryViewModelTest {
     @Test
     fun `verify invocations when navigateToCreateNewTransaction method is called`() = runTest {
         /* When */
-        viewModel.navigateToCreateNewTransaction()
+        viewModel.navigateToCreateNewCategory()
 
         /* Then */
         assertEquals(BottomSheetCategoryEvent.ToCreateNewCategory, viewModel.navigation.value?.getAndForget())

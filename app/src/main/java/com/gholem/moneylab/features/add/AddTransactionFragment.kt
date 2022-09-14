@@ -28,6 +28,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     private val dataAdapter: AddTransactionsAdapter by lazy {
         AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
     }
+    private fun showCategoryBottomSheet() {
+        viewModel.navigateToCategoryBottomSheet()
+    }
 
     private var position = 0
 
@@ -88,9 +91,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         dataPicker.show()
     }
 
-    private fun showCategoryBottomSheet() {
-        viewModel.navigateToCategoryBottomSheet()
-    }
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->

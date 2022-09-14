@@ -31,7 +31,7 @@ class BottomSheetCategoryViewModel @Inject constructor(
         navigation.emit(BottomSheetCategoryEvent.ToPreviousScreen)
     }
 
-    fun navigateToCreateNewTransaction() = viewModelScope.launch {
+    fun navigateToCreateNewCategory() = viewModelScope.launch {
         navigation.emit(BottomSheetCategoryEvent.ToCreateNewCategory)
     }
 

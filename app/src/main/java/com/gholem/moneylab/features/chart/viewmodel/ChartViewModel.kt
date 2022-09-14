@@ -19,7 +19,7 @@ class ChartViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase
 ) : ViewModel() {
 
-    val navigation: NavigationLiveData<ChartNavigationEvent> =
+    var navigation: NavigationLiveData<ChartNavigationEvent> =
         NavigationLiveData()
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
@@ -48,7 +48,7 @@ class ChartViewModel @Inject constructor(
             }
         }
 
-        Action.ShowDataChartTransactionItem(result).send()
+        //Action.ShowDataChartTransactionItem(result).send()
     }
 
     private fun getMapOfTransactionsByDate(list: List<Transaction>): Map<Long, List<Transaction>> {
@@ -61,7 +61,6 @@ class ChartViewModel @Inject constructor(
 
         return result
     }
-
     private fun Action.send() =
         viewModelScope.launch {
             _actions.send(this@send)

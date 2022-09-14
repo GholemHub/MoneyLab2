@@ -1,6 +1,7 @@
 package com.gholem.moneylab.features.chart
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentChartBinding
@@ -11,15 +12,25 @@ import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
+class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     private val viewModel: ChartViewModel by viewModels()
     lateinit var navigation: ChartNavigation
-    private val dataAdapter : ChartAdapter by lazy {
-        ChartAdapter{ navigateToEditTransaction() }
+
+    private val dataAdapter: ChartAdapter by lazy {
+        ChartAdapter{ getPositionOfEditItem()}
     }
 
-    override fun constructViewBinding(): FragmentChartBinding  =
+    private fun getPositionOfEditItem() {
+       /* findNavController().previousBackStackEntry?.savedStateHandle?.set(
+            EDIT_ITEM,
+            _position
+        )*/
+
+        //viewModel.navigateToEditTransaction()
+    }
+
+    override fun constructViewBinding(): FragmentChartBinding =
         FragmentChartBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentChartBinding) {
@@ -33,8 +44,9 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
             }
     }
 
-    private fun navigateToEditTransaction() {
-        viewModel.navigateToEditTransaction()
+    override fun setupNavigation() {
+        navigation = ChartNavigation(navControllerWrapper)
+        viewModel.navigation.observe(this, navigation::navigate)
     }
 
     override fun onResume() {
@@ -52,13 +64,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
         }
     }
 
-    override fun setupNavigation() {
-        navigation = ChartNavigation(navControllerWrapper)
-        viewModel.navigation.observe(this, navigation::navigate)
-    }
-
     companion object {
         const val EDIT_ITEM = "EDIT_ITEM"
-
     }
 }
