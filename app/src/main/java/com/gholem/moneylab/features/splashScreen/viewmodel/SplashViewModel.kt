@@ -25,7 +25,7 @@ class SplashViewModel @Inject constructor(
 
     private val _uiState = Channel<UiState>(Channel.BUFFERED)
     val uiState: Flow<UiState> = _uiState.receiveAsFlow()
-    var navigation: NavigationLiveData<SplashNavigationEvent> = NavigationLiveData()
+    val navigation: NavigationLiveData<SplashNavigationEvent> = NavigationLiveData()
 
     fun getCategoriesAndSetDefault(listOfDefaultCategories: List<TransactionCategory>) =
         viewModelScope.launch {

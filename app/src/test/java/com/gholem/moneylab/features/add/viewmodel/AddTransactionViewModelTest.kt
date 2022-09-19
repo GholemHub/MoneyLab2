@@ -2,7 +2,6 @@ package com.gholem.moneylab.features.add.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.Transaction
 import com.gholem.moneylab.domain.model.TransactionCategory
@@ -47,7 +46,10 @@ class AddTransactionViewModelTest {
         viewModel.navigateToCategoryBottomSheet()
 
         /* Then */
-        assertEquals(AddNavigationEvent.ToCategoryBottomSheetDialog, viewModel.navigation.value?.getAndForget())
+        assertEquals(
+            AddNavigationEvent.ToCategoryBottomSheetDialog,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test
