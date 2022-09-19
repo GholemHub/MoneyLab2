@@ -1,7 +1,6 @@
 package com.gholem.moneylab.repository.storage.entity
 
-import com.gholem.moneylab.domain.model.TransactionCategory
-import org.junit.Assert
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -12,13 +11,13 @@ class CategoryEntityTest {
         val result = CategoryEntity("123", 1).toModel()
 
         /* Then */
-        assertEquals(TransactionCategory("123", 1, 0), result)
+        assertEquals(TransactionCategoryModel("123", 1, 0), result)
     }
 
     @Test
     fun `map TransactionCategory to CategoryEntity`() {
         /* Given */
-        val transactionCategory = TransactionCategory("123", 1)
+        val transactionCategory = TransactionCategoryModel("123", 1)
 
         /* When */
         val result = CategoryEntity.from(transactionCategory)

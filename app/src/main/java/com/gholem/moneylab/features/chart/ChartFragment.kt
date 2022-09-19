@@ -10,13 +10,13 @@ import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
+class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     private val viewModel: ChartViewModel by viewModels()
 
     private val dataAdapter = ChartAdapter()
 
-    override fun constructViewBinding(): FragmentChartBinding  =
+    override fun constructViewBinding(): FragmentChartBinding =
         FragmentChartBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentChartBinding) {
@@ -32,7 +32,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        observeActions()
         viewModel.fetchTransactionList()
+    }
+
+    override fun setupNavigation() {
+
     }
 
     private fun observeActions() {
@@ -43,9 +48,5 @@ class ChartFragment : BaseFragment<FragmentChartBinding,ChartViewModel>() {
                 }
             }
         }
-    }
-
-    override fun setupNavigation() {
-
     }
 }

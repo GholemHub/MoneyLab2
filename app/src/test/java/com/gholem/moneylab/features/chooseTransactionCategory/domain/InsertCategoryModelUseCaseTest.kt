@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.chooseTransactionCategory.domain
 
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.repository.storage.CategoryStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -20,7 +20,7 @@ class InsertCategoryModelUseCaseTest {
     @Test
     fun `verify invocations when run method was called`() = runTest {
         /* Given */
-        val item = TransactionCategory("Name", 0, 0)
+        val item = TransactionCategoryModel("Name", 0, 0)
         `when`(categoryStorageRepositoryMock.insert(item)).thenReturn(0)
 
         /* When */

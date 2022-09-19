@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.databinding.ItemNewCategoryImageBinding
-import com.gholem.moneylab.domain.model.NewCategoryImageItem
-import com.gholem.moneylab.domain.model.NewCategoryImageItem.Companion.getImages
+import com.gholem.moneylab.features.createNewCategoryImage.adapter.item.NewCategoryImageItem
+import com.gholem.moneylab.features.createNewCategoryImage.adapter.item.NewCategoryImageItem.Companion.getImages
 import com.gholem.moneylab.features.createNewCategoryImage.adapter.viewholder.CreateNewCategoryViewHolder
 
 class CreateNewCategoryImageAdapter(val imageClickListener: (position: Int) -> Unit) :

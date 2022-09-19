@@ -22,11 +22,13 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
     lateinit var navigation: AddTransactionNavigation
 
-    //ViewModel for parse data into
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
+        AddTransactionsAdapter(
+            viewModel.adapterData,
+            { showCategoryBottomSheet() },
+            { showDateDialog(it) })
     }
 
     private var position = 0
@@ -58,11 +60,14 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.navigation.observe(this, navigation::navigate)
     }
 
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        dataAdapter.setDate(position, p3, p2, p1)
+    }
+
     //only: fragment back to fragment\\savedStateHandle
     private fun observeCategoryChange() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(KEY_CATEGORY)
             ?.observe(viewLifecycleOwner) { result -> dataAdapter.setCategory(result) }
-
     }
 
     private fun observeNewCategories() {
@@ -78,7 +83,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-        var dataPicker = DatePickerDialog(
+        val dataPicker = DatePickerDialog(
             requireContext(),
             this,
             rightNow.get(Calendar.YEAR),
@@ -105,11 +110,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 is AddTransactionViewModel.Action.SelectCategory -> {
                     dataAdapter.setCategory(action.categoryId)
                 }
+                is AddTransactionViewModel.Action.InvalidData -> {
+                    dataAdapter.setInvalidData(action.listOfIndexes)
+                }
             }
         }
-    }
-
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dataAdapter.setDate(position, p3, p2, p1)
     }
 }

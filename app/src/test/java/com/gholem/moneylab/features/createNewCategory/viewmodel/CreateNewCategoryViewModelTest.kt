@@ -3,7 +3,7 @@ package com.gholem.moneylab.features.createNewCategory.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,16 +44,13 @@ class CreateNewCategoryViewModelTest {
         viewModel.navigateToImagePicker()
 
         /* Then */
-        assertEquals(
-            CreateNewCategoryNavigationEvent.ToImagePicker,
-            viewModel.navigation.value?.getAndForget()
-        )
+        assertEquals(CreateNewCategoryNavigationEvent.ToImagePicker, viewModel.navigation.value?.getAndForget())
     }
 
     @Test
     fun `verify invocations when saveCategoryAndFinish method is called`() = runTest {
         /* Given */
-        val transactionCategory = TransactionCategory("123", 1)
+        val transactionCategory = TransactionCategoryModel("123", 1)
         `when`(insertCategoryModelUseCaseMock.run(transactionCategory)).thenReturn(1L)
 
         /* When */
@@ -66,9 +63,6 @@ class CreateNewCategoryViewModelTest {
                 CreateNewCategoryViewModel.Action.ReturnCategoryId(1L), awaitItem()
             )
         }
-        assertEquals(
-            CreateNewCategoryNavigationEvent.ToPreviousScreen,
-            viewModel.navigation.value?.getAndForget()
-        )
+        assertEquals(CreateNewCategoryNavigationEvent.ToPreviousScreen, viewModel.navigation.value?.getAndForget())
     }
 }
