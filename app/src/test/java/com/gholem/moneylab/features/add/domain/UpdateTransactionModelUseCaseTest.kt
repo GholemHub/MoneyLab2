@@ -21,12 +21,12 @@ class UpdateTransactionModelUseCaseTest {
     fun `verify invocations when run method was called`() = runTest {
         /* Given */
         val item = TransactionCategory("Name", 0, 0)
-        Mockito.`when`(transactionStorageRepositoryMock.update(transactionList.first(), 1))
+        Mockito.`when`(transactionStorageRepositoryMock.updateItem(transactionList.first(), 1))
             .thenReturn(Unit)
         /* When */
         val result = useCase.BiConsumer(transactionList.first(), 1)
         /* Then */
-        Mockito.verify(transactionStorageRepositoryMock).update(transactionList.first(), 1)
+        Mockito.verify(transactionStorageRepositoryMock).updateItem(transactionList.first(), 1)
     }
 
     private val transactionCategory = TransactionCategory(

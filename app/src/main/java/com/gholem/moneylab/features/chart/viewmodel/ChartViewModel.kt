@@ -3,16 +3,16 @@ package com.gholem.moneylab.features.chart.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.domain.model.ChartTransactionItem
-import com.gholem.moneylab.domain.model.Transaction
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
+import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
 import com.gholem.moneylab.features.chart.navigation.ChartNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class ChartViewModel @Inject constructor(
@@ -51,8 +51,8 @@ class ChartViewModel @Inject constructor(
         Action.ShowDataChartTransactionItem(result).send()
     }
 
-    private fun getMapOfTransactionsByDate(list: List<Transaction>): Map<Long, List<Transaction>> {
-        val result = mutableMapOf<Long, List<Transaction>>()
+    private fun getMapOfTransactionsByDate(list: List<TransactionModel>): Map<Long, List<TransactionModel>> {
+        val result = mutableMapOf<Long, List<TransactionModel>>()
         val dateSet = list.map { it.date }.sortedDescending().toSet()
 
         dateSet.forEach { uniqueDate ->
@@ -61,6 +61,7 @@ class ChartViewModel @Inject constructor(
 
         return result
     }
+
     private fun Action.send() =
         viewModelScope.launch {
             _actions.send(this@send)

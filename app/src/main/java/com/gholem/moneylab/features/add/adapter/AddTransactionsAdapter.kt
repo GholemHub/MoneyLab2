@@ -2,36 +2,45 @@ package com.gholem.moneylab.features.add.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
+import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
-    val categoryClickListener: () -> Unit,
-    val dateClickListener: (position: Int) -> Unit
+    private var adapterData: MutableList<AddTransactionItem>,
+    private val categoryClickListener: () -> Unit,
+    private val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
-    private var listOfCategory: List<TransactionCategory> = mutableListOf()
-
-    private val adapterData = AddTransactionItem.getDefaultItems().toMutableList()
+    private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
+    private var listOfInvalidItemsIndexes = listOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
         return createViewHolders(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: AddTransactionViewHolder, position: Int) {
+        val isInvalidData = listOfInvalidItemsIndexes.contains(position)
+
         when (holder) {
             is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
-            is AddTransactionViewHolder.TransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Transaction)
-            is AddTransactionViewHolder.NewTransactionViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.NewTransaction)
+            is AddTransactionViewHolder.TransactionViewHolder -> {
+                holder.bind(
+                    adapterData[position] as AddTransactionItem.Transaction,
+                    isInvalidData
+                )
+            }
+            is AddTransactionViewHolder.NewTransactionViewHolder -> Unit // Do nothing
         }
     }
 
@@ -45,7 +54,7 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun updateData(listOfTrCategory: List<TransactionCategory>) {
+    fun updateData(listOfTrCategory: List<TransactionCategoryModel>) {
         listOfCategory = listOfTrCategory
         notifyDataSetChanged()
     }
@@ -80,13 +89,15 @@ class AddTransactionsAdapter(
         notifyItemChanged(adapterData.indexOf(cat))
     }
 
-    fun getTransactionListData(): List<Transaction> =
-        mutableListOf<Transaction>().apply {
-            var currentCategory: TransactionCategory? = null
+    fun getTransactionListData(): List<TransactionModel> {
+        val listTransactionModel = mutableListOf<TransactionModel>().apply {
+            var currentCategory: TransactionCategoryModel? = null
 
             adapterData.forEach { item ->
                 when (item) {
-                    is AddTransactionItem.Category -> currentCategory = item.category
+                    is AddTransactionItem.Category -> {
+                        currentCategory = item.category
+                    }
                     is AddTransactionItem.Transaction -> {
                         this.add(mapToTransaction(currentCategory, item))
                     }
@@ -95,16 +106,28 @@ class AddTransactionsAdapter(
             }
         }
 
-    private fun mapToTransaction(
-        category: TransactionCategory?,
-        item: AddTransactionItem.Transaction
-    ) = Transaction(
-        category = category ?: listOfCategory.get(0),
-        amount = item.amount.toInt(),
-        date = item.date
-    )
+        return listTransactionModel
+    }
 
-    private fun createViewHolders(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
+    fun setInvalidData(listOfIndexes: List<Int>) {
+        listOfInvalidItemsIndexes = listOfIndexes
+        notifyDataSetChanged()
+    }
+
+    private fun mapToTransaction(
+        category: TransactionCategoryModel?,
+        item: AddTransactionItem.Transaction
+    ) =
+        TransactionModel(
+            category = category ?: listOfCategory[0],
+            amount = item.amount.ifBlank { "0" }.toInt(),
+            date = item.date
+        )
+
+    private fun createViewHolders(
+        parent: ViewGroup,
+        viewType: Int
+    ): AddTransactionViewHolder {
         return when (viewType) {
             R.layout.item_category -> createCategoryViewHolder(parent)
             R.layout.item_transaction -> createTransactionViewHolder(parent)
@@ -132,23 +155,29 @@ class AddTransactionsAdapter(
     private fun createTransactionViewHolder(
         parent: ViewGroup
     ): AddTransactionViewHolder.TransactionViewHolder {
+
         val binding = ItemTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        val viewHolder =
-            AddTransactionViewHolder.TransactionViewHolder(binding).also { viewHolder ->
-                binding.removeCategoryFromRecycler.setOnClickListener {
-                    val position = viewHolder.adapterPosition
-                    adapterData.removeAt(position)
 
-                    notifyItemRangeChanged(position, adapterData.size - 1)
-                }
-            }
+        val viewHolder = AddTransactionViewHolder.TransactionViewHolder(binding)
+
+        binding.removeCategoryFromRecycler.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            adapterData.removeAt(position)
+
+            notifyDataSetChanged()
+        }
 
         binding.setDateBtn.setOnClickListener {
             dateClickListener.invoke(viewHolder.adapterPosition)
+        }
+
+        binding.amountEditText.doAfterTextChanged {
+            val item = adapterData[viewHolder.adapterPosition]
+            (item as AddTransactionItem.Transaction).amount = it?.toString() ?: ""
         }
 
         return viewHolder
@@ -167,8 +196,9 @@ class AddTransactionsAdapter(
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
                     val startPosition = viewHolder.adapterPosition
+
                     adapterData.add(startPosition, AddTransactionItem.Transaction())
-                    notifyItemRangeChanged(startPosition, adapterData.size - 1)
+                    notifyDataSetChanged()
                 }
             }
     }

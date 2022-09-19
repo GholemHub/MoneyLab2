@@ -3,7 +3,7 @@ package com.gholem.moneylab.features.chooseTransactionCategory.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomSheetCategoryEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +19,11 @@ class BottomSheetCategoryViewModel @Inject constructor(
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
-    var listOfCategories = mutableListOf<TransactionCategory>()
+    var listOfCategories = mutableListOf<TransactionCategoryModel>()
     val navigation: NavigationLiveData<BottomSheetCategoryEvent> = NavigationLiveData()
 
     fun getCategories() = viewModelScope.launch {
-        listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategory>
+        listOfCategories = getCategoryListUseCase.run(Unit) as MutableList<TransactionCategoryModel>
         Action.ShowData(listOfCategories).send()
     }
 
@@ -41,6 +41,6 @@ class BottomSheetCategoryViewModel @Inject constructor(
         }
 
     sealed class Action {
-        data class ShowData(val list: List<TransactionCategory>) : Action()
+        data class ShowData(val list: List<TransactionCategoryModel>) : Action()
     }
 }

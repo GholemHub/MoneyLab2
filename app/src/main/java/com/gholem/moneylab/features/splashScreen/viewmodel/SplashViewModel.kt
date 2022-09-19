@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoriesModelUseCase
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigationEvent
@@ -27,7 +27,7 @@ class SplashViewModel @Inject constructor(
     val uiState: Flow<UiState> = _uiState.receiveAsFlow()
     val navigation: NavigationLiveData<SplashNavigationEvent> = NavigationLiveData()
 
-    fun getCategoriesAndSetDefault(listOfDefaultCategories: List<TransactionCategory>) =
+    fun getCategoriesAndSetDefault(listOfDefaultCategories: List<TransactionCategoryModel>) =
         viewModelScope.launch {
             initializeCategoriesIfEmpty(getCategoryListUseCase.run(Unit).toMutableList(), listOfDefaultCategories)
         }
@@ -52,14 +52,14 @@ class SplashViewModel @Inject constructor(
         action.invoke()
     }
 
-    private fun initializeCategoriesIfEmpty(listOfCategories: MutableList<TransactionCategory>,listOfDefaultCategories: List<TransactionCategory>) {
+    private fun initializeCategoriesIfEmpty(listOfCategories: MutableList<TransactionCategoryModel>, listOfDefaultCategories: List<TransactionCategoryModel>) {
         if (listOfCategories.size == 0) {
             listOfCategories.addAll(listOfDefaultCategories)
             saveCategories(listOfCategories)
         }
     }
 
-    private fun saveCategories(categories: List<TransactionCategory>) = viewModelScope.launch {
+    private fun saveCategories(categories: List<TransactionCategoryModel>) = viewModelScope.launch {
         insertCategoriesModelUseCase.run(categories)
     }
 

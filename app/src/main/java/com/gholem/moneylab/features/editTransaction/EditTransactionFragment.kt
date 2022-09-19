@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentEditTransactionBinding
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.editTransaction.navigation.EditTransactionNavigation
 import com.gholem.moneylab.features.editTransaction.viewmodel.EditTransactionViewModel
@@ -96,7 +96,7 @@ class EditTransactionFragment :
         }
     }
 
-    private fun fillTransactionData(viewBinding: FragmentEditTransactionBinding, transaction: Transaction) {
+    private fun fillTransactionData(viewBinding: FragmentEditTransactionBinding, transaction: TransactionModel) {
         viewBinding.amount.setText(transaction.amount.toString())
         viewBinding.setDateBtn.text = transaction.date.timestampToString()
         viewBinding.categoryButton.text = transaction.category.categoryName
@@ -106,7 +106,7 @@ class EditTransactionFragment :
 
     private fun fillCategoryData(
         viewBinding: FragmentEditTransactionBinding,
-        category: TransactionCategory
+        category: TransactionCategoryModel
     ){
         viewBinding.categoryButton.text = category.categoryName
         viewBinding.categoryButton

@@ -1,4 +1,4 @@
-package com.gholem.moneylab.domain.model
+package com.gholem.moneylab.features.createNewCategoryImage.adapter.item
 
 import com.gholem.moneylab.R
 

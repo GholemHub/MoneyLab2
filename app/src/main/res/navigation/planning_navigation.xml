@@ -9,5 +9,10 @@
         android:id="@+id/planning_fragment"
         android:name="com.gholem.moneylab.features.planning.PlanningFragment"
         android:label="Planning"
-        tools:layout="@layout/fragment_planning" />
+        tools:layout="@layout/fragment_planning" >
+        <action
+            android:id="@+id/action_planning_fragment_to_chart_navigation"
+            app:destination="@id/chart_navigation" />
+    </fragment>
+    <include app:graph="@navigation/chart_navigation" />
 </navigation>

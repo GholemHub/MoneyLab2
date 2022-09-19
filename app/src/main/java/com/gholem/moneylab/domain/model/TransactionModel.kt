@@ -1,7 +1,7 @@
 package com.gholem.moneylab.domain.model
 
-data class Transaction(
-    var category: TransactionCategory,
+data class TransactionModel(
+    var category: TransactionCategoryModel,
     var amount: Int,
     var date: Long
 )

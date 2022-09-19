@@ -10,7 +10,10 @@ import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 interface TransactionDao {
 
     @Insert
-    suspend fun insert(transactionEntity: List<TransactionEntity>)
+    suspend fun insertList(transactionEntity: List<TransactionEntity>)
+
+    @Insert
+    suspend fun insertItem(transactionEntity: TransactionEntity)
 
     @Update
     suspend fun update(transactionEntity: TransactionEntity)

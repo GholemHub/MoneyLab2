@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemChartDateBinding
 import com.gholem.moneylab.databinding.ItemChartTransactionBinding
-import com.gholem.moneylab.domain.model.ChartTransactionItem
+import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 
 class ChartAdapter(

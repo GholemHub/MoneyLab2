@@ -2,7 +2,7 @@ package com.gholem.moneylab.domain.model
 
 import androidx.annotation.DrawableRes
 
-data class TransactionCategory(
+data class TransactionCategoryModel(
     val categoryName: String,
     @DrawableRes val image: Int,
     val id: Long? = null

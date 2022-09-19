@@ -22,11 +22,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         ChartAdapter{ getPositionOfEditItem(it)}
     }
 
-    private fun getPositionOfEditItem(_position: Int) {
-
-        viewModel.navigateToEditTransaction(_position)
-    }
-
     override fun constructViewBinding(): FragmentChartBinding =
         FragmentChartBinding.inflate(layoutInflater)
 
@@ -51,7 +46,13 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        observeActions()
         viewModel.fetchTransactionList()
+    }
+
+    private fun getPositionOfEditItem(_position: Int) {
+
+        viewModel.navigateToEditTransaction(_position)
     }
 
     private fun observeActions() {

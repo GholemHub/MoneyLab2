@@ -1,4 +1,6 @@
-package com.gholem.moneylab.domain.model
+package com.gholem.moneylab.features.chart.adapter.item
+
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 
 sealed class ChartTransactionItem {
     data class ChartDate(
@@ -6,7 +8,7 @@ sealed class ChartTransactionItem {
     ) : ChartTransactionItem()
 
     data class ChartTransaction(
-        var category: TransactionCategory,
+        var category: TransactionCategoryModel,
         var amount: String = ""
 
     ) : ChartTransactionItem()

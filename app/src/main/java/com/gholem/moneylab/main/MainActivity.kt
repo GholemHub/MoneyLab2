@@ -2,7 +2,9 @@ package com.gholem.moneylab.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationFab.isEnabled = false
         binding.bottomAppBar.isVisible = isVisible
         binding.bottomNavigationFab.isVisible = isVisible
+        binding.bottomNavigationView.isVisible = isVisible
         binding.bottomNavigationFab.isEnabled = true
     }
 

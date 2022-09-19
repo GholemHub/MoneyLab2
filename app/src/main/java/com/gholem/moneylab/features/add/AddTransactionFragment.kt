@@ -22,11 +22,13 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
 
     lateinit var navigation: AddTransactionNavigation
 
-    //ViewModel for parse data into
     private val viewModel: AddTransactionViewModel by viewModels()
 
     private val dataAdapter: AddTransactionsAdapter by lazy {
-        AddTransactionsAdapter({ showCategoryBottomSheet() }, { showDateDialog(it) })
+        AddTransactionsAdapter(
+            viewModel.adapterData,
+            { showCategoryBottomSheet() },
+            { showDateDialog(it) })
     }
     private fun showCategoryBottomSheet() {
         viewModel.navigateToCategoryBottomSheet()
@@ -84,7 +86,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         position = _position
 
         val rightNow: Calendar = Calendar.getInstance()
-        var dataPicker = DatePickerDialog(
+        val dataPicker = DatePickerDialog(
             requireContext(),
             this,
             rightNow.get(Calendar.YEAR),
@@ -106,6 +108,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 }
                 is AddTransactionViewModel.Action.SelectCategory -> {
                     dataAdapter.setCategory(action.categoryId)
+                }
+                is AddTransactionViewModel.Action.InvalidData -> {
+                    dataAdapter.setInvalidData(action.listOfIndexes)
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.gholem.moneylab.features.add.domain
 
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.repository.storage.TransactionStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -18,17 +18,17 @@ class InsertTransactionsModelUseCaseTest {
     @Test
     fun `verify if insert method was triggered on repository`() = runTest {
         /* Given */
-        val category = TransactionCategory("1", 2, 3)
+        val category = TransactionCategoryModel("1", 2, 3)
         val item = listOf(
-            Transaction(category, 1, 2),
-            Transaction(category, 3, 4)
+            TransactionModel(category, 1, 2),
+            TransactionModel(category, 3, 4)
         )
-        `when`(transactionStorageRepositoryMock.insert(item)).thenReturn(Unit)
+        `when`(transactionStorageRepositoryMock.insertList(item)).thenReturn(Unit)
 
         /* When */
         useCase.run(item)
 
         /* Then */
-        verify(transactionStorageRepositoryMock).insert(item)
+        verify(transactionStorageRepositoryMock).insertList(item)
     }
 }

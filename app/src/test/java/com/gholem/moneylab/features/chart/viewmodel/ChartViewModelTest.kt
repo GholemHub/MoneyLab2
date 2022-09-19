@@ -2,9 +2,9 @@ package com.gholem.moneylab.features.chart.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.domain.model.ChartTransactionItem
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -72,14 +72,14 @@ class ChartViewModelTest {
             }
         }
 
-    private val transactionCategory = TransactionCategory(
+    private val transactionCategory = TransactionCategoryModel(
         categoryName = "categoryName",
         image = 1,
         id = 5
     )
 
     private val transactionList = listOf(
-        Transaction(
+        TransactionModel(
             category = transactionCategory,
             amount = 123,
             date = 321

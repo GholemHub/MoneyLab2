@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.UpdateTransactionModelUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -29,7 +29,7 @@ class EditTransactionViewModel @Inject constructor(
     val actions = _actions.receiveAsFlow()
     val navigation: NavigationLiveData<EditTransactionNavigationEvent> =
         NavigationLiveData()
-    lateinit var currentTransaction: Transaction
+    lateinit var currentTransaction: TransactionModel
     private var currentTransactionPosition: Long = 0
 
     override fun onCleared() {
@@ -49,7 +49,7 @@ class EditTransactionViewModel @Inject constructor(
     fun getTransactionInfo(_positionItem: Long) = viewModelScope.launch {
         val transactions = getTransactionListUseCase.run(Unit)
         currentTransactionPosition = _positionItem
-        currentTransaction = Transaction(
+        currentTransaction = TransactionModel(
             transactions[currentTransactionPosition.toInt()].category,
             transactions[currentTransactionPosition.toInt()].amount,
             transactions[currentTransactionPosition.toInt()].date
@@ -76,8 +76,8 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     sealed class Action {
-        data class GetCurrentTransaction(val transaction: Transaction) : Action()
-        data class GetCurrentCategory(val category: TransactionCategory) : Action()
+        data class GetCurrentTransaction(val transaction: TransactionModel) : Action()
+        data class GetCurrentCategory(val category: TransactionCategoryModel) : Action()
         object SetEditedTransaction : Action()
     }
 }
