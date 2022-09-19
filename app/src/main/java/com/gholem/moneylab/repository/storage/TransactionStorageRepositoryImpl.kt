@@ -14,6 +14,10 @@ class TransactionStorageRepositoryImpl @Inject constructor(
     override suspend fun insert(transactions: List<Transaction>) =
         transactionDao.insert(transactions.map { TransactionEntity.from(it) })
 
+    override suspend fun update(transactions: Transaction, id: Long) {
+        transactionDao.update(TransactionEntity.setTransactionEntityId(transactions, id))
+    }
+
     override suspend fun getAll(): List<Transaction> {
         val transactions = transactionDao.getAll()
 

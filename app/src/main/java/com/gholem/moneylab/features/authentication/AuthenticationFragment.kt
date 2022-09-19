@@ -14,7 +14,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import timber.log.Timber.i
 
 
 @AndroidEntryPoint

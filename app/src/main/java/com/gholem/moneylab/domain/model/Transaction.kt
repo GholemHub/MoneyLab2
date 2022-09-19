@@ -1,7 +1,7 @@
 package com.gholem.moneylab.domain.model
 
 data class Transaction(
-    val category: TransactionCategory,
-    val amount: Int,
-    val date: Long
+    var category: TransactionCategory,
+    var amount: Int,
+    var date: Long
 )

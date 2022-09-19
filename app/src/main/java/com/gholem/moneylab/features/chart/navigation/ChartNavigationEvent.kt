@@ -1,5 +1,5 @@
 package com.gholem.moneylab.features.chart.navigation
 
 sealed class ChartNavigationEvent {
-    object ToEditTransaction : ChartNavigationEvent()
+    class ToEditTransaction(var pos: Long) : ChartNavigationEvent()
 }

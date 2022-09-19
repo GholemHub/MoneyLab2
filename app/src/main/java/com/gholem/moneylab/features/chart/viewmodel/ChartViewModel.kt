@@ -25,8 +25,8 @@ class ChartViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    fun navigateToEditTransaction() = viewModelScope.launch {
-        navigation.emit(ChartNavigationEvent.ToEditTransaction)
+    fun navigateToEditTransaction(_position: Int) = viewModelScope.launch {
+        navigation.emit(ChartNavigationEvent.ToEditTransaction(_position.toLong()))
     }
 
     fun fetchTransactionList() = viewModelScope.launch {
@@ -48,7 +48,7 @@ class ChartViewModel @Inject constructor(
             }
         }
 
-        //Action.ShowDataChartTransactionItem(result).send()
+        Action.ShowDataChartTransactionItem(result).send()
     }
 
     private fun getMapOfTransactionsByDate(list: List<Transaction>): Map<Long, List<Transaction>> {

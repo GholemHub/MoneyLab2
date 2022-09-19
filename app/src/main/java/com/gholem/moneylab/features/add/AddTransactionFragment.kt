@@ -61,6 +61,10 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.navigation.observe(this, navigation::navigate)
     }
 
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        dataAdapter.setDate(position, p3, p2, p1)
+    }
+
     //only: fragment back to fragment\\savedStateHandle
     private fun observeCategoryChange() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>(KEY_CATEGORY)
@@ -91,7 +95,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         dataPicker.show()
     }
 
-
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
@@ -106,9 +109,5 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
                 }
             }
         }
-    }
-
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dataAdapter.setDate(position, p3, p2, p1)
     }
 }
