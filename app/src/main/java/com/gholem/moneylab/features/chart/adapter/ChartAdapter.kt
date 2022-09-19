@@ -8,7 +8,6 @@ import com.gholem.moneylab.databinding.ItemChartDateBinding
 import com.gholem.moneylab.databinding.ItemChartTransactionBinding
 import com.gholem.moneylab.domain.model.ChartTransactionItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
-import timber.log.Timber.i
 
 class ChartAdapter(
     val editItemPosition: (position: Int) -> Unit
@@ -68,7 +67,6 @@ class ChartAdapter(
         binding.root.setOnClickListener {
             when (adapterData[viewHolder.adapterPosition]) {
                 is ChartTransactionItem.ChartTransaction -> {
-                    //checkDateCount(viewHolder.adapterPosition)
                     editItemPosition.invoke(viewHolder.adapterPosition - checkDateCount(viewHolder.adapterPosition))
                 }
             }
@@ -92,7 +90,6 @@ class ChartAdapter(
 
     fun updateData(listOfTransaction: List<ChartTransactionItem>) {
         adapterData = listOfTransaction
-        i("DDD ${adapterData}")
         notifyDataSetChanged()
     }
 }
