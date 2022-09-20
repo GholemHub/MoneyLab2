@@ -1,6 +1,8 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
 
+import android.app.AlertDialog
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -33,7 +35,6 @@ class EditTransactionViewModel @Inject constructor(
     val navigation: NavigationLiveData<EditTransactionNavigationEvent> =
         NavigationLiveData()
     lateinit var currentTransaction: TransactionModel
-    private var currentTransactionPosition: Long = 0
 
     override fun onCleared() {
         bottomNavigationVisibilityBus.changeVisibility(true)
@@ -54,7 +55,6 @@ class EditTransactionViewModel @Inject constructor(
         val transaction = transactions.first{
             it.transactionId == _positionItem
         }
-        //currentTransactionPosition = _positionItem
 
         currentTransaction = TransactionModel(
             transaction.category,
@@ -66,7 +66,9 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     fun deleteTransaction() = viewModelScope.launch {
-        deleteTransactionModelUseCase.run(currentTransactionPosition.toInt() +1)
+        deleteTransactionModelUseCase.run(currentTransaction.transactionId.toInt())
+        navigation.emit(EditTransactionNavigationEvent.ToPreviousScreen)
+
     }
 
     fun navigateToCategoryBottomSheet() = viewModelScope.launch {
@@ -83,7 +85,7 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     fun saveEditedTransaction() = viewModelScope.launch {
-        updateTransactionModelUseCase.BiConsumer(currentTransaction, currentTransactionPosition + 1)
+        updateTransactionModelUseCase.run(currentTransaction)
         navigation.emit(EditTransactionNavigationEvent.ToPreviousScreen)
     }
 

@@ -34,12 +34,12 @@ data class TransactionEntity(
                 transaction.category.id ?: 1
             )
 
-        fun setTransactionEntityId(transaction: TransactionModel, id: Long): TransactionEntity =
+        fun setTransactionEntityId(transaction: TransactionModel): TransactionEntity =
             TransactionEntity(
                 transaction.amount,
                 transaction.date,
                 transaction.category.id ?: 1,
-                id
+                transaction.transactionId
             )
     }
 }

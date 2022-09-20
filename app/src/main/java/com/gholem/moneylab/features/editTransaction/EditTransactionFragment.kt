@@ -1,6 +1,9 @@
 package com.gholem.moneylab.features.editTransaction
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
+import android.view.View
 import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -50,7 +53,7 @@ class EditTransactionFragment :
 
     private fun deleteTransactionListener(viewBinding: FragmentEditTransactionBinding) {
         viewBinding.deleteTransaction.setOnClickListener{
-            viewModel.deleteTransaction()
+            basicAlert()
         }
     }
 
@@ -154,5 +157,19 @@ class EditTransactionFragment :
 
         viewModel.currentTransaction.date = rightNow.timeInMillis
         viewBinding.setDateBtn.text = rightNow.timeInMillis.timestampToString()
+    }
+
+
+    fun basicAlert(){
+        val builder = AlertDialog.Builder(requireContext())
+
+        with(builder)
+        {
+            setTitle("Delete transaction?")
+            setMessage("If you delete you can not load it again")
+            setPositiveButton("Delete") { p0, p1 -> viewModel.deleteTransaction()}
+            setNegativeButton("Back"){p0,p1 ->}
+            show()
+        }
     }
 }
