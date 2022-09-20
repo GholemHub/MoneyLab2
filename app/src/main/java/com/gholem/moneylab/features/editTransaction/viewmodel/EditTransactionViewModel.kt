@@ -7,6 +7,7 @@ import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.UpdateTransactionModelUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -15,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +25,8 @@ class EditTransactionViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase,
     private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus,
     private val updateTransactionModelUseCase: UpdateTransactionModelUseCase,
-) : ViewModel() {
+    private val deleteTransactionModelUseCase: DeleteTransactionModelUseCase
+    ) : ViewModel() {
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
@@ -48,13 +51,22 @@ class EditTransactionViewModel @Inject constructor(
 
     fun getTransactionInfo(_positionItem: Long) = viewModelScope.launch {
         val transactions = getTransactionListUseCase.run(Unit)
-        currentTransactionPosition = _positionItem
+        val transaction = transactions.first{
+            it.transactionId == _positionItem
+        }
+        //currentTransactionPosition = _positionItem
+
         currentTransaction = TransactionModel(
-            transactions[currentTransactionPosition.toInt()].category,
-            transactions[currentTransactionPosition.toInt()].amount,
-            transactions[currentTransactionPosition.toInt()].date
+            transaction.category,
+            transaction.amount,
+            transaction.date,
+            transaction.transactionId
         )
         Action.GetCurrentTransaction(currentTransaction).send()
+    }
+
+    fun deleteTransaction() = viewModelScope.launch {
+        deleteTransactionModelUseCase.run(currentTransactionPosition.toInt() +1)
     }
 
     fun navigateToCategoryBottomSheet() = viewModelScope.launch {

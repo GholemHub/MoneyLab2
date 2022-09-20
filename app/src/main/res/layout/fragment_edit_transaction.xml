@@ -55,7 +55,7 @@
         tools:layout_editor_absoluteX="16dp">
 
         <ImageView
-            android:id="@+id/remove_category_from_recycler"
+            android:id="@+id/delete_transaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +75,7 @@
             android:textSize="@dimen/app_text_size_default"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/set_date_btn"
-            app:layout_constraintStart_toEndOf="@+id/remove_category_from_recycler"
+            app:layout_constraintStart_toEndOf="@+id/delete_transaction"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button

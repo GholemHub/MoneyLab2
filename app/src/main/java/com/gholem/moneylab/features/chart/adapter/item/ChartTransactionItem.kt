@@ -9,7 +9,7 @@ sealed class ChartTransactionItem {
 
     data class ChartTransaction(
         var category: TransactionCategoryModel,
-        var amount: String = ""
-
+        var amount: String = "",
+        val id: Long
     ) : ChartTransactionItem()
 }

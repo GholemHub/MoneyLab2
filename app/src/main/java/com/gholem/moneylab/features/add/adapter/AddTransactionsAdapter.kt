@@ -121,7 +121,8 @@ class AddTransactionsAdapter(
         TransactionModel(
             category = category ?: listOfCategory[0],
             amount = item.amount.ifBlank { "0" }.toInt(),
-            date = item.date
+            date = item.date,
+            transactionId = item.id
         )
 
     private fun createViewHolders(

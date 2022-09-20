@@ -16,7 +16,8 @@ sealed class AddTransactionItem {
             this.set(Calendar.SECOND, 0)
             this.set(Calendar.MINUTE, 0)
             this.set(Calendar.HOUR, 0)
-        }.timeInMillis
+        }.timeInMillis,
+        val id: Long = System.currentTimeMillis()
     ) : AddTransactionItem()
 
     object NewTransaction : AddTransactionItem()

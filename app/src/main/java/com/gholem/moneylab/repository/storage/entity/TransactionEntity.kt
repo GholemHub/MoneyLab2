@@ -22,7 +22,8 @@ data class TransactionEntity(
                 id = categoryEntity.id
             ),
             amount = amount,
-            date = date
+            date = date,
+            id
         )
 
     companion object {

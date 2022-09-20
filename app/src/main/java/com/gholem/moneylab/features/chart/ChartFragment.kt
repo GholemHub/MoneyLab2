@@ -50,8 +50,8 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         viewModel.fetchTransactionList()
     }
 
-    private fun getPositionOfEditItem(_position: Int) {
-
+    private fun getPositionOfEditItem(_position: Long) {
+        Timber.i("_position: ${_position}")
         viewModel.navigateToEditTransaction(_position)
     }
 

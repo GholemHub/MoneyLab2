@@ -45,6 +45,13 @@ class EditTransactionFragment :
         dateSetListener(viewBinding)
         categorySetListener(viewBinding)
         doneBtnSetListener(viewBinding)
+        deleteTransactionListener(viewBinding)
+    }
+
+    private fun deleteTransactionListener(viewBinding: FragmentEditTransactionBinding) {
+        viewBinding.deleteTransaction.setOnClickListener{
+            viewModel.deleteTransaction()
+        }
     }
 
     private fun doneBtnSetListener(viewBinding: FragmentEditTransactionBinding) {
@@ -90,7 +97,6 @@ class EditTransactionFragment :
                 }
                 EditTransactionViewModel.Action.SetEditedTransaction -> {
                     viewModel.saveEditedTransaction()
-                    i("viewModel.currentTransaction ${viewModel.currentTransaction}")
                 }
             }
         }

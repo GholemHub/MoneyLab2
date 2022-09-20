@@ -5,6 +5,7 @@ import com.gholem.moneylab.domain.model.TransactionModel
 interface TransactionStorageRepository {
 
     suspend fun updateItem(transactions: TransactionModel, id: Long)
+    suspend fun deleteItem(id: Int)
     suspend fun insertList(transactions: List<TransactionModel>)
     suspend fun insertItem(transactions: TransactionModel)
     suspend fun getAll(): List<TransactionModel>

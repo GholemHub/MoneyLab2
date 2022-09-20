@@ -25,8 +25,8 @@ class ChartViewModel @Inject constructor(
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    fun navigateToEditTransaction(_position: Int) = viewModelScope.launch {
-        navigation.emit(ChartNavigationEvent.ToEditTransaction(_position.toLong()))
+    fun navigateToEditTransaction(_position: Long) = viewModelScope.launch {
+        navigation.emit(ChartNavigationEvent.ToEditTransaction(_position))
     }
 
     fun fetchTransactionList() = viewModelScope.launch {
@@ -42,7 +42,8 @@ class ChartViewModel @Inject constructor(
                 result.add(
                     ChartTransactionItem.ChartTransaction(
                         transaction.category,
-                        transaction.amount.toString()
+                        transaction.amount.toString(),
+                        transaction.transactionId
                     )
                 )
             }
