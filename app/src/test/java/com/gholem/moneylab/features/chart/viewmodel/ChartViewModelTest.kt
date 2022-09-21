@@ -82,7 +82,8 @@ class ChartViewModelTest {
         TransactionModel(
             category = transactionCategory,
             amount = 123,
-            date = 321
+            date = 321,
+            1
         )
     )
 
@@ -90,7 +91,8 @@ class ChartViewModelTest {
         ChartTransactionItem.ChartDate(date = 321L),
         ChartTransactionItem.ChartTransaction(
             category = transactionCategory,
-            amount = "123"
+            amount = "123",
+            1
         )
     )
 }

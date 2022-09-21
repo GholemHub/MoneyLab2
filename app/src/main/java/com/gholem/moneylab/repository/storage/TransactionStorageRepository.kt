@@ -8,5 +8,6 @@ interface TransactionStorageRepository {
     suspend fun deleteItem(id: Int)
     suspend fun insertList(transactions: List<TransactionModel>)
     suspend fun insertItem(transactions: TransactionModel)
+    suspend fun getItemById(id: Long): TransactionModel
     suspend fun getAll(): List<TransactionModel>
 }

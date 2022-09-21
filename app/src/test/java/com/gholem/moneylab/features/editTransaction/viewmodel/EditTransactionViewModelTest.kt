@@ -3,8 +3,10 @@ package com.gholem.moneylab.features.editTransaction.viewmodel
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.Transaction
-import com.gholem.moneylab.domain.model.TransactionCategory
+import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
+import com.gholem.moneylab.features.add.domain.GetTransactionItemUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.UpdateTransactionModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
@@ -28,10 +30,14 @@ class EditTransactionViewModelTest {
         Mockito.mock(BottomNavigationVisibilityBus::class.java)
     private val getCategoryListUseCaseMock: GetCategoryListUseCase =
         Mockito.mock(GetCategoryListUseCase::class.java)
+    private val getTransactionItemUseCaseMock: GetTransactionItemUseCase =
+        Mockito.mock(GetTransactionItemUseCase::class.java)
     private val getTransactionListUseCaseMock: GetTransactionListUseCase =
         Mockito.mock(GetTransactionListUseCase::class.java)
     private val updateTransactionModelUseCaseMock: UpdateTransactionModelUseCase =
         Mockito.mock(UpdateTransactionModelUseCase::class.java)
+    private val deleteTransactionModelUseCaseMock: DeleteTransactionModelUseCase =
+        Mockito.mock(DeleteTransactionModelUseCase::class.java)
 
 
     private lateinit var viewModel: EditTransactionViewModel
@@ -41,8 +47,10 @@ class EditTransactionViewModelTest {
         viewModel = EditTransactionViewModel(
             getCategoryListUseCaseMock,
             getTransactionListUseCaseMock,
+            getTransactionItemUseCaseMock,
             bottomNavigationVisibilityBusMock,
-            updateTransactionModelUseCaseMock
+            updateTransactionModelUseCaseMock,
+            deleteTransactionModelUseCaseMock
         )
     }
 
@@ -68,18 +76,19 @@ class EditTransactionViewModelTest {
             expectNoEvents()
         }
     }
-    ///???? HOW TO MOCK LATEINIT VAR
+
     @Test
     fun `verify invocations on saveEditedTransaction method call`() = runTest {
 
         /* Given */
-        `when`(updateTransactionModelUseCaseMock.BiConsumer(transactionList.first(), 1))
+        `when`(updateTransactionModelUseCaseMock.run(transactionList.first()))
             .thenReturn(Unit)
+        viewModel.setCurrentTransaction(TransactionModel(transactionCategory,1,1,1))
         /* When */
         viewModel.saveEditedTransaction()
 
         /* Then */
-        verify(updateTransactionModelUseCaseMock).BiConsumer(transactionList.first(), 1)
+        verify(updateTransactionModelUseCaseMock).run(transactionList.first())
     }
 
     @Test
@@ -125,10 +134,11 @@ class EditTransactionViewModelTest {
         viewModel.actions.test {
             assertEquals(
                 EditTransactionViewModel.Action.GetCurrentTransaction(
-                    Transaction(
+                    TransactionModel(
                         transactionCategory,
                         123,
-                        321
+                        321,
+                        1
                     )
                 ),
                 awaitItem()
@@ -137,16 +147,17 @@ class EditTransactionViewModelTest {
         }
     }
 
-    private val transactionCategory = TransactionCategory(
+    private val transactionCategory = TransactionCategoryModel(
         categoryName = "categoryName",
         image = 1,
         id = 5
     )
     private val transactionList = listOf(
-        Transaction(
+        TransactionModel(
             category = transactionCategory,
             amount = 123,
-            date = 321
+            date = 321,
+            1
         )
     )
 }

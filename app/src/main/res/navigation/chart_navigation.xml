@@ -33,9 +33,7 @@
         <action
             android:id="@+id/actionChartFragmentToEditTransactionFragment"
             app:destination="@id/editTransactionFragment">
-            <argument
-                android:name="position"
-                app:argType="long" />
+
         </action>
     </fragment>
     <fragment

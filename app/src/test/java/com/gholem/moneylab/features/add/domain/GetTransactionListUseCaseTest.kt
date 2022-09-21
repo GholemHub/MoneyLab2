@@ -19,8 +19,8 @@ class GetTransactionListUseCaseTest {
     fun `verify if getAll method was triggered`() = runTest {
         /* Given */
         val transactionList = listOf(
-            TransactionModel(TransactionCategoryModel("categoryName", 1, 5), 2, 3),
-            TransactionModel(TransactionCategoryModel("categoryName2", 2, 4), 5, 6)
+            TransactionModel(TransactionCategoryModel("categoryName", 1, 5), 2, 3,1),
+            TransactionModel(TransactionCategoryModel("categoryName2", 2, 4), 5, 6,1)
         )
         `when`(transactionStorageRepositoryMock.getAll()).thenReturn(transactionList)
 

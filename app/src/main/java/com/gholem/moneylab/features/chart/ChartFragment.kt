@@ -10,7 +10,6 @@ import com.gholem.moneylab.features.chart.navigation.ChartNavigationEvent
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
@@ -19,7 +18,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     lateinit var navigation: ChartNavigation
 
     private val dataAdapter: ChartAdapter by lazy {
-        ChartAdapter{ getPositionOfEditItem(it)}
+        ChartAdapter { getPositionOfEditItem(it) }
     }
 
     override fun constructViewBinding(): FragmentChartBinding =
@@ -40,7 +39,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         navigation = ChartNavigation(navControllerWrapper)
         viewModel.navigation.observe(this) {
             it as ChartNavigationEvent.ToEditTransaction
-            navigation.navigate(it, it.pos)
+            navigation.navigate(it)
         }
     }
 
@@ -51,7 +50,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     }
 
     private fun getPositionOfEditItem(_position: Long) {
-        Timber.i("_position: ${_position}")
         viewModel.navigateToEditTransaction(_position)
     }
 

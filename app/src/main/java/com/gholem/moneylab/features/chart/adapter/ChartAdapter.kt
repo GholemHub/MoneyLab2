@@ -8,7 +8,6 @@ import com.gholem.moneylab.databinding.ItemChartDateBinding
 import com.gholem.moneylab.databinding.ItemChartTransactionBinding
 import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
-import timber.log.Timber
 
 class ChartAdapter(
     val editItemPosition: (position: Long) -> Unit
@@ -66,11 +65,12 @@ class ChartAdapter(
             ChartViewHolder.ChartTransactionViewHolder(binding)
 
         binding.root.setOnClickListener {
-            when (adapterData[viewHolder.adapterPosition]) {
-                is ChartTransactionItem.ChartTransaction -> {
-                    var transactionItem = adapterData.get(viewHolder.adapterPosition) as ChartTransactionItem.ChartTransaction
-                    editItemPosition.invoke(transactionItem.id)
-                }
+            var chartTransactionItem =
+                adapterData[viewHolder.adapterPosition] is ChartTransactionItem.ChartTransaction
+            chartTransactionItem.also {
+                var transactionItem =
+                    adapterData.get(viewHolder.adapterPosition) as ChartTransactionItem.ChartTransaction
+                editItemPosition.invoke(transactionItem.id)
             }
         }
         return viewHolder

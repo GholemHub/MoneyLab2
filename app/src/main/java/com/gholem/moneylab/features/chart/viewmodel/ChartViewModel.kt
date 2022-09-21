@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class ChartViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase

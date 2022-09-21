@@ -23,7 +23,7 @@ class FetchTransactionModelUseCase @Inject constructor(
                 category = categories.first { it.id == (person.rank.toInt() % categories.size).toLong() + 1 },
                 amount = person.tradingPairs.toInt(),
                 date = person.updated,
-                transactionId = 123
+                transactionId = System.currentTimeMillis()
 
             )
         } ?: emptyList()

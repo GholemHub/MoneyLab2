@@ -20,7 +20,7 @@ class InsertTransactionModelUseCaseTest {
     fun `verify if insert method was triggered on repository`() = runTest {
         /* Given */
         val category = TransactionCategoryModel("1", 2, 3)
-        val item = TransactionModel(category, 1, 2)
+        val item = TransactionModel(category, 1, 2,1)
         Mockito.`when`(transactionStorageRepositoryMock.insertItem(item)).thenReturn(Unit)
 
         /* When */

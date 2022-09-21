@@ -19,11 +19,16 @@ class TransactionStorageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteItem(id: Int) {
-        transactionDao.del(id)
+        transactionDao.delete(id)
     }
 
     override suspend fun insertItem(transaction: TransactionModel) {
         transactionDao.insertItem(TransactionEntity.from(transaction))
+    }
+
+    override suspend fun getItemById(id: Long): TransactionModel {
+        val item = transactionDao.getItem(id)
+        return item.map(categoryDao.getById(item.categoryId))
     }
 
     override suspend fun getAll(): List<TransactionModel> {

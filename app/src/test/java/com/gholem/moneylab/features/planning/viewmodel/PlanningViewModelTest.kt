@@ -68,7 +68,7 @@ class PlanningViewModelTest {
         }
 
     private val list: List<TransactionModel> = listOf(
-        TransactionModel(TransactionCategoryModel("", 1), 1, 2),
-        TransactionModel(TransactionCategoryModel("", 1), 1, 2)
+        TransactionModel(TransactionCategoryModel("", 1), 1, 2, 1),
+        TransactionModel(TransactionCategoryModel("", 1), 1, 2, 1)
     )
 }

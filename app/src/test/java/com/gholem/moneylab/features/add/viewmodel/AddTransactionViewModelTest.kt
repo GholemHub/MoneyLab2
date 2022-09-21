@@ -57,7 +57,7 @@ class AddTransactionViewModelTest {
         /* Given */
         val transactionList = listOf(
             TransactionModel(
-                TransactionCategoryModel("1", 2, 3), 1, 2
+                TransactionCategoryModel("1", 2, 3), 1, 2,1
             )
         )
         `when`(insertTransactionsModelUseCaseMock.run(transactionList)).thenReturn(Unit)

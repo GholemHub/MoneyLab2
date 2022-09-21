@@ -2,8 +2,6 @@ package com.gholem.moneylab.features.editTransaction
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.DialogInterface
-import android.view.View
 import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -11,20 +9,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentEditTransactionBinding
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.editTransaction.navigation.EditTransactionNavigation
 import com.gholem.moneylab.features.editTransaction.viewmodel.EditTransactionViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import com.gholem.moneylab.util.timestampToString
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber.i
 import java.util.*
 
 @AndroidEntryPoint
 class EditTransactionFragment :
-    BaseFragment<FragmentEditTransactionBinding, EditTransactionViewModel>(), DatePickerDialog.OnDateSetListener {
+    BaseFragment<FragmentEditTransactionBinding, EditTransactionViewModel>(),
+    DatePickerDialog.OnDateSetListener {
 
     lateinit var navigation: EditTransactionNavigation
     private val viewModel: EditTransactionViewModel by viewModels()
@@ -36,34 +34,38 @@ class EditTransactionFragment :
     override fun init(_viewBinding: FragmentEditTransactionBinding) {
         viewModel.init()
         this.viewBinding = _viewBinding
-        setDataOfEditItem(args.position)
+        getTransactionInfo(args.position)
         observeActions(viewBinding)
         observeNewCategories()
         viewBinding.amount.doAfterTextChanged {
-            var v : String = it.toString()
-            if(!v.isEmpty()){
-                viewModel.currentTransaction.amount = v.toInt()
+            val v: String = it.toString()
+            if (!v.isEmpty()) {
+                viewModel.getCurrentTransaction().amount = v.toInt()
             }
         }
-        dateSetListener(viewBinding)
-        categorySetListener(viewBinding)
-        doneBtnSetListener(viewBinding)
-        deleteTransactionListener(viewBinding)
+        listeners()
     }
 
-    private fun deleteTransactionListener(viewBinding: FragmentEditTransactionBinding) {
-        viewBinding.deleteTransaction.setOnClickListener{
+    private fun listeners() {
+        dateSetListener()
+        categorySetListener()
+        doneBtnSetListener()
+        deleteTransactionListener()
+    }
+
+    private fun deleteTransactionListener() {
+        viewBinding.deleteTransaction.setOnClickListener {
             basicAlert()
         }
     }
 
-    private fun doneBtnSetListener(viewBinding: FragmentEditTransactionBinding) {
+    private fun doneBtnSetListener() {
         viewBinding.editTransactionDoneBtn.setOnClickListener {
             viewModel.onDoneButtonClick()
         }
     }
 
-    private fun categorySetListener(viewBinding: FragmentEditTransactionBinding) {
+    private fun categorySetListener() {
         viewBinding.categoryButton.setOnClickListener {
             viewModel.navigateToCategoryBottomSheet()
         }
@@ -74,11 +76,11 @@ class EditTransactionFragment :
             KEY_CATEGORY
         )
             ?.observe(viewLifecycleOwner) { result ->
-                viewModel.setIdOfCategory(result-1)
+                viewModel.setIdOfCategory(result - 1)
             }
     }
 
-    private fun dateSetListener(viewBinding: FragmentEditTransactionBinding) {
+    private fun dateSetListener() {
         viewBinding.setDateBtn.setOnClickListener {
             showDateDialog()
         }
@@ -93,7 +95,7 @@ class EditTransactionFragment :
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 is EditTransactionViewModel.Action.GetCurrentTransaction -> {
-                    fillTransactionData(viewBinding, action.transaction)
+                    fillTransactionData(action.transaction)
                 }
                 is EditTransactionViewModel.Action.GetCurrentCategory -> {
                     fillCategoryData(viewBinding, action.category)
@@ -105,7 +107,7 @@ class EditTransactionFragment :
         }
     }
 
-    private fun fillTransactionData(viewBinding: FragmentEditTransactionBinding, transaction: TransactionModel) {
+    private fun fillTransactionData(transaction: TransactionModel) {
         viewBinding.amount.setText(transaction.amount.toString())
         viewBinding.setDateBtn.text = transaction.date.timestampToString()
         viewBinding.categoryButton.text = transaction.category.categoryName
@@ -116,14 +118,14 @@ class EditTransactionFragment :
     private fun fillCategoryData(
         viewBinding: FragmentEditTransactionBinding,
         category: TransactionCategoryModel
-    ){
+    ) {
         viewBinding.categoryButton.text = category.categoryName
         viewBinding.categoryButton
             .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.image, 0)
-        viewModel.currentTransaction.category = category
+        viewModel.getCurrentTransaction().category = category
     }
 
-    private fun setDataOfEditItem(positionItem: Long) {
+    private fun getTransactionInfo(positionItem: Long) {
         viewModel.getTransactionInfo(positionItem)
     }
 
@@ -136,12 +138,12 @@ class EditTransactionFragment :
             rightNow.get(Calendar.MONTH),
             rightNow.get(Calendar.DAY_OF_MONTH)
         )
-        dataPicker.datePicker.maxDate = rightNow.timeInMillis
+        dataPicker.datePicker.maxDate = viewModel.getCurrentTransaction().date
         dataPicker.show()
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        setDate(p1,p2,p3)
+        setDate(p1, p2, p3)
     }
 
     private fun setDate(year: Int, month: Int, day: Int) {
@@ -155,20 +157,19 @@ class EditTransactionFragment :
         rightNow.set(Calendar.MONTH, month)
         rightNow.set(Calendar.YEAR, year)
 
-        viewModel.currentTransaction.date = rightNow.timeInMillis
+        viewModel.getCurrentTransaction().date = rightNow.timeInMillis
         viewBinding.setDateBtn.text = rightNow.timeInMillis.timestampToString()
     }
 
-
-    fun basicAlert(){
+    fun basicAlert() {
         val builder = AlertDialog.Builder(requireContext())
 
         with(builder)
         {
             setTitle("Delete transaction?")
             setMessage("If you delete you can not load it again")
-            setPositiveButton("Delete") { p0, p1 -> viewModel.deleteTransaction()}
-            setNegativeButton("Back"){p0,p1 ->}
+            setPositiveButton("Delete") { p0, p1 -> viewModel.deleteTransaction() }
+            setNegativeButton("Back") { p0, p1 -> }
             show()
         }
     }
