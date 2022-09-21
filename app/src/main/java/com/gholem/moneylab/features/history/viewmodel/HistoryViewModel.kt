@@ -1,12 +1,12 @@
-package com.gholem.moneylab.features.chart.viewmodel
+package com.gholem.moneylab.features.history.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
-import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
-import com.gholem.moneylab.features.chart.navigation.ChartNavigationEvent
+import com.gholem.moneylab.features.history.adapter.item.HistoryTransactionItem
+import com.gholem.moneylab.features.history.navigation.HistoryNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -14,32 +14,32 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChartViewModel @Inject constructor(
+class HistoryViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase
 ) : ViewModel() {
 
-    var navigation: NavigationLiveData<ChartNavigationEvent> =
+    var navigation: NavigationLiveData<HistoryNavigationEvent> =
         NavigationLiveData()
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
     fun navigateToEditTransaction(_position: Long) = viewModelScope.launch {
-        navigation.emit(ChartNavigationEvent.ToEditTransaction(_position))
+        navigation.emit(HistoryNavigationEvent.ToEditTransaction(_position))
     }
 
     fun fetchTransactionList() = viewModelScope.launch {
         val transactions = getTransactionListUseCase.run(Unit)
-        val result: MutableList<ChartTransactionItem> = arrayListOf()
+        val result: MutableList<HistoryTransactionItem> = arrayListOf()
 
         val mapOfTransactions = getMapOfTransactionsByDate(transactions)
 
         mapOfTransactions.forEach { entry ->
-            result.add(ChartTransactionItem.ChartDate(entry.key))
+            result.add(HistoryTransactionItem.HistoryDate(entry.key))
 
             entry.value.forEach { transaction ->
                 result.add(
-                    ChartTransactionItem.ChartTransaction(
+                    HistoryTransactionItem.HistoryTransaction(
                         transaction.category,
                         transaction.amount.toString(),
                         transaction.transactionId
@@ -48,7 +48,7 @@ class ChartViewModel @Inject constructor(
             }
         }
 
-        Action.ShowDataChartTransactionItem(result).send()
+        Action.ShowDataHistoryTransactionItem(result).send()
     }
 
     private fun getMapOfTransactionsByDate(list: List<TransactionModel>): Map<Long, List<TransactionModel>> {
@@ -68,6 +68,6 @@ class ChartViewModel @Inject constructor(
         }
 
     sealed class Action {
-        data class ShowDataChartTransactionItem(val list: List<ChartTransactionItem>) : Action()
+        data class ShowDataHistoryTransactionItem(val list: List<HistoryTransactionItem>) : Action()
     }
 }

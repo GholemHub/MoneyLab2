@@ -12,7 +12,6 @@ import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
@@ -72,21 +71,26 @@ class AddTransactionsAdapter(
         rightNow.set(Calendar.MONTH, month)
         rightNow.set(Calendar.YEAR, year)
 
-        transaction?.date = rightNow.timeInMillis
+        val copyTransaction = transaction?.copy(date = rightNow.timeInMillis)
 
-        transaction?.let {
-            notifyItemChanged(position)
+        if (copyTransaction != null) {
+            adapterData[position] = copyTransaction
+            transaction?.let {
+                notifyItemChanged(position)
+            }
         }
+        //transaction?.date = rightNow.timeInMillis
+
+
     }
 
     fun setCategory(categoryId: Long) {
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-
-        cat.category = listOfCategory.get(categoryId.toInt() - 1)
-
-        notifyItemChanged(adapterData.indexOf(cat))
+        val copyCategory = cat.copy(category = listOfCategory.get(categoryId.toInt() - 1))
+        adapterData.set(0, copyCategory)
+        notifyItemChanged(adapterData.indexOf(copyCategory))
     }
 
     fun getTransactionListData(): List<TransactionModel> {
@@ -122,7 +126,7 @@ class AddTransactionsAdapter(
             category = category ?: listOfCategory[0],
             amount = item.amount.ifBlank { "0" }.toInt(),
             date = item.date,
-            transactionId = item.id
+            transactionId = 0
         )
 
     private fun createViewHolders(
@@ -178,7 +182,8 @@ class AddTransactionsAdapter(
 
         binding.amountEditText.doAfterTextChanged {
             val item = adapterData[viewHolder.adapterPosition]
-            (item as AddTransactionItem.Transaction).amount = it?.toString() ?: ""
+            val copyAmount = (item as AddTransactionItem.Transaction).copy(amount = it?.toString() ?: "")
+            adapterData[viewHolder.adapterPosition] = copyAmount
         }
 
         return viewHolder

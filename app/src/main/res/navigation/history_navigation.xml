@@ -2,12 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/chart_navigation"
-    app:startDestination="@id/chart_fragment">
+    app:startDestination="@id/history_fragment">
 
     <dialog
         android:id="@+id/category_bottom_sheet_dialog"
         android:name="com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment"
-
         android:label="CategoryBottomSheet">
         <action
             android:id="@+id/action_category_bottom_sheet_dialog_to_createNewCategoryFragment"
@@ -26,14 +25,12 @@
         android:name="com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment"
         android:label="CreateNewTransactionCategoryFragment" />
     <fragment
-        android:id="@+id/chart_fragment"
-        android:name="com.gholem.moneylab.features.chart.ChartFragment"
-        android:label="Chart">
-
+        android:id="@+id/history_fragment"
+        android:name="com.gholem.moneylab.features.history.HistoryFragment"
+        android:label="History">
         <action
-            android:id="@+id/actionChartFragmentToEditTransactionFragment"
+            android:id="@+id/actionHistoryFragmentToEditTransactionFragment"
             app:destination="@id/editTransactionFragment">
-
         </action>
     </fragment>
     <fragment

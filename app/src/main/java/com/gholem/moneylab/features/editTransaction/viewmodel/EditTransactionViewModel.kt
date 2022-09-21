@@ -1,8 +1,6 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
 
-import android.app.AlertDialog
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -11,7 +9,6 @@ import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionItemUseCase
-import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.UpdateTransactionModelUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.editTransaction.navigation.EditTransactionNavigationEvent
@@ -19,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,16 +27,16 @@ class EditTransactionViewModel @Inject constructor(
     private val deleteTransactionModelUseCase: DeleteTransactionModelUseCase
     ) : ViewModel() {
 
+    override fun onCleared() {
+        bottomNavigationVisibilityBus.changeVisibility(true)
+        super.onCleared()
+    }
+
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
     val navigation: NavigationLiveData<EditTransactionNavigationEvent> =
         NavigationLiveData()
     private lateinit var currentTransaction: TransactionModel
-
-    override fun onCleared() {
-        bottomNavigationVisibilityBus.changeVisibility(true)
-        super.onCleared()
-    }
 
     private fun Action.send() =
         viewModelScope.launch {
@@ -53,19 +49,31 @@ class EditTransactionViewModel @Inject constructor(
 
     fun getTransactionInfo(_positionItem: Long) = viewModelScope.launch {
         val transaction = getTransactionItemUseCase.run(_positionItem)
-
         setCurrentTransaction(transaction)
-        Action.GetCurrentTransaction(getCurrentTransaction()).send()
+        Action.GetCurrentTransaction(currentTransaction).send()
     }
 
-    fun getCurrentTransaction() = currentTransaction
+    fun getTransactionDate() = currentTransaction.date
+
+
+    fun changeTransactionAmount(amount: Int) {
+        currentTransaction = currentTransaction.copy(amount = amount)
+    }
+
+    fun changeTransactionDate(date: Long){
+        currentTransaction = currentTransaction.copy(date = date)
+    }
+
+    fun changeTransactionCategory(category: TransactionCategoryModel) {
+        currentTransaction = currentTransaction.copy(category = category)
+    }
 
     fun setCurrentTransaction(_currentTransaction: TransactionModel){
         this.currentTransaction = _currentTransaction
     }
 
     fun deleteTransaction() = viewModelScope.launch {
-        deleteTransactionModelUseCase.run(getCurrentTransaction().transactionId.toInt())
+        deleteTransactionModelUseCase.run(currentTransaction.transactionId.toInt())
         navigation.emit(EditTransactionNavigationEvent.ToPreviousScreen)
     }
 
@@ -83,7 +91,7 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     fun saveEditedTransaction() = viewModelScope.launch {
-        updateTransactionModelUseCase.run(getCurrentTransaction())
+        updateTransactionModelUseCase.run(currentTransaction)
         navigation.emit(EditTransactionNavigationEvent.ToPreviousScreen)
     }
 

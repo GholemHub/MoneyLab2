@@ -38,9 +38,9 @@ class EditTransactionFragment :
         observeActions(viewBinding)
         observeNewCategories()
         viewBinding.amount.doAfterTextChanged {
-            val v: String = it.toString()
-            if (!v.isEmpty()) {
-                viewModel.getCurrentTransaction().amount = v.toInt()
+            val amountText: String = it.toString()
+            if (!amountText.isEmpty()) {
+                viewModel.changeTransactionAmount(amountText.toInt())
             }
         }
         listeners()
@@ -122,7 +122,7 @@ class EditTransactionFragment :
         viewBinding.categoryButton.text = category.categoryName
         viewBinding.categoryButton
             .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.image, 0)
-        viewModel.getCurrentTransaction().category = category
+        viewModel.changeTransactionCategory(category)
     }
 
     private fun getTransactionInfo(positionItem: Long) {
@@ -138,7 +138,7 @@ class EditTransactionFragment :
             rightNow.get(Calendar.MONTH),
             rightNow.get(Calendar.DAY_OF_MONTH)
         )
-        dataPicker.datePicker.maxDate = viewModel.getCurrentTransaction().date
+        dataPicker.datePicker.maxDate = viewModel.getTransactionDate()
         dataPicker.show()
     }
 
@@ -157,11 +157,11 @@ class EditTransactionFragment :
         rightNow.set(Calendar.MONTH, month)
         rightNow.set(Calendar.YEAR, year)
 
-        viewModel.getCurrentTransaction().date = rightNow.timeInMillis
+        viewModel.changeTransactionDate(rightNow.timeInMillis)
         viewBinding.setDateBtn.text = rightNow.timeInMillis.timestampToString()
     }
 
-    fun basicAlert() {
+    private fun basicAlert() {
         val builder = AlertDialog.Builder(requireContext())
 
         with(builder)

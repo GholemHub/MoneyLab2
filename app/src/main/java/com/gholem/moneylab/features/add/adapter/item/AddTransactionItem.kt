@@ -6,18 +6,17 @@ import java.util.*
 
 sealed class AddTransactionItem {
     data class Category(
-        var category: TransactionCategoryModel
+        val category: TransactionCategoryModel
     ) : AddTransactionItem()
 
     data class Transaction(
-        var amount: String = "",
-        var date: Long = Calendar.getInstance().apply {
+        val amount: String = "",
+        val date: Long = Calendar.getInstance().apply {
             this.set(Calendar.MILLISECOND, 0)
             this.set(Calendar.SECOND, 0)
             this.set(Calendar.MINUTE, 0)
             this.set(Calendar.HOUR, 0)
-        }.timeInMillis,
-        val id: Long = System.currentTimeMillis()
+        }.timeInMillis
     ) : AddTransactionItem()
 
     object NewTransaction : AddTransactionItem()

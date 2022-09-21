@@ -1,8 +1,8 @@
-package com.gholem.moneylab.features.chart.viewmodel
+package com.gholem.moneylab.features.history.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.features.chart.adapter.item.ChartTransactionItem
+import com.gholem.moneylab.features.history.adapter.item.HistoryTransactionItem
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
@@ -15,7 +15,7 @@ import org.junit.Test
 import org.mockito.Mockito.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ChartViewModelTest {
+class HistoryViewModelTest {
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
@@ -23,11 +23,11 @@ class ChartViewModelTest {
     private val getTransactionListUseCaseMock: GetTransactionListUseCase =
         mock(GetTransactionListUseCase::class.java)
 
-    private lateinit var viewModel: ChartViewModel
+    private lateinit var viewModel: HistoryViewModel
 
     @Before
     fun setup() {
-        viewModel = ChartViewModel(
+        viewModel = HistoryViewModel(
             getTransactionListUseCaseMock
         )
     }
@@ -45,7 +45,7 @@ class ChartViewModelTest {
             verify(getTransactionListUseCaseMock).run(Unit)
             viewModel.actions.test {
                 assertEquals(
-                    ChartViewModel.Action.ShowDataChartTransactionItem(chartTransactionItems),
+                    HistoryViewModel.Action.ShowDataChartTransactionItem(historyTransactionItems),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -65,7 +65,7 @@ class ChartViewModelTest {
             verify(getTransactionListUseCaseMock).run(Unit)
             viewModel.actions.test {
                 assertEquals(
-                    ChartViewModel.Action.ShowDataChartTransactionItem(emptyList()),
+                    HistoryViewModel.Action.ShowDataChartTransactionItem(emptyList()),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -87,9 +87,9 @@ class ChartViewModelTest {
         )
     )
 
-    private val chartTransactionItems: List<ChartTransactionItem> = listOf(
-        ChartTransactionItem.ChartDate(date = 321L),
-        ChartTransactionItem.ChartTransaction(
+    private val historyTransactionItems: List<HistoryTransactionItem> = listOf(
+        HistoryTransactionItem.HistoryDate(date = 321L),
+        HistoryTransactionItem.HistoryTransaction(
             category = transactionCategory,
             amount = "123",
             1

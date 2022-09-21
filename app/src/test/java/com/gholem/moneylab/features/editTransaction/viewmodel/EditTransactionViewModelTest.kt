@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
@@ -17,6 +18,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -25,6 +27,8 @@ import org.mockito.Mockito.verify
 class EditTransactionViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
+    @get:Rule var rule: TestRule = InstantTaskExecutorRule()
 
     private val bottomNavigationVisibilityBusMock: BottomNavigationVisibilityBus =
         Mockito.mock(BottomNavigationVisibilityBus::class.java)
@@ -46,7 +50,6 @@ class EditTransactionViewModelTest {
     fun setup() {
         viewModel = EditTransactionViewModel(
             getCategoryListUseCaseMock,
-            getTransactionListUseCaseMock,
             getTransactionItemUseCaseMock,
             bottomNavigationVisibilityBusMock,
             updateTransactionModelUseCaseMock,
@@ -56,8 +59,6 @@ class EditTransactionViewModelTest {
 
     @Test
     fun `verify invocations on getTransaction method call`() = runTest {
-        /* Given */
-
         /* When */
         viewModel.init()
 
@@ -79,11 +80,11 @@ class EditTransactionViewModelTest {
 
     @Test
     fun `verify invocations on saveEditedTransaction method call`() = runTest {
-
         /* Given */
         `when`(updateTransactionModelUseCaseMock.run(transactionList.first()))
             .thenReturn(Unit)
-        viewModel.setCurrentTransaction(TransactionModel(transactionCategory,1,1,1))
+        viewModel.setCurrentTransaction(TransactionModel(transactionCategory,123, 321,1))
+
         /* When */
         viewModel.saveEditedTransaction()
 
@@ -95,6 +96,7 @@ class EditTransactionViewModelTest {
     fun `verify invocations on setIdOfCategory method call`() = runTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(listOf(transactionCategory))
+
         /* When */
         viewModel.setIdOfCategory(0)
 
@@ -109,7 +111,6 @@ class EditTransactionViewModelTest {
         }
     }
 
-    ///???? IS IT WORKING GOOD?
     @Test
     fun `verify invocations on navigateToCategoryBottomSheet method call`() = runTest {
         /* When */

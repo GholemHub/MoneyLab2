@@ -7,7 +7,7 @@
     android:padding="@dimen/margin_default">
 
     <TextView
-        android:id="@+id/item_chart_transaction_header"
+        android:id="@+id/item_history_transaction_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/transaction_amount_hint"
@@ -25,7 +25,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/category_icon"
-        app:layout_constraintStart_toEndOf="@id/item_chart_transaction_header"
+        app:layout_constraintStart_toEndOf="@id/item_history_transaction_header"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="750" />
 
