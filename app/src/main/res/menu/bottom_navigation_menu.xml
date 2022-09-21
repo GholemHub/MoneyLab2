@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/chart_navigation"
-        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:icon="@drawable/ic_baseline_history_24"
         android:title="History" />
 
     <item
@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/planning_navigation"
-        android:icon="@drawable/ic_baseline_data_saver_off_24"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
         android:title="Planning" />
 
 </menu>
