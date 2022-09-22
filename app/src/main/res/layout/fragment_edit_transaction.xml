@@ -50,25 +50,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_default"
-        app:layout_constraintBottom_toBottomOf="@+id/amount"
+        app:layout_constraintBottom_toBottomOf="@+id/amount_input_layout_edit_Transaction"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category_button"
         app:srcCompat="@drawable/ic_baseline_close_24"
         app:tint="@color/silver" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/amount"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amount_input_layout_edit_Transaction"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginEnd="@dimen/margin_default"
-        android:background="@drawable/bg_edit_text"
-        android:hint="@string/transaction_amount_hint"
-        android:textSize="@dimen/app_text_size_default"
         app:layout_constraintEnd_toStartOf="@id/set_date_btn"
         app:layout_constraintStart_toEndOf="@+id/delete_transaction"
-        app:layout_constraintTop_toBottomOf="@+id/category_button" />
+        app:layout_constraintTop_toBottomOf="@+id/category_button">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount_edit_text_editTransaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:background="@drawable/bg_edit_text"
+            android:hint="@string/transaction_amount_hint"
+            android:textSize="@dimen/app_text_size_default" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/set_date_btn"
@@ -98,6 +104,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount" />
+        app:layout_constraintTop_toBottomOf="@+id/amount_input_layout_edit_Transaction" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

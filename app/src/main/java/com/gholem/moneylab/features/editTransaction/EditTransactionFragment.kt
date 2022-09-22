@@ -37,10 +37,15 @@ class EditTransactionFragment :
         getTransactionInfo(args.position)
         observeActions(viewBinding)
         observeNewCategories()
-        viewBinding.amount.doAfterTextChanged {
+        viewBinding.amountEditTextEditTransaction.doAfterTextChanged {
             val amountText: String = it.toString()
+
             if (!amountText.isEmpty()) {
                 viewModel.changeTransactionAmount(amountText.toInt())
+                viewBinding.amountInputLayoutEditTransaction.isErrorEnabled = false
+            }else{
+                viewBinding.amountInputLayoutEditTransaction.error = "Value cannot be empty"
+                viewBinding.amountInputLayoutEditTransaction.isErrorEnabled = true
             }
         }
         listeners()
@@ -61,7 +66,9 @@ class EditTransactionFragment :
 
     private fun doneBtnSetListener() {
         viewBinding.editTransactionDoneBtn.setOnClickListener {
-            viewModel.onDoneButtonClick()
+            if (viewBinding.amountEditTextEditTransaction.text?.isEmpty() == false) {
+                viewModel.onDoneButtonClick()
+            }
         }
     }
 
@@ -108,7 +115,7 @@ class EditTransactionFragment :
     }
 
     private fun fillTransactionData(transaction: TransactionModel) {
-        viewBinding.amount.setText(transaction.amount.toString())
+        viewBinding.amountEditTextEditTransaction.setText(transaction.amount.toString())
         viewBinding.setDateBtn.text = transaction.date.timestampToString()
         viewBinding.categoryButton.text = transaction.category.categoryName
         viewBinding.categoryButton
