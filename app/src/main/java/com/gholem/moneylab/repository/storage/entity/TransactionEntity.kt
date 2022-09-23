@@ -2,12 +2,11 @@ package com.gholem.moneylab.repository.storage.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 
 @Entity(tableName = "transaction_table")
 data class TransactionEntity(
-
     val amount: Int,
     val date: Long,
     val categoryId: Long,
@@ -22,7 +21,8 @@ data class TransactionEntity(
                 id = categoryEntity.id
             ),
             amount = amount,
-            date = date
+            date = date,
+            transactionId = id
         )
 
     companion object {
@@ -31,6 +31,14 @@ data class TransactionEntity(
                 transaction.amount,
                 transaction.date,
                 transaction.category.id ?: 1
+            )
+
+        fun setTransactionEntityId(transaction: TransactionModel): TransactionEntity =
+            TransactionEntity(
+                transaction.amount,
+                transaction.date,
+                transaction.category.id ?: 1,
+                transaction.transactionId
             )
     }
 }

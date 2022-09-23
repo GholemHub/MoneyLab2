@@ -11,6 +11,7 @@ import com.gholem.moneylab.features.createNewCategory.viewmodel.CreateNewCategor
 import com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment.Companion.KEY_IMAGE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CreateNewCategoryFragment :
@@ -66,6 +67,8 @@ class CreateNewCategoryFragment :
                         KEY_CATEGORY_CHOOSE,
                         action.id
                     )
+
+
                 }
             }
         }

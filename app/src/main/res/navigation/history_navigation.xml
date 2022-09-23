@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chart_navigation"
+    app:startDestination="@id/history_fragment">
+
+    <dialog
+        android:id="@+id/category_bottom_sheet_dialog"
+        android:name="com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment"
+        android:label="CategoryBottomSheet">
+        <action
+            android:id="@+id/action_category_bottom_sheet_dialog_to_createNewCategoryFragment"
+            app:destination="@id/createNewCategoryFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/createNewCategoryFragment"
+        android:name="com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment"
+        android:label="CreateNewCategoryFragment">
+        <action
+            android:id="@+id/action_createNewCategoryFragment_to_createNewTransactionCategoryFragment"
+            app:destination="@id/createNewCategoryImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createNewCategoryImageFragment"
+        android:name="com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment"
+        android:label="CreateNewTransactionCategoryFragment" />
+    <fragment
+        android:id="@+id/history_fragment"
+        android:name="com.gholem.moneylab.features.history.HistoryFragment"
+        android:label="History">
+        <action
+            android:id="@+id/actionHistoryFragmentToEditTransactionFragment"
+            app:destination="@id/editTransactionFragment">
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.gholem.moneylab.features.editTransaction.EditTransactionFragment"
+        android:label="fragment_edit_transaction">
+        <argument
+            android:name="position"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_editTransactionFragment_to_category_bottom_sheet_dialog"
+            app:destination="@id/category_bottom_sheet_dialog" />
+    </fragment>
+</navigation>

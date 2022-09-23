@@ -20,8 +20,8 @@ class InsertTransactionsModelUseCaseTest {
         /* Given */
         val category = TransactionCategoryModel("1", 2, 3)
         val item = listOf(
-            TransactionModel(category, 1, 2),
-            TransactionModel(category, 3, 4)
+            TransactionModel(category, 1, 2, 1),
+            TransactionModel(category, 3, 4, 1)
         )
         `when`(transactionStorageRepositoryMock.insertList(item)).thenReturn(Unit)
 

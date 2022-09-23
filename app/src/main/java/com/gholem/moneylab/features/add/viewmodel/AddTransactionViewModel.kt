@@ -81,7 +81,6 @@ class AddTransactionViewModel @Inject constructor(
 
     private fun checkTransactionAmount(): List<Int> {
         val listOfEmpty = mutableListOf<Int>()
-        Timber.i("DDD ViewModel: ${adapterData}")
         adapterData.forEachIndexed { position, transactionItem ->
             if (transactionItem is AddTransactionItem.Transaction &&
                 transactionItem.amount.isBlank()
@@ -92,7 +91,6 @@ class AddTransactionViewModel @Inject constructor(
 
         return listOfEmpty
     }
-
 
     sealed class Action {
         object GetTransactionsData : Action()

@@ -23,7 +23,7 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
-    <include app:graph="@navigation/chart_navigation" />
+    <include app:graph="@navigation/history_navigation" />
     <include app:graph="@navigation/add_navigation" />
     <include app:graph="@navigation/planning_navigation" />
     <fragment

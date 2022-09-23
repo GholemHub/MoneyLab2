@@ -72,9 +72,8 @@ class AddTransactionsAdapter(
         rightNow.set(Calendar.MONTH, month)
         rightNow.set(Calendar.YEAR, year)
 
-        transaction?.date = rightNow.timeInMillis
-
-        transaction?.let {
+        transaction?.copy(date = rightNow.timeInMillis)?.let {
+            adapterData[position] = it
             notifyItemChanged(position)
         }
     }
@@ -83,10 +82,10 @@ class AddTransactionsAdapter(
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-
-        cat.category = listOfCategory.get(categoryId.toInt() - 1)
-
-        notifyItemChanged(adapterData.indexOf(cat))
+        val copyCategory = cat.copy(category = listOfCategory[categoryId.toInt() - 1])
+        val categoryPosition = adapterData.indexOf(cat)
+        adapterData[categoryPosition] = copyCategory
+        notifyItemChanged(adapterData.indexOf(copyCategory))
     }
 
     fun getTransactionListData(): List<TransactionModel> {
@@ -121,7 +120,8 @@ class AddTransactionsAdapter(
         TransactionModel(
             category = category ?: listOfCategory[0],
             amount = item.amount.ifBlank { "0" }.toInt(),
-            date = item.date
+            date = item.date,
+            transactionId = 0
         )
 
     private fun createViewHolders(
@@ -177,9 +177,10 @@ class AddTransactionsAdapter(
 
         binding.amountEditText.doAfterTextChanged {
             val item = adapterData[viewHolder.adapterPosition]
-            (item as AddTransactionItem.Transaction).amount = it?.toString() ?: ""
+            val copyAmount =
+                (item as AddTransactionItem.Transaction).copy(amount = it?.toString() ?: "")
+            adapterData[viewHolder.adapterPosition] = copyAmount
         }
-
         return viewHolder
     }
 

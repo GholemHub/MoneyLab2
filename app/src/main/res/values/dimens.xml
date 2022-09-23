@@ -5,6 +5,7 @@
 
       <dimen name="margin_0.5x">8dp</dimen>
       <dimen name="margin_default">16dp</dimen>
+      <dimen name="text_size_height">39dp</dimen>
       <dimen name="margin_1.5x">24dp</dimen>
       <dimen name="margin_2x">32dp</dimen>
    </resources>

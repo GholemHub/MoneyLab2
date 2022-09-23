@@ -14,5 +14,5 @@
             android:id="@+id/action_planning_fragment_to_chart_navigation"
             app:destination="@id/chart_navigation" />
     </fragment>
-    <include app:graph="@navigation/chart_navigation" />
+    <include app:graph="@navigation/history_navigation" />
 </navigation>

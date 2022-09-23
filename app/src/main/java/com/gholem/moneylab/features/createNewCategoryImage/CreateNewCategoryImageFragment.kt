@@ -48,6 +48,7 @@ class CreateNewCategoryImageFragment :
     }
 
     companion object {
+        ///ONLY TO BACK NAVIGATION
         const val KEY_IMAGE = "KEY_IMAGE"
         const val SPAN_COUNT = 4
     }

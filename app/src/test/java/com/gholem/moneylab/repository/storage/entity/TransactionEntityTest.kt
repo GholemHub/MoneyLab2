@@ -11,7 +11,7 @@ class TransactionEntityTest {
     fun `map Transaction to TransactionEntity`() {
         /* Given */
         val category = TransactionCategoryModel("1", 1, 1)
-        val transaction = TransactionModel(category, 2, 3)
+        val transaction = TransactionModel(category, 2, 3, 1)
 
         /* When */
         val result = TransactionEntity.from(transaction)
@@ -34,7 +34,8 @@ class TransactionEntityTest {
             TransactionModel(
                 category = TransactionCategoryModel("name", 1, 1),
                 amount = 1,
-                date = 1
+                date = 1,
+                1
             ), result
         )
     }

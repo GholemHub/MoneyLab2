@@ -30,6 +30,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             { showCategoryBottomSheet() },
             { showDateDialog(it) })
     }
+    private fun showCategoryBottomSheet() {
+        viewModel.navigateToCategoryBottomSheet()
+    }
 
     private var position = 0
 
@@ -92,10 +95,6 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         )
         dataPicker.datePicker.maxDate = rightNow.timeInMillis
         dataPicker.show()
-    }
-
-    private fun showCategoryBottomSheet() {
-        viewModel.navigateToCategoryBottomSheet()
     }
 
     private fun observeActions() {

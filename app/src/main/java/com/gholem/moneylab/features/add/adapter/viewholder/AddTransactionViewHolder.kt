@@ -1,13 +1,14 @@
 package com.gholem.moneylab.features.add.adapter.viewholder
 
+import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemCategoryBinding
 import com.gholem.moneylab.databinding.ItemNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemTransactionBinding
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
-import timber.log.Timber.i
 
 sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -32,7 +33,8 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
             binding.amountEditText.setText(transaction.amount)
 
             if (isInvalidData) {
-                binding.amountInputLayout.error = "Value cannot be empty"
+                val resources = binding.root.resources
+                binding.amountInputLayout.error = resources.getText(R.string.error_message)
                 binding.amountInputLayout.isErrorEnabled = true
             } else {
                 binding.amountInputLayout.isErrorEnabled = false

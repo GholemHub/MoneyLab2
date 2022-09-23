@@ -35,7 +35,7 @@ class BottomSheetCategoryFragment :
     }
 
     private fun navigateToCreateNewTransaction() {
-        viewModel.navigateToCreateNewTransaction()
+        viewModel.navigateToCreateNewCategory()
     }
 
     private fun observeActions() {

@@ -4,7 +4,7 @@ import com.gholem.moneylab.arch.usecase.UseCase
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.repository.network.TransactionApiRepository
-import com.squareup.picasso.Downloader
+
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -22,7 +22,9 @@ class FetchTransactionModelUseCase @Inject constructor(
             TransactionModel(
                 category = categories.first { it.id == (person.rank.toInt() % categories.size).toLong() + 1 },
                 amount = person.tradingPairs.toInt(),
-                date = person.updated
+                date = person.updated,
+                transactionId = System.currentTimeMillis()
+
             )
         } ?: emptyList()
     }
