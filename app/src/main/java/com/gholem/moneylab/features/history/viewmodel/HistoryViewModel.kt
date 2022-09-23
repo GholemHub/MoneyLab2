@@ -20,12 +20,11 @@ class HistoryViewModel @Inject constructor(
 
     var navigation: NavigationLiveData<HistoryNavigationEvent> =
         NavigationLiveData()
-
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    fun navigateToEditTransaction(_position: Long) = viewModelScope.launch {
-        navigation.emit(HistoryNavigationEvent.ToEditTransaction(_position))
+    fun navigateToEditTransaction(position: Long) = viewModelScope.launch {
+        navigation.emit(HistoryNavigationEvent.ToEditTransaction(position))
     }
 
     fun fetchTransactionList() = viewModelScope.launch {
@@ -47,7 +46,6 @@ class HistoryViewModel @Inject constructor(
                 )
             }
         }
-
         Action.ShowDataHistoryTransactionItem(result).send()
     }
 

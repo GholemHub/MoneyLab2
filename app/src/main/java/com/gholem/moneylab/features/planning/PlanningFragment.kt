@@ -9,6 +9,9 @@ import com.gholem.moneylab.features.planning.adapter.PlanningAdapter
 import com.gholem.moneylab.features.planning.navigation.PlanningNavigation
 import com.gholem.moneylab.features.planning.viewmodel.PlanningViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,12 +29,42 @@ class PlanningFragment : BaseFragment<FragmentPlanningBinding, PlanningViewModel
         FragmentPlanningBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: FragmentPlanningBinding) {
+        createChart(viewBinding)
+
+
         viewBinding.planningRecyclerview.setHasFixedSize(true)
         viewBinding.planningRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         viewBinding.planningRecyclerview.adapter = dataAdapter
 
         observeActions()
         initViewModel()
+    }
+
+    private fun createChart(viewBinding: FragmentPlanningBinding) {
+        val model: AAChartModel = AAChartModel()
+            .chartType(AAChartType.Pie)
+            .title("title")
+            .subtitle("subtitle")
+            .series(
+                arrayOf(
+                    AASeriesElement()
+                        .name("Tokyo")
+                        .data(
+                            arrayOf(
+                                7.0,
+                                6.9,
+                                9.5,
+                                14.5,
+                                18.2,
+                                21.5,
+                                25.2,
+                            )
+                        ),
+                )
+            )
+
+        viewBinding.aaChartView.aa_drawChartWithChartModel(model)
+        viewBinding.aaChartView.aa_refreshChartWithChartModel(model)
     }
 
     override fun setupNavigation() {

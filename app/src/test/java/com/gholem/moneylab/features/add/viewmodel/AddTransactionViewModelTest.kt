@@ -3,8 +3,8 @@ package com.gholem.moneylab.features.add.viewmodel
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
@@ -57,7 +57,7 @@ class AddTransactionViewModelTest {
         /* Given */
         val transactionList = listOf(
             TransactionModel(
-                TransactionCategoryModel("1", 2, 3), 1, 2,1
+                TransactionCategoryModel("1", 2, 3), 1, 2, 1
             )
         )
         `when`(insertTransactionsModelUseCaseMock.run(transactionList)).thenReturn(Unit)
@@ -67,7 +67,10 @@ class AddTransactionViewModelTest {
 
         /* Then */
         verify(insertTransactionsModelUseCaseMock).run(transactionList)
-        assertEquals(AddNavigationEvent.ToCategoryBottomSheetDialog, viewModel.navigation.value?.getAndForget())
+        assertEquals(
+            AddNavigationEvent.ToCategoryBottomSheetDialog,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test

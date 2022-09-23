@@ -7,6 +7,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentEditTransactionBinding
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
@@ -43,38 +44,27 @@ class EditTransactionFragment :
             if (!amountText.isEmpty()) {
                 viewModel.changeTransactionAmount(amountText.toInt())
                 viewBinding.amountInputLayoutEditTransaction.isErrorEnabled = false
-            }else{
-                viewBinding.amountInputLayoutEditTransaction.error = "Value cannot be empty"
+            } else {
+                viewBinding.amountInputLayoutEditTransaction.error =
+                    resources.getText(R.string.error_message)
                 viewBinding.amountInputLayoutEditTransaction.isErrorEnabled = true
             }
         }
-        listeners()
+        attachListeners()
     }
 
-    private fun listeners() {
-        dateSetListener()
-        categorySetListener()
-        doneBtnSetListener()
-        deleteTransactionListener()
-    }
-
-    private fun deleteTransactionListener() {
+    private fun attachListeners() {
         viewBinding.deleteTransaction.setOnClickListener {
             basicAlert()
         }
-    }
-
-    private fun doneBtnSetListener() {
         viewBinding.editTransactionDoneBtn.setOnClickListener {
-            if (viewBinding.amountEditTextEditTransaction.text?.isEmpty() == false) {
-                viewModel.onDoneButtonClick()
-            }
+            viewModel.onDoneButtonClick(viewBinding.amountEditTextEditTransaction.text)
         }
-    }
-
-    private fun categorySetListener() {
         viewBinding.categoryButton.setOnClickListener {
             viewModel.navigateToCategoryBottomSheet()
+        }
+        viewBinding.setDateBtn.setOnClickListener {
+            showDateDialog()
         }
     }
 
@@ -87,12 +77,6 @@ class EditTransactionFragment :
             }
     }
 
-    private fun dateSetListener() {
-        viewBinding.setDateBtn.setOnClickListener {
-            showDateDialog()
-        }
-    }
-
     override fun setupNavigation() {
         navigation = EditTransactionNavigation(navControllerWrapper)
         viewModel.navigation.observe(this, navigation::navigate)
@@ -101,7 +85,7 @@ class EditTransactionFragment :
     private fun observeActions(viewBinding: FragmentEditTransactionBinding) {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
-                is EditTransactionViewModel.Action.GetCurrentTransaction -> {
+                is EditTransactionViewModel.Action.UpdateTransactionInfo -> {
                     fillTransactionData(action.transaction)
                 }
                 is EditTransactionViewModel.Action.GetCurrentCategory -> {

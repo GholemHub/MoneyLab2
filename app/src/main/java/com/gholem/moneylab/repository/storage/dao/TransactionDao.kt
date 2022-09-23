@@ -1,7 +1,9 @@
 package com.gholem.moneylab.repository.storage.dao
 
-import androidx.room.*
-import com.gholem.moneylab.domain.model.TransactionModel
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
 
 @Dao

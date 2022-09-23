@@ -1,6 +1,7 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
 
+import android.text.Editable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -47,14 +48,13 @@ class EditTransactionViewModel @Inject constructor(
         bottomNavigationVisibilityBus.changeVisibility(false)
     }
 
-    fun getTransactionInfo(_positionItem: Long) = viewModelScope.launch {
-        val transaction = getTransactionItemUseCase.run(_positionItem)
+    fun getTransactionInfo(positionItem: Long) = viewModelScope.launch {
+        val transaction = getTransactionItemUseCase.run(positionItem)
         setCurrentTransaction(transaction)
-        Action.GetCurrentTransaction(currentTransaction).send()
+        Action.UpdateTransactionInfo(currentTransaction).send()
     }
 
     fun getTransactionDate() = currentTransaction.date
-
 
     fun changeTransactionAmount(amount: Int) {
         currentTransaction = currentTransaction.copy(amount = amount)
@@ -68,8 +68,8 @@ class EditTransactionViewModel @Inject constructor(
         currentTransaction = currentTransaction.copy(category = category)
     }
 
-    fun setCurrentTransaction(_currentTransaction: TransactionModel){
-        this.currentTransaction = _currentTransaction
+    fun setCurrentTransaction(currentTransaction: TransactionModel){
+        this.currentTransaction = currentTransaction
     }
 
     fun deleteTransaction() = viewModelScope.launch {
@@ -86,8 +86,10 @@ class EditTransactionViewModel @Inject constructor(
         Action.GetCurrentCategory(categories[result.toInt()]).send()
     }
 
-    fun onDoneButtonClick() {
-        Action.SetEditedTransaction.send()
+    fun onDoneButtonClick(amount: Editable?) {
+        if (amount?.isEmpty() == false) {
+            Action.SetEditedTransaction.send()
+        }
     }
 
     fun saveEditedTransaction() = viewModelScope.launch {
@@ -96,7 +98,7 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     sealed class Action {
-        data class GetCurrentTransaction(val transaction: TransactionModel) : Action()
+        data class UpdateTransactionInfo(val transaction: TransactionModel) : Action()
         data class GetCurrentCategory(val category: TransactionCategoryModel) : Action()
         object SetEditedTransaction : Action()
     }

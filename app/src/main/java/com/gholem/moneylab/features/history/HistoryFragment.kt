@@ -18,7 +18,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding, HistoryViewModel>()
     lateinit var navigation: HistoryNavigation
 
     private val dataAdapter: HistoryAdapter by lazy {
-        HistoryAdapter { getPositionOfEditItem(it) }
+        HistoryAdapter { navigateToEditTransaction(it) }
     }
 
     override fun constructViewBinding(): FragmentHistoryBinding =
@@ -49,8 +49,8 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding, HistoryViewModel>()
         viewModel.fetchTransactionList()
     }
 
-    private fun getPositionOfEditItem(_position: Long) {
-        viewModel.navigateToEditTransaction(_position)
+    private fun navigateToEditTransaction(position: Long) {
+        viewModel.navigateToEditTransaction(position)
     }
 
     private fun observeActions() {

@@ -92,7 +92,6 @@ class AddTransactionViewModel @Inject constructor(
         return listOfEmpty
     }
 
-
     sealed class Action {
         object GetTransactionsData : Action()
         data class ShowData(val list: List<TransactionCategoryModel>) : Action()

@@ -1,17 +1,21 @@
 package com.gholem.moneylab.features.history.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.features.history.adapter.item.HistoryTransactionItem
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
+import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
+import com.gholem.moneylab.features.history.navigation.HistoryNavigationEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.Mockito.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -19,6 +23,8 @@ class HistoryViewModelTest {
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
+    @get:Rule var rule: TestRule = InstantTaskExecutorRule()
 
     private val getTransactionListUseCaseMock: GetTransactionListUseCase =
         mock(GetTransactionListUseCase::class.java)
@@ -33,24 +39,28 @@ class HistoryViewModelTest {
     }
 
     @Test
-    fun `verify invocations when fetchTransactionList method is called with transactions`() =
-        runTest {
-            /* Given */
-            `when`(getTransactionListUseCaseMock.run(Unit)).thenReturn(transactionList)
+    fun `verify invocations on navigateToEditTransaction method call`() = runTest {
+        /* When */
+        val position = 0L
+        viewModel.navigateToEditTransaction(position)
 
-            /* When */
-            viewModel.fetchTransactionList()
+        /* Then */
+        assertEquals(
+            HistoryNavigationEvent.ToEditTransaction(position),
+            viewModel.navigation.value?.getAndForget()
+        )
+    }
+    @Test
+    fun `verify invocations on onDoneButtonClick method call`() = runTest {
+        /* When */
+        viewModel.navigateToEditTransaction(0)
 
-            /* Then */
-            verify(getTransactionListUseCaseMock).run(Unit)
-            viewModel.actions.test {
-                assertEquals(
-                    HistoryViewModel.Action.ShowDataChartTransactionItem(historyTransactionItems),
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
+        /* Then */
+        viewModel.actions.test {
+            assertEquals(AddTransactionViewModel.Action.GetTransactionsData, awaitItem())
+            expectNoEvents()
         }
+    }
 
     @Test
     fun `verify invocations when fetchTransactionList method is called without transactions`() =
@@ -65,7 +75,7 @@ class HistoryViewModelTest {
             verify(getTransactionListUseCaseMock).run(Unit)
             viewModel.actions.test {
                 assertEquals(
-                    HistoryViewModel.Action.ShowDataChartTransactionItem(emptyList()),
+                    HistoryViewModel.Action.ShowDataHistoryTransactionItem(emptyList()),
                     awaitItem()
                 )
                 expectNoEvents()

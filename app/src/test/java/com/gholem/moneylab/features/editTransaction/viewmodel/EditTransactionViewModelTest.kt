@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
+import android.text.Editable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
@@ -10,8 +11,8 @@ import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionItemUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.UpdateTransactionModelUseCase
-import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
+import com.gholem.moneylab.features.editTransaction.navigation.EditTransactionNavigationEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -25,10 +26,12 @@ import org.mockito.Mockito.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class EditTransactionViewModelTest {
+
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    @get:Rule var rule: TestRule = InstantTaskExecutorRule()
+    @get:Rule
+    var rule: TestRule = InstantTaskExecutorRule()
 
     private val bottomNavigationVisibilityBusMock: BottomNavigationVisibilityBus =
         Mockito.mock(BottomNavigationVisibilityBus::class.java)
@@ -42,7 +45,6 @@ class EditTransactionViewModelTest {
         Mockito.mock(UpdateTransactionModelUseCase::class.java)
     private val deleteTransactionModelUseCaseMock: DeleteTransactionModelUseCase =
         Mockito.mock(DeleteTransactionModelUseCase::class.java)
-
 
     private lateinit var viewModel: EditTransactionViewModel
 
@@ -58,18 +60,85 @@ class EditTransactionViewModelTest {
     }
 
     @Test
-    fun `verify invocations on getTransaction method call`() = runTest {
+    fun `verify invocations on setCurrentTransaction method call`() = runTest {
         /* When */
-        viewModel.init()
+        viewModel.setCurrentTransaction(transactionModel)
 
         /* Then */
-        verify(bottomNavigationVisibilityBusMock).changeVisibility(false)
+        assertEquals(viewModel.setCurrentTransaction(transactionModel), Unit)
+    }
+
+    @Test
+    fun `verify invocations on changeTransactionDate method call`() = runTest {
+        /* Given */
+        viewModel.setCurrentTransaction(transactionModel)
+
+        /* When */
+        viewModel.changeTransactionDate(1)
+
+        /* Then */
+        assertEquals(viewModel.changeTransactionDate(1), Unit)
+    }
+
+    @Test
+    fun `verify invocations on changeTransactionAmount method call`() = runTest {
+        /* Given */
+        viewModel.setCurrentTransaction(transactionModel)
+
+        /* When */
+        viewModel.changeTransactionAmount(1)
+
+        /* Then */
+        assertEquals(viewModel.changeTransactionAmount(1), Unit)
+    }
+
+    @Test
+    fun `verify invocations on changeTransactionCategory method call`() = runTest {
+        /* Given */
+        viewModel.setCurrentTransaction(transactionModel)
+
+        /* When */
+        viewModel.changeTransactionCategory(transactionCategory)
+
+        /* Then */
+        assertEquals(viewModel.changeTransactionCategory(transactionCategory), Unit)
+    }
+
+    @Test
+    fun `verify invocations on getTransactionDate method call`() = runTest {
+        /* Given */
+        viewModel.setCurrentTransaction(transactionModel)
+
+        /* When */
+        viewModel.getTransactionDate()
+
+        /* Then */
+        assertEquals(viewModel.getTransactionDate(), 1)
+    }
+
+    @Test
+    fun `verify invocations on deleteTransaction method call`() = runTest {
+        /* Given */
+        viewModel.setCurrentTransaction(transactionModel)
+        `when`(deleteTransactionModelUseCaseMock.run(1))
+            .thenReturn(Unit)
+
+        /* When */
+        viewModel.deleteTransaction()
+
+        /* Then */
+        assertEquals(
+            EditTransactionNavigationEvent.ToPreviousScreen,
+            viewModel.navigation.value?.getAndForget()
+        )
     }
 
     @Test
     fun `verify invocations on onDoneButtonClick method call`() = runTest {
         /* When */
-        viewModel.onDoneButtonClick()
+        var edit: Editable?
+        edit = "1".toEditable()
+        viewModel.onDoneButtonClick(edit)
 
         /* Then */
         viewModel.actions.test {
@@ -79,11 +148,20 @@ class EditTransactionViewModelTest {
     }
 
     @Test
+    fun `verify invocations on editTransaction init method call`() = runTest {
+        /* When */
+        viewModel.init()
+
+        /* Then */
+        verify(bottomNavigationVisibilityBusMock).changeVisibility(false)
+    }
+
+    @Test
     fun `verify invocations on saveEditedTransaction method call`() = runTest {
         /* Given */
         `when`(updateTransactionModelUseCaseMock.run(transactionList.first()))
             .thenReturn(Unit)
-        viewModel.setCurrentTransaction(TransactionModel(transactionCategory,123, 321,1))
+        viewModel.setCurrentTransaction(TransactionModel(transactionCategory, 123, 321, 1))
 
         /* When */
         viewModel.saveEditedTransaction()
@@ -118,13 +196,13 @@ class EditTransactionViewModelTest {
 
         /* Then */
         assertEquals(
-            AddNavigationEvent.ToCategoryBottomSheetDialog,
+            EditTransactionNavigationEvent.ToCategoryBottomSheetDialog,
             viewModel.navigation.value?.getAndForget()
         )
     }
 
     @Test
-    fun `verify invocations on init method call`() = runTest {
+    fun `verify invocations on getTransactionInfo method call`() = runTest {
         /* Given */
         `when`(getTransactionListUseCaseMock.run(Unit)).thenReturn(transactionList)
         /* When */
@@ -134,7 +212,7 @@ class EditTransactionViewModelTest {
         verify(getTransactionListUseCaseMock).run(Unit)
         viewModel.actions.test {
             assertEquals(
-                EditTransactionViewModel.Action.GetCurrentTransaction(
+                EditTransactionViewModel.Action.UpdateTransactionInfo(
                     TransactionModel(
                         transactionCategory,
                         123,
@@ -147,6 +225,8 @@ class EditTransactionViewModelTest {
             expectNoEvents()
         }
     }
+
+    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
     private val transactionCategory = TransactionCategoryModel(
         categoryName = "categoryName",
@@ -161,4 +241,5 @@ class EditTransactionViewModelTest {
             1
         )
     )
+    private val transactionModel = TransactionModel(transactionCategory, 1, 1, 1)
 }
