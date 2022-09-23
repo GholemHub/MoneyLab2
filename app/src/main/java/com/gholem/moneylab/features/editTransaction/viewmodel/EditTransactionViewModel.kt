@@ -87,7 +87,7 @@ class EditTransactionViewModel @Inject constructor(
     }
 
     fun onDoneButtonClick(amount: String) {
-        if (amount.isEmpty() == false) {
+        if (amount.isNotBlank()) {
             Action.SetEditedTransaction.send()
         }
     }

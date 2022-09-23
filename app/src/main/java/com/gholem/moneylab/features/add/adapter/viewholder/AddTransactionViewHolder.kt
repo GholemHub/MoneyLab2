@@ -33,8 +33,8 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
             binding.amountEditText.setText(transaction.amount)
 
             if (isInvalidData) {
-                binding.amountInputLayout.error =
-                    Resources.getSystem().getString(R.string.error_message)
+                val resources = binding.root.resources
+                binding.amountInputLayout.error = resources.getText(R.string.error_message)
                 binding.amountInputLayout.isErrorEnabled = true
             } else {
                 binding.amountInputLayout.isErrorEnabled = false

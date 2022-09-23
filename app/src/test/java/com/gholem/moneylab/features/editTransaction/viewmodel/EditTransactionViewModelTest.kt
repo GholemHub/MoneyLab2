@@ -224,8 +224,6 @@ class EditTransactionViewModelTest {
         }
     }
 
-    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
-
     private val transactionCategory = TransactionCategoryModel(
         categoryName = "categoryName",
         image = 1,

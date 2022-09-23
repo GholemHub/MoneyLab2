@@ -58,7 +58,7 @@ class EditTransactionFragment :
             basicAlert()
         }
         viewBinding.editTransactionDoneBtn.setOnClickListener {
-            val editable = viewBinding.amountEditTextEditTransaction.text
+            val editable = viewBinding.amountEditTextEditTransaction.text!!
             viewModel.onDoneButtonClick(editable.toString())
         }
         viewBinding.categoryButton.setOnClickListener {
