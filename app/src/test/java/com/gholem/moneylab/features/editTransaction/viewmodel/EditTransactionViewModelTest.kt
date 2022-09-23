@@ -136,9 +136,7 @@ class EditTransactionViewModelTest {
     @Test
     fun `verify invocations on onDoneButtonClick method call`() = runTest {
         /* When */
-        var edit: Editable?
-        edit = "1".toEditable()
-        viewModel.onDoneButtonClick(edit)
+        viewModel.onDoneButtonClick("1")
 
         /* Then */
         viewModel.actions.test {

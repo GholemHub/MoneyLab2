@@ -86,8 +86,8 @@ class EditTransactionViewModel @Inject constructor(
         Action.GetCurrentCategory(categories[result.toInt()]).send()
     }
 
-    fun onDoneButtonClick(amount: Editable?) {
-        if (amount?.isEmpty() == false) {
+    fun onDoneButtonClick(amount: String) {
+        if (amount.isEmpty() == false) {
             Action.SetEditedTransaction.send()
         }
     }
