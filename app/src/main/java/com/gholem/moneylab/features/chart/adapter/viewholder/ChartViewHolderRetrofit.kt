@@ -1,17 +1,17 @@
-package com.gholem.moneylab.features.planning.adapter.viewholder
+package com.gholem.moneylab.features.chart.adapter.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.gholem.moneylab.databinding.ItemPlanningBinding
+import com.gholem.moneylab.databinding.ItemChartRetrofitBinding
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.util.timestampToString
 
-sealed class PlanningViewHolder(binding: ViewBinding) :
+sealed class ChartViewHolderRetrofit(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    class PlanningDataViewHolder(
-        private val binding: ItemPlanningBinding
-    ) : PlanningViewHolder(binding) {
+    class ChartDataViewHolderRetrofit(
+        private val binding: ItemChartRetrofitBinding
+    ) : ChartViewHolderRetrofit(binding) {
 
         fun bind(data: TransactionModel) {
             binding.categoryName.text = data.category.categoryName

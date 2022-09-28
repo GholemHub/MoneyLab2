@@ -32,9 +32,9 @@ class EditTransactionFragment :
     override fun constructViewBinding(): FragmentEditTransactionBinding =
         FragmentEditTransactionBinding.inflate(layoutInflater)
 
-    override fun init(_viewBinding: FragmentEditTransactionBinding) {
+    override fun init(viewBinding: FragmentEditTransactionBinding) {
         viewModel.init()
-        this.viewBinding = _viewBinding
+        this.viewBinding = viewBinding
         getTransactionInfo(args.position)
         observeActions(viewBinding)
         observeNewCategories()
@@ -58,7 +58,7 @@ class EditTransactionFragment :
             basicAlert()
         }
         viewBinding.editTransactionDoneBtn.setOnClickListener {
-            val editable = viewBinding.amountEditTextEditTransaction.text!!
+            val editable = viewBinding.amountEditTextEditTransaction.text ?: ""
             viewModel.onDoneButtonClick(editable.toString())
         }
         viewBinding.categoryButton.setOnClickListener {

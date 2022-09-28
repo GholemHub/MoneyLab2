@@ -33,7 +33,8 @@ class AddTransactionsAdapter(
         val isInvalidData = listOfInvalidItemsIndexes.contains(position)
 
         when (holder) {
-            is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
+            is AddTransactionViewHolder.CategoryViewHolder ->
+                holder.bind(adapterData[position] as AddTransactionItem.Category)
             is AddTransactionViewHolder.TransactionViewHolder -> {
                 holder.bind(
                     adapterData[position] as AddTransactionItem.Transaction,

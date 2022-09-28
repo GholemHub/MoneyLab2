@@ -4,23 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.planning.PlanningFragment">
+    tools:context=".features.chart.ChartFragment">
 
-    <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-        android:id="@+id/aa_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"
-        >
-
-    </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/planning_recyclerview"
+        android:id="@+id/chart_recyclerview"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chart_recyclerview_retrofit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

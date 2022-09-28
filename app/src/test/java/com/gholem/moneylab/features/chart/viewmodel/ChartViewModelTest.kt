@@ -1,11 +1,12 @@
-package com.gholem.moneylab.features.planning.viewmodel
+package com.gholem.moneylab.features.chart.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
+import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
-import com.gholem.moneylab.features.planning.domain.FetchTransactionModelUseCase
+import com.gholem.moneylab.features.chart.domain.FetchTransactionModelUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -15,7 +16,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 
-class PlanningViewModelTest {
+class ChartViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
@@ -23,14 +24,17 @@ class PlanningViewModelTest {
         Mockito.mock(InsertTransactionModelUseCase::class.java)
     private val fetchTransactionModelUseCaseMock: FetchTransactionModelUseCase =
         Mockito.mock(FetchTransactionModelUseCase::class.java)
+    private val GetTransactionListUseCaseMock: GetTransactionListUseCase =
+        Mockito.mock(GetTransactionListUseCase::class.java)
 
-    private lateinit var viewModel: PlanningViewModel
+    private lateinit var viewModel: ChartViewModel
 
     @Before
     fun setup() {
-        viewModel = PlanningViewModel(
+        viewModel = ChartViewModel(
             insertTransactionModelUseCaseMock,
-            fetchTransactionModelUseCaseMock
+            fetchTransactionModelUseCaseMock,
+            GetTransactionListUseCaseMock
         )
     }
 
@@ -60,7 +64,7 @@ class PlanningViewModelTest {
             verify(fetchTransactionModelUseCaseMock).run(Unit)
             viewModel.actions.test {
                 assertEquals(
-                    PlanningViewModel.Action.ShowTransactions(list),
+                    ChartViewModel.Action.ShowTransactions(list),
                     awaitItem()
                 )
                 expectNoEvents()

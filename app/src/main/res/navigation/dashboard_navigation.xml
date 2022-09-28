@@ -10,10 +10,9 @@
         android:name="com.gholem.moneylab.features.splashScreen.SplashFragment"
         android:label="splash_fragment"
         tools:layout="@layout/fragment_splash">
-
         <action
             android:id="@+id/action_to_dashboard"
-            app:destination="@id/chart_navigation"
+            app:destination="@id/history_navigation"
             app:popUpTo="@id/dashboard_navigation"
             app:popUpToInclusive="true" />
         <action
@@ -25,14 +24,15 @@
 
     <include app:graph="@navigation/history_navigation" />
     <include app:graph="@navigation/add_navigation" />
-    <include app:graph="@navigation/planning_navigation" />
+    <include app:graph="@navigation/chart_navigation" />
+
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="com.gholem.moneylab.features.authentication.AuthenticationFragment"
         android:label="AuthenticationFragment" >
         <action
             android:id="@+id/action_authenticationFragment_to_chart_navigation"
-            app:destination="@id/chart_navigation"
+            app:destination="@id/history_navigation"
             app:popUpTo="@id/dashboard_navigation"
             app:popUpToInclusive="true"
             />
