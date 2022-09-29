@@ -35,7 +35,7 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 pieEntries.add(pieEntry)
             }
 
-            var pieDataSet = PieDataSet(pieEntries, "123")
+            var pieDataSet = PieDataSet(pieEntries, "Categoties")
             pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 1000)
             pieDataSet.valueTextSize = 13f
 
@@ -57,11 +57,11 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 barEntries.add(barEntry)
             }
 
-            var barDataSet = BarDataSet(barEntries, "123")
+            var barDataSet = BarDataSet(barEntries, "Categoties")
             barDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 1000)
             barDataSet.valueTextSize = 13f
             binding.barChart.data = BarData(barDataSet)
-            binding.barChart.description.text = "321"
+            binding.barChart.description.isEnabled = false
         }
     }
 }

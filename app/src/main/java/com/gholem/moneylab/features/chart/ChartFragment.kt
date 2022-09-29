@@ -10,8 +10,6 @@ import com.gholem.moneylab.features.chart.adapter.ChartAdapterRetrofit
 import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

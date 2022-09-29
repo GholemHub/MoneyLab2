@@ -1,6 +1,5 @@
 package com.gholem.moneylab.features.chart.adapter
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,8 +7,6 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemChartBarBinding
 import com.gholem.moneylab.databinding.ItemChartCategoryBinding
 import com.gholem.moneylab.databinding.ItemChartPieBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chart.adapter.item.ChartCategoryModel
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
@@ -41,23 +38,6 @@ class ChartAdapter(
     }
 
     override fun getItemCount(): Int = adapterData.size
-
-    private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<ChartCategoryModel> {
-
-        val categorySum: MutableMap<TransactionCategoryModel, Int> = HashMap()
-        val chartCategoryModelList = mutableListOf<ChartCategoryModel>()
-
-        list.forEach {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                categorySum.merge(it.category, it.amount, Int::plus)
-            }
-        }
-
-        categorySum.forEach {
-            chartCategoryModelList.add(ChartCategoryModel(it.key, it.value))
-        }
-        return chartCategoryModelList
-    }
 
     private fun createViewHolders(
         parent: ViewGroup,
@@ -107,17 +87,18 @@ class ChartAdapter(
         return ChartViewHolder.ChartBarViewHolder(binding)
     }
 
-    fun createAdapterData(list: List<TransactionModel>) {
-        val notDuplicatedListOfTransactionModel = createNotDuplicatedTransactionModel(list)
+    fun createAdapterData(list: List<ChartCategoryModel>) {
         val adapter: MutableList<ChartItem> =
             listOf(
-                ChartItem.Pie(notDuplicatedListOfTransactionModel),
-                ChartItem.Bar(notDuplicatedListOfTransactionModel)
+                ChartItem.Pie(list),
+                ChartItem.Bar(list)
             ).toMutableList()
-        notDuplicatedListOfTransactionModel.forEach {
+        list.forEach {
             adapter.add(ChartItem.Category(it))
         }
         adapterData = adapter
         notifyDataSetChanged()
     }
+
+
 }
