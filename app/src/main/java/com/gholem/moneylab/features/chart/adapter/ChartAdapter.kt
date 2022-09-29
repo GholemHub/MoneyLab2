@@ -23,7 +23,7 @@ class ChartAdapter(
 
         when (holder) {
             is ChartViewHolder.ChartCategoryViewHolder ->
-                holder.bind(adapterData[position] as ChartItem.Category)
+                holder.bind(adapterData[position] as ChartItem.Category, position)
             is ChartViewHolder.ChartPieViewHolder -> holder.bind(adapterData[position] as ChartItem.Pie)
             is ChartViewHolder.ChartBarViewHolder -> holder.bind(adapterData[position] as ChartItem.Bar)
         }

@@ -12,7 +12,6 @@ import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
@@ -198,8 +197,9 @@ class AddTransactionsAdapter(
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
                     val startPosition = viewHolder.adapterPosition
-
-                    adapterData.add(startPosition, AddTransactionItem.Transaction())
+                    if (startPosition <= 6) {
+                        adapterData.add(startPosition, AddTransactionItem.Transaction())
+                    }
                     notifyDataSetChanged()
                 }
             }
