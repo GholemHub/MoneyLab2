@@ -131,7 +131,7 @@ class AddTransactionViewModelTest {
                     )
                 ), awaitItem()
             )
-            assertEquals(AddTransactionViewModel.Action.SelectCategory(0L), awaitItem())
+             assertEquals(AddTransactionViewModel.Action.SelectCategory(0L), awaitItem())
             expectNoEvents()
         }
     }

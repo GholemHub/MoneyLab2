@@ -21,6 +21,8 @@ class AddTransactionsAdapter(
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
 
+    private val MAX_COUNT_TRANSACTIONS = 6
+
     private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
     private var listOfInvalidItemsIndexes = listOf<Int>()
 
@@ -197,7 +199,7 @@ class AddTransactionsAdapter(
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
                     val startPosition = viewHolder.adapterPosition
-                    if (startPosition <= 6) {
+                    if (startPosition <= MAX_COUNT_TRANSACTIONS) {
                         adapterData.add(startPosition, AddTransactionItem.Transaction())
                     }
                     notifyDataSetChanged()

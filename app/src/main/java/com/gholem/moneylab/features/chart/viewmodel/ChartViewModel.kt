@@ -35,7 +35,7 @@ class ChartViewModel @Inject constructor(
     val navigation: NavigationLiveData<ChartNavigationEvent> =
         NavigationLiveData()
 
-    fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<ChartCategoryModel> {
+    private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<ChartCategoryModel> {
 
         val categorySum: MutableMap<TransactionCategoryModel, Int> = HashMap()
         val chartCategoryModelList = mutableListOf<ChartCategoryModel>()
@@ -43,6 +43,8 @@ class ChartViewModel @Inject constructor(
         list.forEach {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 categorySum.merge(it.category, it.amount, Int::plus)
+            }else{
+
             }
         }
 
@@ -65,15 +67,10 @@ class ChartViewModel @Inject constructor(
         Action.FetchTransactions(transactions).send()
     }
 
-    fun getLast30DaysFromList(list: List<TransactionModel>): List<TransactionModel> {
-        var newList = mutableListOf<TransactionModel>()
+    private fun getLast30DaysFromList(list: List<TransactionModel>): List<TransactionModel> {
         val lastMonth = System.currentTimeMillis() - LAST_MONTH
-        list.forEach {
-            if (it.date >= lastMonth) {
-                newList.add(it)
-            }
-        }
-        return newList
+
+        return list.filter { it.date >= lastMonth }
     }
 
     fun saveNewTransaction(item: TransactionModel) = viewModelScope.launch {
