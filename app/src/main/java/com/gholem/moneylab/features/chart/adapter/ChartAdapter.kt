@@ -17,14 +17,10 @@ class ChartAdapter(
     val positionClickListener: (item: ChartItem) -> Unit
 ) : RecyclerView.Adapter<ChartViewHolder>() {
 
-    private val listData1: MutableList<TransactionModel> = mutableListOf()
+    private val listTransactionModel: MutableList<TransactionModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChartViewHolder {
         return createViewHolders(parent, viewType)
-    }
-
-    fun setListData(listData: List<TransactionModel>) {
-        listData1.addAll(listData)
     }
 
     override fun onBindViewHolder(holder: ChartViewHolder, position: Int) {
@@ -34,7 +30,7 @@ class ChartAdapter(
                 holder.bind(adapterData[position] as ChartItem.Category, position)
             is ChartViewHolder.ChartPieViewHolder -> holder.bind(adapterData[position] as ChartItem.Pie)
             is ChartViewHolder.ChartBarViewHolder -> holder.bind(adapterData[position] as ChartItem.Bar)
-            is ChartViewHolder.ChartDataViewHolderRetrofit -> holder.bind(adapterData[position] as ChartItem.Retrofit)
+            is ChartViewHolder.ChartDataRetrofitViewHolder -> holder.bind(adapterData[position] as ChartItem.Transaction)
         }
     }
 
@@ -43,7 +39,7 @@ class ChartAdapter(
             is ChartItem.Category -> R.layout.item_chart_category
             is ChartItem.Pie -> R.layout.item_chart_pie
             is ChartItem.Bar -> R.layout.item_chart_bar
-            is ChartItem.Retrofit -> R.layout.item_chart_retrofit
+            is ChartItem.Transaction -> R.layout.item_chart_retrofit
         }
     }
 
@@ -64,14 +60,14 @@ class ChartAdapter(
 
     private fun creativeRetrofitViewHolder(
         parent: ViewGroup
-    ): ChartViewHolder.ChartDataViewHolderRetrofit {
+    ): ChartViewHolder.ChartDataRetrofitViewHolder {
         val binding = ItemChartRetrofitBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
 
-        return ChartViewHolder.ChartDataViewHolderRetrofit(binding).also { viewHolder ->
+        return ChartViewHolder.ChartDataRetrofitViewHolder(binding).also { viewHolder ->
             binding.root.setOnClickListener {
                 val position = viewHolder.adapterPosition
                 positionClickListener.invoke(adapterData[position])
@@ -116,18 +112,17 @@ class ChartAdapter(
     }
 
     fun createAdapterData(list: List<TransactionModel>) {
-        val adapter: MutableList<ChartItem> =
-            listOf(
-                ChartItem.Pie(list),
-                ChartItem.Bar(list)
-            ).toMutableList()
-        list.forEach {
-            adapter.add(ChartItem.Category(it))
+        if (list.isNotEmpty()) {
+            val adapter: MutableList<ChartItem> =
+                listOf(
+                    ChartItem.Pie(list),
+                    ChartItem.Bar(list)
+                ).toMutableList()
+            list.forEach {
+                adapter.add(ChartItem.Category(it))
+            }
+            adapterData = adapter
+            notifyDataSetChanged()
         }
-        listData1.forEach {
-            adapter.add(ChartItem.Retrofit(it))
-        }
-        adapterData = adapter
-        notifyDataSetChanged()
     }
 }

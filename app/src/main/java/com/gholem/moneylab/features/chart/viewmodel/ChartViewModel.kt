@@ -23,6 +23,7 @@ class ChartViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val LAST_MONTH = 2592000000L
+    private val TIME_IN_MILI = 1000000000L
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
@@ -34,29 +35,18 @@ class ChartViewModel @Inject constructor(
 
     private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<TransactionModel> {
 
-        val chartCategoryModelList = mutableListOf<TransactionModel>()
-        val chartCategories = list
-            .groupBy { it.category }
-            .mapValues { it.value.sumOf { it.amount } }
-
-        chartCategories.forEach {
-            chartCategoryModelList.add(
-                TransactionModel(
-                    it.key,
-                    it.value,
-                    System.currentTimeMillis(),
-                    System.currentTimeMillis()
-                )
+        return sortTransactionList(list.groupBy { it.category }
+            .mapValues { it.value.sumOf { it.amount } }.map {
+            TransactionModel(
+                it.key,
+                it.value,
+                TIME_IN_MILI,
+                TIME_IN_MILI
             )
-        }
-
-        return sortTransactionList(chartCategoryModelList)
+        })
     }
 
     fun getTransactionList() = viewModelScope.launch {
-        val transactions = fetchTransactionModelUseCase.run(Unit)
-        Action.FetchTransactions(transactions).send()
-
         val listOfTransaction = getTransactionListUseCase.run(Unit)
         val last30Days = getLast30DaysFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)

@@ -28,10 +28,10 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                     ChartColors.values()[position - 2 % ChartColors.values().size].colorResId
                 )
             )
-            binding.itemChartAmount.text = data.categpry.amount.toString()
-            binding.itemChartCategoryIcon.setImageResource(data.categpry.category.image)
+            binding.itemChartAmount.text = data.transactionModel.amount.toString()
+            binding.itemChartCategoryIcon.setImageResource(data.transactionModel.category.image)
             binding.itemChartTransactionHeader.text =
-                data.categpry.category.categoryName
+                data.transactionModel.category.categoryName
         }
     }
 
@@ -42,7 +42,7 @@ sealed class ChartViewHolder(binding: ViewBinding) :
         fun bind(data: ChartItem.Pie) {
             val pieEntries = mutableListOf<PieEntry>()
 
-            data.transactionModel.forEachIndexed { index, it ->
+            data.transactionModelList.forEachIndexed { index, it ->
                 val pieEntry = PieEntry(it.amount.toFloat(), index.toFloat())
                 pieEntries.add(pieEntry)
             }
@@ -67,7 +67,7 @@ sealed class ChartViewHolder(binding: ViewBinding) :
         fun bind(data: ChartItem.Bar) {
             val barEntries = mutableListOf<BarEntry>()
 
-            data.transactionModel.forEachIndexed { index, it ->
+            data.transactionModelList.forEachIndexed { index, it ->
                 val barEntry = BarEntry(index.toFloat(), it.amount.toFloat())
                 barEntries.add(barEntry)
             }
@@ -77,17 +77,18 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 ChartColors.values()
                     .map { resources.getColor(it.colorResId, resources.newTheme()) })
             barDataSet.valueTextSize = 13f
+            binding.barChart.setTouchEnabled(false)
             binding.barChart.animateXY(1000, 3000)
             binding.barChart.data = BarData(barDataSet)
             binding.barChart.description.isEnabled = false
         }
     }
 
-    class ChartDataViewHolderRetrofit(
+    class ChartDataRetrofitViewHolder(
         private val binding: ItemChartRetrofitBinding
     ) : ChartViewHolder(binding) {
 
-        fun bind(data: ChartItem.Retrofit) {
+        fun bind(data: ChartItem.Transaction) {
             binding.categoryName.text = data.transactionModel.category.categoryName
             binding.amount.text = data.transactionModel.amount.toString()
             binding.date.text = data.transactionModel.date.timestampToString()

@@ -20,7 +20,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     private val dataAdapter: ChartAdapter by lazy {
         ChartAdapter(viewModel.adapterData) {
-            saveTransaction(it as ChartItem.Retrofit)
+            saveTransaction(it as ChartItem.Transaction)
         }
     }
 
@@ -45,16 +45,13 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         viewModel.navigation.observe(this, chartNavigation::navigate)
     }
 
-    private fun saveTransaction(item: ChartItem.Retrofit) {
+    private fun saveTransaction(item: ChartItem.Transaction) {
         viewModel.saveNewTransaction(item.transactionModel)
     }
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
-                is ChartViewModel.Action.FetchTransactions -> {
-                    dataAdapter.setListData(action.transactions)
-                }
                 is ChartViewModel.Action.ShowTransactions -> {
                     dataAdapter.createAdapterData(action.list)
                 }

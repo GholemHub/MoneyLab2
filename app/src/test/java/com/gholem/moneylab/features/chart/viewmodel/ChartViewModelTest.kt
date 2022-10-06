@@ -21,6 +21,7 @@ import org.mockito.Mockito.verify
 class ChartViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
@@ -28,7 +29,7 @@ class ChartViewModelTest {
         Mockito.mock(InsertTransactionModelUseCase::class.java)
     private val fetchTransactionModelUseCaseMock: FetchTransactionModelUseCase =
         Mockito.mock(FetchTransactionModelUseCase::class.java)
-    private val GetTransactionListUseCaseMock: GetTransactionListUseCase =
+    private val getTransactionListUseCaseMock: GetTransactionListUseCase =
         Mockito.mock(GetTransactionListUseCase::class.java)
 
     private lateinit var viewModel: ChartViewModel
@@ -38,7 +39,7 @@ class ChartViewModelTest {
         viewModel = ChartViewModel(
             insertTransactionModelUseCaseMock,
             fetchTransactionModelUseCaseMock,
-            GetTransactionListUseCaseMock
+            getTransactionListUseCaseMock
         )
     }
 
@@ -46,7 +47,7 @@ class ChartViewModelTest {
     fun `verify invocations when getTransactionList method is called`() =
         runTest {
             /* Given */
-            `when`(GetTransactionListUseCaseMock.run(Unit)).thenReturn(list)
+            `when`(getTransactionListUseCaseMock.run(Unit)).thenReturn(list)
             /* When */
             viewModel.getTransactionList()
 
@@ -59,7 +60,6 @@ class ChartViewModelTest {
                 expectNoEvents()
             }
         }
-
 
     @Test
     fun `verify invocations when saveNewTransaction method is called`() =
@@ -74,28 +74,8 @@ class ChartViewModelTest {
             verify(insertTransactionModelUseCaseMock).run(list.first())
         }
 
-    @Test
-    fun `verify invocations when fetchTransactionList method is called`() =
-        runTest {
-            /* Given */
-            `when`(fetchTransactionModelUseCaseMock.run(Unit)).thenReturn(list)
-
-            /* When */
-            viewModel.fetchTransactions()
-
-            /* Then */
-            verify(fetchTransactionModelUseCaseMock).run(Unit)
-            viewModel.actions.test {
-                assertEquals(
-                    ChartViewModel.Action.FetchTransactions(list),
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
-        }
-
-    private val chartCategoryModelList: List<ChartCategoryModel> = listOf(
-        ChartCategoryModel(TransactionCategoryModel("", 1), 1)
+    private val chartCategoryModelList: List<TransactionModel> = listOf(
+        TransactionModel(TransactionCategoryModel("", 1), 1, 1, 1)
     )
 
     private val list: List<TransactionModel> = listOf(

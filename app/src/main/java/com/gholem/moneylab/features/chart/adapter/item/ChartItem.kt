@@ -4,18 +4,18 @@ import com.gholem.moneylab.domain.model.TransactionModel
 
 sealed class ChartItem {
     data class Category(
-        val categpry: TransactionModel
+        val transactionModel: TransactionModel
     ) : ChartItem()
 
     data class Pie(
-        val transactionModel: List<TransactionModel>
+        val transactionModelList: List<TransactionModel>
     ) : ChartItem()
 
     data class Bar(
-        val transactionModel: List<TransactionModel>
+        val transactionModelList: List<TransactionModel>
     ) : ChartItem()
 
-    data class Retrofit(
+    data class Transaction(
         val transactionModel: TransactionModel
     ) : ChartItem()
 }

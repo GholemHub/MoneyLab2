@@ -58,7 +58,15 @@ class BottomSheetCategoryFragment :
                             )
                             navigateToAddTransaction()
                         }
-
+                        categoryViewBinding.deleteCategory.setOnClickListener {
+                            val categoryItem = action.list.first { it.id == category.id }
+                            categoryItem.id?.let { it1 ->
+                                viewModel.deleteCategory(
+                                    it1.toInt()
+                                )
+                            }
+                            navigateToAddTransaction()
+                        }
                         getViewBinding().bottomSheetCategoriesContainer.addView(categoryViewBinding.root)
                     }
                 }

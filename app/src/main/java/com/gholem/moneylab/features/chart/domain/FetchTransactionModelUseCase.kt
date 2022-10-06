@@ -22,7 +22,6 @@ class FetchTransactionModelUseCase @Inject constructor(
                 amount = person.tradingPairs.toInt(),
                 date = person.updated,
                 transactionId = System.currentTimeMillis()
-
             )
         } ?: emptyList()
     }
