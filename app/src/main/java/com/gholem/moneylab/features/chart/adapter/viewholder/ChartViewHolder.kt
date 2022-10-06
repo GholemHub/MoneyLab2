@@ -8,7 +8,9 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemChartBarBinding
 import com.gholem.moneylab.databinding.ItemChartCategoryBinding
 import com.gholem.moneylab.databinding.ItemChartPieBinding
+import com.gholem.moneylab.databinding.ItemChartRetrofitBinding
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
+import com.gholem.moneylab.util.timestampToString
 import com.github.mikephil.charting.data.*
 
 sealed class ChartViewHolder(binding: ViewBinding) :
@@ -27,9 +29,9 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 )
             )
             binding.itemChartAmount.text = data.categpry.amount.toString()
-            binding.itemChartCategoryIcon.setImageResource(data.categpry.transactionCategoryModel.image)
+            binding.itemChartCategoryIcon.setImageResource(data.categpry.category.image)
             binding.itemChartTransactionHeader.text =
-                data.categpry.transactionCategoryModel.categoryName
+                data.categpry.category.categoryName
         }
     }
 
@@ -78,6 +80,17 @@ sealed class ChartViewHolder(binding: ViewBinding) :
             binding.barChart.animateXY(1000, 3000)
             binding.barChart.data = BarData(barDataSet)
             binding.barChart.description.isEnabled = false
+        }
+    }
+
+    class ChartDataViewHolderRetrofit(
+        private val binding: ItemChartRetrofitBinding
+    ) : ChartViewHolder(binding) {
+
+        fun bind(data: ChartItem.Retrofit) {
+            binding.categoryName.text = data.transactionModel.category.categoryName
+            binding.amount.text = data.transactionModel.amount.toString()
+            binding.date.text = data.transactionModel.date.timestampToString()
         }
     }
 

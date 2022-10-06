@@ -1,14 +1,11 @@
 package com.gholem.moneylab.features.chart.viewmodel
 
-import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
-import com.gholem.moneylab.features.chart.adapter.item.ChartCategoryModel
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.domain.FetchTransactionModelUseCase
 import com.gholem.moneylab.features.chart.navigation.ChartNavigationEvent
@@ -35,36 +32,35 @@ class ChartViewModel @Inject constructor(
     val navigation: NavigationLiveData<ChartNavigationEvent> =
         NavigationLiveData()
 
-    private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<ChartCategoryModel> {
+    private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<TransactionModel> {
 
-        val categorySum: MutableMap<TransactionCategoryModel, Int> = HashMap()
-        val chartCategoryModelList = mutableListOf<ChartCategoryModel>()
+        val chartCategoryModelList = mutableListOf<TransactionModel>()
+        val chartCategories = list
+            .groupBy { it.category }
+            .mapValues { it.value.sumOf { it.amount } }
 
-        list.forEach {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                categorySum.merge(it.category, it.amount, Int::plus)
-            }else{
-
-            }
-        }
-
-        categorySum.forEach {
-            chartCategoryModelList.add(ChartCategoryModel(it.key, it.value))
+        chartCategories.forEach {
+            chartCategoryModelList.add(
+                TransactionModel(
+                    it.key,
+                    it.value,
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis()
+                )
+            )
         }
 
         return sortTransactionList(chartCategoryModelList)
     }
 
     fun getTransactionList() = viewModelScope.launch {
+        val transactions = fetchTransactionModelUseCase.run(Unit)
+        Action.FetchTransactions(transactions).send()
+
         val listOfTransaction = getTransactionListUseCase.run(Unit)
         val last30Days = getLast30DaysFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
         Action.ShowTransactions(listOfSortedTransactions).send()
-    }
-
-    fun fetchTransactions() = viewModelScope.launch {
-        val transactions = fetchTransactionModelUseCase.run(Unit)
-        Action.FetchTransactions(transactions).send()
     }
 
     private fun getLast30DaysFromList(list: List<TransactionModel>): List<TransactionModel> {
@@ -77,7 +73,7 @@ class ChartViewModel @Inject constructor(
         insertTransactionModelUseCase.run(item)
     }
 
-    private fun sortTransactionList(listOfTransaction: List<ChartCategoryModel>) =
+    private fun sortTransactionList(listOfTransaction: List<TransactionModel>) =
         listOfTransaction.sortedByDescending { it.amount }
 
     private fun Action.send() =
@@ -86,8 +82,7 @@ class ChartViewModel @Inject constructor(
         }
 
     sealed class Action {
-        data class ShowTransactionsRetrofit(val transactions: List<TransactionModel>) : Action()
         data class FetchTransactions(val transactions: List<TransactionModel>) : Action()
-        data class ShowTransactions(val list: List<ChartCategoryModel>) : Action()
+        data class ShowTransactions(val list: List<TransactionModel>) : Action()
     }
 }

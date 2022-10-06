@@ -4,9 +4,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentChartBinding
-import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chart.adapter.ChartAdapter
-import com.gholem.moneylab.features.chart.adapter.ChartAdapterRetrofit
+import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
@@ -18,11 +17,11 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     lateinit var chartNavigation: ChartNavigation
     private val viewModel: ChartViewModel by viewModels()
     private lateinit var viewBinding: FragmentChartBinding
-    private val dataAdapterRetrofit: ChartAdapterRetrofit by lazy {
-        ChartAdapterRetrofit { saveTransaction(it) }
-    }
+
     private val dataAdapter: ChartAdapter by lazy {
-        ChartAdapter(viewModel.adapterData)
+        ChartAdapter(viewModel.adapterData) {
+            saveTransaction(it as ChartItem.Retrofit)
+        }
     }
 
     override fun constructViewBinding(): FragmentChartBinding =
@@ -30,7 +29,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     override fun init(viewBinding: FragmentChartBinding) {
         observeActions()
-        initViewModel()
         this.viewBinding = viewBinding
         viewModel.getTransactionList()
 
@@ -47,19 +45,16 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         viewModel.navigation.observe(this, chartNavigation::navigate)
     }
 
-    private fun saveTransaction(item: TransactionModel) {
-        viewModel.saveNewTransaction(item)
-    }
-
-    private fun initViewModel() {
-        viewModel.fetchTransactions()
+    private fun saveTransaction(item: ChartItem.Retrofit) {
+        viewModel.saveNewTransaction(item.transactionModel)
     }
 
     private fun observeActions() {
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
-                is ChartViewModel.Action.ShowTransactionsRetrofit ->
-                    dataAdapterRetrofit.setListData(action.transactions)
+                is ChartViewModel.Action.FetchTransactions -> {
+                    dataAdapter.setListData(action.transactions)
+                }
                 is ChartViewModel.Action.ShowTransactions -> {
                     dataAdapter.createAdapterData(action.list)
                 }

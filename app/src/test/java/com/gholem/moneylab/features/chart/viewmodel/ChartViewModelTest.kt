@@ -7,7 +7,6 @@ import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
-import com.gholem.moneylab.features.chart.adapter.item.ChartCategoryModel
 import com.gholem.moneylab.features.chart.domain.FetchTransactionModelUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

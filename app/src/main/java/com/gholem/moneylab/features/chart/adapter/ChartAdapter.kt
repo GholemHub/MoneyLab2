@@ -7,16 +7,24 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemChartBarBinding
 import com.gholem.moneylab.databinding.ItemChartCategoryBinding
 import com.gholem.moneylab.databinding.ItemChartPieBinding
-import com.gholem.moneylab.features.chart.adapter.item.ChartCategoryModel
+import com.gholem.moneylab.databinding.ItemChartRetrofitBinding
+import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 
 class ChartAdapter(
-    private var adapterData: MutableList<ChartItem>
+    private var adapterData: MutableList<ChartItem>,
+    val positionClickListener: (item: ChartItem) -> Unit
 ) : RecyclerView.Adapter<ChartViewHolder>() {
+
+    private val listData1: MutableList<TransactionModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChartViewHolder {
         return createViewHolders(parent, viewType)
+    }
+
+    fun setListData(listData: List<TransactionModel>) {
+        listData1.addAll(listData)
     }
 
     override fun onBindViewHolder(holder: ChartViewHolder, position: Int) {
@@ -26,6 +34,7 @@ class ChartAdapter(
                 holder.bind(adapterData[position] as ChartItem.Category, position)
             is ChartViewHolder.ChartPieViewHolder -> holder.bind(adapterData[position] as ChartItem.Pie)
             is ChartViewHolder.ChartBarViewHolder -> holder.bind(adapterData[position] as ChartItem.Bar)
+            is ChartViewHolder.ChartDataViewHolderRetrofit -> holder.bind(adapterData[position] as ChartItem.Retrofit)
         }
     }
 
@@ -34,6 +43,7 @@ class ChartAdapter(
             is ChartItem.Category -> R.layout.item_chart_category
             is ChartItem.Pie -> R.layout.item_chart_pie
             is ChartItem.Bar -> R.layout.item_chart_bar
+            is ChartItem.Retrofit -> R.layout.item_chart_retrofit
         }
     }
 
@@ -47,7 +57,25 @@ class ChartAdapter(
             R.layout.item_chart_category -> createCategoryViewHolder(parent)
             R.layout.item_chart_pie -> createPieViewHolder(parent)
             R.layout.item_chart_bar -> createBarViewHolder(parent)
+            R.layout.item_chart_retrofit -> creativeRetrofitViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    private fun creativeRetrofitViewHolder(
+        parent: ViewGroup
+    ): ChartViewHolder.ChartDataViewHolderRetrofit {
+        val binding = ItemChartRetrofitBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return ChartViewHolder.ChartDataViewHolderRetrofit(binding).also { viewHolder ->
+            binding.root.setOnClickListener {
+                val position = viewHolder.adapterPosition
+                positionClickListener.invoke(adapterData[position])
+            }
         }
     }
 
@@ -87,7 +115,7 @@ class ChartAdapter(
         return ChartViewHolder.ChartBarViewHolder(binding)
     }
 
-    fun createAdapterData(list: List<ChartCategoryModel>) {
+    fun createAdapterData(list: List<TransactionModel>) {
         val adapter: MutableList<ChartItem> =
             listOf(
                 ChartItem.Pie(list),
@@ -96,9 +124,10 @@ class ChartAdapter(
         list.forEach {
             adapter.add(ChartItem.Category(it))
         }
+        listData1.forEach {
+            adapter.add(ChartItem.Retrofit(it))
+        }
         adapterData = adapter
         notifyDataSetChanged()
     }
-
-
 }
