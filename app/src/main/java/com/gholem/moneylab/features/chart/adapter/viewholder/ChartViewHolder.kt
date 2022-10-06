@@ -9,6 +9,7 @@ import com.gholem.moneylab.databinding.*
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.util.timestampToString
 import com.github.mikephil.charting.data.*
+import java.text.DecimalFormat
 
 sealed class ChartViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -82,6 +83,13 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 ChartColors.values()
                     .map { resources.getColor(it.colorResId, resources.newTheme()) })
             barDataSet.valueTextSize = 13f
+            binding.barChart.xAxis.setDrawGridLines(false)
+            binding.barChart.xAxis.setLabelCount(1, false)
+
+            binding.barChart.setFitBars(true)
+            binding.barChart.setDrawGridBackground(false)
+            binding.barChart.isVerticalFadingEdgeEnabled = false
+            binding.barChart.isVerticalScrollBarEnabled = false
             binding.barChart.setTouchEnabled(false)
             binding.barChart.animateXY(1000, 3000)
             binding.barChart.data = BarData(barDataSet)
