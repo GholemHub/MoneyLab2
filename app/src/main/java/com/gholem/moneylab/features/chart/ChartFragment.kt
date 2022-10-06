@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.chart
 
+import android.text.format.DateFormat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
@@ -10,6 +11,7 @@ import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
@@ -31,6 +33,8 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         observeActions()
         this.viewBinding = viewBinding
         viewModel.getTransactionList()
+        setMonth()
+        clickListeners()
 
         viewBinding.chartRecyclerview
             .apply {
@@ -38,6 +42,31 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
+    }
+
+    private fun clickListeners() {
+        viewBinding.previousMonthChart.setOnClickListener {
+            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH - viewModel.LAST_MONTH
+            setMonth()
+            viewModel.getTransactionList()
+            dataAdapter.notifyDataSetChanged()
+        }
+        viewBinding.nextMonthChart.setOnClickListener {
+            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH + viewModel.LAST_MONTH
+            setMonth()
+            viewModel.getTransactionList()
+            dataAdapter.notifyDataSetChanged()
+        }
+    }
+
+    fun convertDate(dateInMilliseconds: String, dateFormat: String?): String? {
+        return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
+    }
+    fun setMonth() {
+        var lastMonth = System.currentTimeMillis()
+        lastMonth = lastMonth + viewModel.COUNT_MONTH
+
+        viewBinding.monthChartText.text = convertDate(lastMonth.toString(), "MM/yyyy")
     }
 
     override fun setupNavigation() {

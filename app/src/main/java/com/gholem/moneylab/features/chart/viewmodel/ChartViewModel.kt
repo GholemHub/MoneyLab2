@@ -13,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +24,8 @@ class ChartViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase
 ) : ViewModel() {
 
-    private val LAST_MONTH = 2592000000L
+    val LAST_MONTH = 2678400000L
+    var COUNT_MONTH = 0L
     private val TIME_IN_MILI = 1000000000L
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
@@ -37,19 +40,21 @@ class ChartViewModel @Inject constructor(
 
         return sortTransactionList(list.groupBy { it.category }
             .mapValues { it.value.sumOf { it.amount } }.map {
-            TransactionModel(
-                it.key,
-                it.value,
-                TIME_IN_MILI,
-                TIME_IN_MILI
-            )
-        })
+                i("it.value:: ${it.value}")
+                TransactionModel(
+                    it.key,
+                    it.value,
+                    TIME_IN_MILI,
+                    TIME_IN_MILI
+                )
+            })
     }
 
     fun getTransactionList() = viewModelScope.launch {
         val listOfTransaction = getTransactionListUseCase.run(Unit)
-        val last30Days = getLast30DaysFromList(listOfTransaction)
+        val last30Days = getMonthFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
+        i("listOfSortedTransactions :: ${listOfSortedTransactions.size}")
         Action.ShowTransactions(listOfSortedTransactions).send()
     }
 
@@ -57,6 +62,30 @@ class ChartViewModel @Inject constructor(
         val lastMonth = System.currentTimeMillis() - LAST_MONTH
 
         return list.filter { it.date >= lastMonth }
+    }
+
+    private fun getMonthFromList(list: List<TransactionModel>): List<TransactionModel> {
+        val lastMonth = System.currentTimeMillis() - (COUNT_MONTH)
+
+        var c1 = Calendar.getInstance()
+        var c2 = Calendar.getInstance()
+        c1.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)// this takes current date
+        c1[Calendar.DAY_OF_MONTH] = 1
+
+        c2.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)// this takes current date
+        c2[Calendar.DAY_OF_MONTH] = 31
+        //i("Day :: ${c1.timeInMillis} ${c2.timeInMillis}")
+        i("size :: ${list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis }.size}")
+        var lista = mutableListOf<TransactionModel>()
+        if (list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis }.size == 0){
+            lista = mutableListOf()
+        }
+        else{
+            lista.addAll(list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis })
+        }
+
+        i("size2 :: ${lista.size}")
+            return lista
     }
 
     fun saveNewTransaction(item: TransactionModel) = viewModelScope.launch {
@@ -70,6 +99,7 @@ class ChartViewModel @Inject constructor(
         viewModelScope.launch {
             _actions.send(this@send)
         }
+
 
     sealed class Action {
         data class FetchTransactions(val transactions: List<TransactionModel>) : Action()

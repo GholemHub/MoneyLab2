@@ -5,10 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.R
-import com.gholem.moneylab.databinding.ItemChartBarBinding
-import com.gholem.moneylab.databinding.ItemChartCategoryBinding
-import com.gholem.moneylab.databinding.ItemChartPieBinding
-import com.gholem.moneylab.databinding.ItemChartRetrofitBinding
+import com.gholem.moneylab.databinding.*
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.util.timestampToString
 import com.github.mikephil.charting.data.*
@@ -17,7 +14,15 @@ sealed class ChartViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
     val resources = binding.root.resources
 
-    class ChartCategoryViewHolder(
+    class ChartEmptyViewHolder(
+        private val binding: ItemChartEmptyBinding
+    ) : ChartViewHolder(binding) {
+
+        fun bind(data: ChartItem.Category, position: Int) {
+        }
+    }
+
+    class ChartiveCategoryViewHolder(
         private val binding: ItemChartCategoryBinding
     ) : ChartViewHolder(binding) {
 

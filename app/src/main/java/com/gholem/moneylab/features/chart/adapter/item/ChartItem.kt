@@ -18,4 +18,6 @@ sealed class ChartItem {
     data class Transaction(
         val transactionModel: TransactionModel
     ) : ChartItem()
+
+    object Empty: ChartItem()
 }
