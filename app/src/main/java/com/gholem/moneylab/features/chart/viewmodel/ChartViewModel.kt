@@ -13,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber.i
 import java.util.*
 import javax.inject.Inject
 
@@ -40,7 +39,6 @@ class ChartViewModel @Inject constructor(
 
         return sortTransactionList(list.groupBy { it.category }
             .mapValues { it.value.sumOf { it.amount } }.map {
-                i("it.value:: ${it.value}")
                 TransactionModel(
                     it.key,
                     it.value,
@@ -54,38 +52,26 @@ class ChartViewModel @Inject constructor(
         val listOfTransaction = getTransactionListUseCase.run(Unit)
         val last30Days = getMonthFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
-        i("listOfSortedTransactions :: ${listOfSortedTransactions.size}")
         Action.ShowTransactions(listOfSortedTransactions).send()
     }
 
-    private fun getLast30DaysFromList(list: List<TransactionModel>): List<TransactionModel> {
-        val lastMonth = System.currentTimeMillis() - LAST_MONTH
-
-        return list.filter { it.date >= lastMonth }
-    }
-
     private fun getMonthFromList(list: List<TransactionModel>): List<TransactionModel> {
-        val lastMonth = System.currentTimeMillis() - (COUNT_MONTH)
 
-        var c1 = Calendar.getInstance()
-        var c2 = Calendar.getInstance()
-        c1.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)// this takes current date
-        c1[Calendar.DAY_OF_MONTH] = 1
+        var startOfMonth = Calendar.getInstance()
+        var endOfMonth = Calendar.getInstance()
+        startOfMonth.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)
+        startOfMonth[Calendar.DAY_OF_MONTH] = 1
 
-        c2.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)// this takes current date
-        c2[Calendar.DAY_OF_MONTH] = 31
-        //i("Day :: ${c1.timeInMillis} ${c2.timeInMillis}")
-        i("size :: ${list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis }.size}")
+        endOfMonth.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)
+        endOfMonth[Calendar.DAY_OF_MONTH] = 31
+
         var lista = mutableListOf<TransactionModel>()
-        if (list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis }.size == 0){
+        if (list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis }.size == 0) {
             lista = mutableListOf()
+        } else {
+            lista.addAll(list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis })
         }
-        else{
-            lista.addAll(list.filter { it.date >= c1.timeInMillis && it.date <= c2.timeInMillis })
-        }
-
-        i("size2 :: ${lista.size}")
-            return lista
+        return lista
     }
 
     fun saveNewTransaction(item: TransactionModel) = viewModelScope.launch {

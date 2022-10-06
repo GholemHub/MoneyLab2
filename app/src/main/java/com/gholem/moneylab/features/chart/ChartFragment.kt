@@ -11,7 +11,6 @@ import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber.i
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
@@ -62,6 +61,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     fun convertDate(dateInMilliseconds: String, dateFormat: String?): String? {
         return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
     }
+
     fun setMonth() {
         var lastMonth = System.currentTimeMillis()
         lastMonth = lastMonth + viewModel.COUNT_MONTH

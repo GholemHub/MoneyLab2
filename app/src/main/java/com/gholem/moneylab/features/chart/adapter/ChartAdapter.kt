@@ -135,9 +135,7 @@ class ChartAdapter(
             adapterData = adapter
             notifyDataSetChanged()
         }else{
-            i("Is empty::")
             val adapter: MutableList<ChartItem> = mutableListOf(ChartItem.Empty)
-
             adapterData = adapter
             notifyDataSetChanged()
         }
