@@ -26,7 +26,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun init(viewBinding: FragmentSplashBinding) {
         observeData()
         viewModel.init()
-        googleSignInOptions()
+        viewModel.goToDashboard()
+        //googleSignInOptions()
         setDefaultCategories()
 
     }
