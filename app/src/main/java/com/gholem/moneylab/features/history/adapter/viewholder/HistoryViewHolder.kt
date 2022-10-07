@@ -29,6 +29,7 @@ sealed class HistoryViewHolder(binding: ViewBinding) :
     ) : HistoryViewHolder(binding) {
         fun bind(transaction: HistoryTransactionItem.HistoryTransaction) {
             binding.amount.text = transaction.amount
+            binding.itemHistoryTransactionHeader.text = transaction.category.categoryName
             binding.categoryIcon.setImageResource(transaction.category.image)
         }
     }

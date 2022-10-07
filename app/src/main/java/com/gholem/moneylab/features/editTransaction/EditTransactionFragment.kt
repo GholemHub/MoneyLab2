@@ -130,7 +130,7 @@ class EditTransactionFragment :
             rightNow.get(Calendar.MONTH),
             rightNow.get(Calendar.DAY_OF_MONTH)
         )
-        dataPicker.datePicker.maxDate = viewModel.getTransactionDate()
+        dataPicker.datePicker.maxDate = System.currentTimeMillis()
         dataPicker.show()
     }
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
-import com.gholem.moneylab.features.chooseTransactionCategory.domain.DeleeteCategoryItemUseCase
+import com.gholem.moneylab.features.chooseTransactionCategory.domain.DeleteCategoryItemUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomSheetCategoryEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BottomSheetCategoryViewModel @Inject constructor(
     private val getCategoryListUseCase: GetCategoryListUseCase,
-    private val deleeteCategoryItemUseCase: DeleeteCategoryItemUseCase
+    private val deleteCategoryItemUseCase: DeleteCategoryItemUseCase
 ) : ViewModel() {
 
     private val _actions = Channel<Action>(Channel.BUFFERED)
@@ -37,8 +37,8 @@ class BottomSheetCategoryViewModel @Inject constructor(
         navigation.emit(BottomSheetCategoryEvent.ToCreateNewCategory)
     }
 
-    fun deleteCategory(category: Int) = viewModelScope.launch {
-        deleeteCategoryItemUseCase.run(category)
+    fun deleteCategory(categoryId: Int) = viewModelScope.launch {
+        deleteCategoryItemUseCase.run(categoryId)
     }
 
     private fun Action.send() =

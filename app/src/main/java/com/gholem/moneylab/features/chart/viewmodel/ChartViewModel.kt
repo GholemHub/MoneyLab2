@@ -23,10 +23,7 @@ class ChartViewModel @Inject constructor(
     private val getTransactionListUseCase: GetTransactionListUseCase
 ) : ViewModel() {
 
-    val LAST_MONTH = 2678400000L
     var COUNT_MONTH = 0L
-    private val TIME_IN_MILI = 1000000000L
-
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
@@ -42,8 +39,8 @@ class ChartViewModel @Inject constructor(
                 TransactionModel(
                     it.key,
                     it.value,
-                    TIME_IN_MILI,
-                    TIME_IN_MILI
+                    0L,
+                    0L
                 )
             })
     }

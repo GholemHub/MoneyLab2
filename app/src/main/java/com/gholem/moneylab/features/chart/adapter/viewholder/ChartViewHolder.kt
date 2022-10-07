@@ -16,11 +16,7 @@ sealed class ChartViewHolder(binding: ViewBinding) :
 
     class ChartEmptyViewHolder(
         private val binding: ItemChartEmptyBinding
-    ) : ChartViewHolder(binding) {
-
-        fun bind(data: ChartItem.Category, position: Int) {
-        }
-    }
+    ) : ChartViewHolder(binding)
 
     class ChartiveCategoryViewHolder(
         private val binding: ItemChartCategoryBinding
@@ -97,7 +93,7 @@ sealed class ChartViewHolder(binding: ViewBinding) :
     }
 
     class ChartDataRetrofitViewHolder(
-        private val binding: ItemChartRetrofitBinding
+        private val binding: ItemChartTransactionBinding
     ) : ChartViewHolder(binding) {
 
         fun bind(data: ChartItem.Transaction) {

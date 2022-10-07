@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
+    val LAST_MONTH = 2678400000L
     lateinit var chartNavigation: ChartNavigation
     private val viewModel: ChartViewModel by viewModels()
     private lateinit var viewBinding: FragmentChartBinding
@@ -45,13 +46,13 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     private fun clickListeners() {
         viewBinding.previousMonthChart.setOnClickListener {
-            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH - viewModel.LAST_MONTH
+            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH - LAST_MONTH
             setMonth()
             viewModel.getTransactionList()
             dataAdapter.notifyDataSetChanged()
         }
         viewBinding.nextMonthChart.setOnClickListener {
-            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH + viewModel.LAST_MONTH
+            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH + LAST_MONTH
             setMonth()
             viewModel.getTransactionList()
             dataAdapter.notifyDataSetChanged()

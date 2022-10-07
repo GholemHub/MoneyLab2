@@ -4,7 +4,7 @@ import com.gholem.moneylab.arch.usecase.UseCase
 import com.gholem.moneylab.repository.storage.CategoryStorageRepository
 import javax.inject.Inject
 
-class DeleeteCategoryItemUseCase @Inject constructor(
+class DeleteCategoryItemUseCase @Inject constructor(
     private val repository: CategoryStorageRepository
 ) : UseCase<Int, Unit> {
 

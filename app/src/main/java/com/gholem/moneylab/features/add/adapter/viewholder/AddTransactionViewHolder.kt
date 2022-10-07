@@ -1,12 +1,11 @@
 package com.gholem.moneylab.features.add.adapter.viewholder
 
-import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.gholem.moneylab.R
-import com.gholem.moneylab.databinding.ItemCategoryBinding
-import com.gholem.moneylab.databinding.ItemNewTransactionBinding
-import com.gholem.moneylab.databinding.ItemTransactionBinding
+import com.gholem.moneylab.databinding.ItemAddCategoryBinding
+import com.gholem.moneylab.databinding.ItemAddNewTransactionBinding
+import com.gholem.moneylab.databinding.ItemAddTransactionBinding
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
 
@@ -14,7 +13,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     class CategoryViewHolder(
-        private val binding: ItemCategoryBinding
+        private val binding: ItemAddCategoryBinding
     ) : AddTransactionViewHolder(binding) {
         fun bind(category: AddTransactionItem.Category) {
 
@@ -25,7 +24,7 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
     }
 
     class TransactionViewHolder(
-        private val binding: ItemTransactionBinding
+        private val binding: ItemAddTransactionBinding
     ) : AddTransactionViewHolder(binding) {
 
         fun bind(transaction: AddTransactionItem.Transaction, isInvalidData: Boolean) {
@@ -43,6 +42,6 @@ sealed class AddTransactionViewHolder(binding: ViewBinding) :
     }
 
     class NewTransactionViewHolder(
-        binding: ItemNewTransactionBinding
+        binding: ItemAddNewTransactionBinding
     ) : AddTransactionViewHolder(binding)
 }

@@ -8,7 +8,6 @@ import com.gholem.moneylab.databinding.*
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
-import timber.log.Timber.i
 
 class ChartAdapter(
     private var adapterData: MutableList<ChartItem>,
@@ -36,7 +35,7 @@ class ChartAdapter(
             is ChartItem.Category -> R.layout.item_chart_category
             is ChartItem.Pie -> R.layout.item_chart_pie
             is ChartItem.Bar -> R.layout.item_chart_bar
-            is ChartItem.Transaction -> R.layout.item_chart_retrofit
+            is ChartItem.Transaction -> R.layout.item_chart_transaction
             is ChartItem.Empty -> R.layout.item_chart_empty
         }
     }
@@ -51,16 +50,16 @@ class ChartAdapter(
             R.layout.item_chart_category -> createCategoryViewHolder(parent)
             R.layout.item_chart_pie -> createPieViewHolder(parent)
             R.layout.item_chart_bar -> createBarViewHolder(parent)
-            R.layout.item_chart_retrofit -> creativeRetrofitViewHolder(parent)
+            R.layout.item_chart_transaction -> createTransactionViewHolder(parent)
             R.layout.item_chart_empty -> createEmptyViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
-    private fun creativeRetrofitViewHolder(
+    private fun createTransactionViewHolder(
         parent: ViewGroup
     ): ChartViewHolder.ChartDataRetrofitViewHolder {
-        val binding = ItemChartRetrofitBinding.inflate(
+        val binding = ItemChartTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -123,21 +122,17 @@ class ChartAdapter(
     }
 
     fun createAdapterData(list: List<TransactionModel>) {
+        adapterData.clear()
+
         if (list.isNotEmpty()) {
-            val adapter: MutableList<ChartItem> =
-                listOf(
-                    ChartItem.Pie(list),
-                    ChartItem.Bar(list)
-                ).toMutableList()
-            list.forEach {
-                adapter.add(ChartItem.Category(it))
-            }
-            adapterData = adapter
-            notifyDataSetChanged()
-        }else{
-            val adapter: MutableList<ChartItem> = mutableListOf(ChartItem.Empty)
-            adapterData = adapter
-            notifyDataSetChanged()
+            adapterData.add(ChartItem.Pie(list))
+            adapterData.add(ChartItem.Bar(list))
+            adapterData.addAll(list.map { ChartItem.Category(it) })
+        } else {
+            adapterData.add(ChartItem.Empty)
         }
+
+        notifyDataSetChanged()
     }
+
 }

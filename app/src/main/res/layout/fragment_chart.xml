@@ -33,14 +33,14 @@
         app:layout_constraintStart_toEndOf="@id/month_chart_text"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chart_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/month_chart_text"
-        android:layout_marginTop="@dimen/margin_default"
-        />
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_chart"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/month_chart_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
