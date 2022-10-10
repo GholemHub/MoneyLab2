@@ -1,6 +1,5 @@
 package com.gholem.moneylab.features.chart
 
-import android.text.format.DateFormat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.arch.base.BaseFragment
@@ -15,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
-    val LAST_MONTH = 2678400000L
     lateinit var chartNavigation: ChartNavigation
     private val viewModel: ChartViewModel by viewModels()
     private lateinit var viewBinding: FragmentChartBinding
@@ -32,8 +30,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     override fun init(viewBinding: FragmentChartBinding) {
         observeActions()
         this.viewBinding = viewBinding
-        viewModel.getTransactionList()
-        setMonth()
+        viewBinding.monthChartText.text = viewModel.sumCountMonth()
         clickListeners()
 
         viewBinding.chartRecyclerview
@@ -46,28 +43,15 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
     private fun clickListeners() {
         viewBinding.previousMonthChart.setOnClickListener {
-            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH - LAST_MONTH
-            setMonth()
-            viewModel.getTransactionList()
+            val currentMonth = viewModel.deductCountMonth()
+            viewBinding.monthChartText.text = currentMonth
             dataAdapter.notifyDataSetChanged()
         }
         viewBinding.nextMonthChart.setOnClickListener {
-            viewModel.COUNT_MONTH = viewModel.COUNT_MONTH + LAST_MONTH
-            setMonth()
-            viewModel.getTransactionList()
+            val currentMonth = viewModel.sumCountMonth()
+            viewBinding.monthChartText.text = currentMonth
             dataAdapter.notifyDataSetChanged()
         }
-    }
-
-    fun convertDate(dateInMilliseconds: String, dateFormat: String?): String? {
-        return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
-    }
-
-    fun setMonth() {
-        var lastMonth = System.currentTimeMillis()
-        lastMonth = lastMonth + viewModel.COUNT_MONTH
-
-        viewBinding.monthChartText.text = convertDate(lastMonth.toString(), "MM/yyyy")
     }
 
     override fun setupNavigation() {

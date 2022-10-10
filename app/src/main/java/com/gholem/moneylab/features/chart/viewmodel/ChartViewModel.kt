@@ -1,5 +1,6 @@
 package com.gholem.moneylab.features.chart.viewmodel
 
+import android.text.format.DateFormat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -24,6 +25,7 @@ class ChartViewModel @Inject constructor(
 ) : ViewModel() {
 
     var COUNT_MONTH = 0L
+    private val LAST_MONTH = 2678400000L
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
@@ -44,7 +46,26 @@ class ChartViewModel @Inject constructor(
             })
     }
 
-    fun getTransactionList() = viewModelScope.launch {
+    private fun convertDate(dateInMilliseconds: String, dateFormat: String?): String? {
+        return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
+    }
+
+    private fun convertDate(): String? {
+        getTransactionList()
+        return setMonth()
+    }
+    private fun setMonth(): String? {
+        var lastMonth = System.currentTimeMillis()
+        lastMonth = lastMonth + COUNT_MONTH
+
+        return convertDate(lastMonth.toString(), "MM/yyyy")
+    }
+
+    private fun sortTransactionList(listOfTransaction: List<TransactionModel>) =
+        listOfTransaction.sortedByDescending { it.amount }
+
+    private fun getTransactionList() = viewModelScope.launch {
+
         val listOfTransaction = getTransactionListUseCase.run(Unit)
         val last30Days = getMonthFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
@@ -69,8 +90,14 @@ class ChartViewModel @Inject constructor(
         insertTransactionModelUseCase.run(item)
     }
 
-    private fun sortTransactionList(listOfTransaction: List<TransactionModel>) =
-        listOfTransaction.sortedByDescending { it.amount }
+    fun deductCountMonth(): String? {
+        COUNT_MONTH -= LAST_MONTH
+        return  convertDate()
+    }
+    fun sumCountMonth(): String? {
+        COUNT_MONTH += LAST_MONTH
+        return convertDate()
+    }
 
     private fun Action.send() =
         viewModelScope.launch {

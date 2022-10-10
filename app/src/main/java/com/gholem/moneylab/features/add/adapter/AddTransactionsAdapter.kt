@@ -84,7 +84,7 @@ class AddTransactionsAdapter(
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-        val copyCategory = cat.copy(category = listOfCategory.first{it.id == categoryId})
+        val copyCategory = cat.copy(category = listOfCategory.first { it.id == categoryId })
         val categoryPosition = adapterData.indexOf(cat)
         adapterData[categoryPosition] = copyCategory
         notifyItemChanged(adapterData.indexOf(copyCategory))

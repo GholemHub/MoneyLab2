@@ -33,13 +33,22 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
     private fun setDefaultCategories() {
         val listOfDefaultCategories = listOf(
-            TransactionCategoryModel(getString(R.string.category_others), R.drawable.ic_category_other),
+            TransactionCategoryModel(
+                getString(R.string.category_others),
+                R.drawable.ic_category_other
+            ),
             TransactionCategoryModel(
                 getString(R.string.category_transport),
                 R.drawable.ic_category_transport
             ),
-            TransactionCategoryModel(getString(R.string.category_food), R.drawable.ic_category_food),
-            TransactionCategoryModel(getString(R.string.category_sport), R.drawable.ic_category_sport)
+            TransactionCategoryModel(
+                getString(R.string.category_food),
+                R.drawable.ic_category_food
+            ),
+            TransactionCategoryModel(
+                getString(R.string.category_sport),
+                R.drawable.ic_category_sport
+            )
         )
         viewModel.getCategoriesAndSetDefault(listOfDefaultCategories)
     }

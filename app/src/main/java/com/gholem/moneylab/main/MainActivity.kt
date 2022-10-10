@@ -2,16 +2,13 @@ package com.gholem.moneylab.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.gholem.moneylab.R
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
 import com.gholem.moneylab.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber.i
 import javax.inject.Inject
 
 @AndroidEntryPoint
