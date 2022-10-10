@@ -56,19 +56,14 @@ class ChartViewModel @Inject constructor(
 
         var startOfMonth = Calendar.getInstance()
         var endOfMonth = Calendar.getInstance()
-        startOfMonth.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)
+
+        startOfMonth.timeInMillis = startOfMonth.timeInMillis + (COUNT_MONTH)
         startOfMonth[Calendar.DAY_OF_MONTH] = 1
 
-        endOfMonth.timeInMillis = System.currentTimeMillis() + (COUNT_MONTH)
+        endOfMonth.timeInMillis = startOfMonth.timeInMillis + (COUNT_MONTH)
         endOfMonth[Calendar.DAY_OF_MONTH] = 31
 
-        var lista = mutableListOf<TransactionModel>()
-        if (list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis }.size == 0) {
-            lista = mutableListOf()
-        } else {
-            lista.addAll(list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis })
-        }
-        return lista
+        return list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis }
     }
 
     fun saveNewTransaction(item: TransactionModel) = viewModelScope.launch {
