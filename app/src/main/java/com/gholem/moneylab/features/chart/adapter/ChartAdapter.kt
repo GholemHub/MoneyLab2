@@ -10,7 +10,7 @@ import com.gholem.moneylab.features.chart.adapter.item.ChartItem
 import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 
 class ChartAdapter(
-    private var adapterData: MutableList<ChartItem>,
+    private val adapterData: MutableList<ChartItem>,
     val positionClickListener: (item: ChartItem) -> Unit
 ) : RecyclerView.Adapter<ChartViewHolder>() {
 

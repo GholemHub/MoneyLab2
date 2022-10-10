@@ -33,7 +33,6 @@ class ChartViewModel @Inject constructor(
         NavigationLiveData()
 
     private fun createNotDuplicatedTransactionModel(list: List<TransactionModel>): List<TransactionModel> {
-
         return sortTransactionList(list.groupBy { it.category }
             .mapValues { it.value.sumOf { it.amount } }.map {
                 TransactionModel(
@@ -54,14 +53,14 @@ class ChartViewModel @Inject constructor(
 
     private fun getMonthFromList(list: List<TransactionModel>): List<TransactionModel> {
 
-        var startOfMonth = Calendar.getInstance()
-        var endOfMonth = Calendar.getInstance()
+        val startOfMonth = Calendar.getInstance()
+        val endOfMonth = Calendar.getInstance()
 
         startOfMonth.timeInMillis = startOfMonth.timeInMillis + (COUNT_MONTH)
         startOfMonth[Calendar.DAY_OF_MONTH] = 1
 
-        endOfMonth.timeInMillis = startOfMonth.timeInMillis + (COUNT_MONTH)
-        endOfMonth[Calendar.DAY_OF_MONTH] = 31
+        endOfMonth.timeInMillis = endOfMonth.timeInMillis + (COUNT_MONTH)
+        endOfMonth[Calendar.DAY_OF_MONTH] = endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         return list.filter { it.date >= startOfMonth.timeInMillis && it.date <= endOfMonth.timeInMillis }
     }
@@ -77,7 +76,6 @@ class ChartViewModel @Inject constructor(
         viewModelScope.launch {
             _actions.send(this@send)
         }
-
 
     sealed class Action {
         data class FetchTransactions(val transactions: List<TransactionModel>) : Action()

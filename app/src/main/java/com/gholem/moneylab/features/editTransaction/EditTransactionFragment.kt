@@ -123,7 +123,7 @@ class EditTransactionFragment :
 
     private fun showDateDialog() {
         val rightNow: Calendar = Calendar.getInstance()
-        var dataPicker = DatePickerDialog(
+        val dataPicker = DatePickerDialog(
             requireContext(),
             this,
             rightNow.get(Calendar.YEAR),

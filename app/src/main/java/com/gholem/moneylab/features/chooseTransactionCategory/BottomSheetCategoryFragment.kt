@@ -44,7 +44,7 @@ class BottomSheetCategoryFragment :
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 is BottomSheetCategoryViewModel.Action.ShowData -> {
-                    var firstCategory: TransactionCategoryModel = action.list.first()
+                    val firstCategory: TransactionCategoryModel = action.list.first()
                     action.list.forEachIndexed { index, category ->
                         val categoryViewBinding = ItemBottomSheetCategoryBinding.inflate(
                             LayoutInflater.from(context),
@@ -54,8 +54,7 @@ class BottomSheetCategoryFragment :
                         categoryViewBinding.imageOfCategory.setImageResource(category.image)
                         categoryViewBinding.categoryName.text = category.categoryName
 
-                        if(index == 0){
-                            firstCategory = category
+                        if (index == 0) {
                             categoryViewBinding.deleteCategory.visibility = View.GONE
                         }
 

@@ -27,7 +27,7 @@ class CreateNewCategoryImageAdapter(val imageClickListener: (position: Int) -> U
             CreateNewCategoryViewHolder.NewCategoryImage(binding).also { viewHolder ->
                 binding.newCategoryImage.setOnClickListener {
                     val position = viewHolder.adapterPosition
-                    var categoryImageItem = adapterData[position] as NewCategoryImageItem.Image
+                    val categoryImageItem = adapterData[position] as NewCategoryImageItem.Image
                     imageClickListener.invoke(categoryImageItem.image)
                 }
             }

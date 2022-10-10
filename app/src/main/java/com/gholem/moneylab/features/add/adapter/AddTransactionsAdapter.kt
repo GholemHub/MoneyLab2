@@ -15,7 +15,7 @@ import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHol
 import java.util.*
 
 class AddTransactionsAdapter(
-    private var adapterData: MutableList<AddTransactionItem>,
+    private val adapterData: MutableList<AddTransactionItem>,
     private val categoryClickListener: () -> Unit,
     private val dateClickListener: (position: Int) -> Unit
 ) :

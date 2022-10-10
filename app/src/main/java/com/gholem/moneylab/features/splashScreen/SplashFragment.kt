@@ -27,7 +27,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         observeData()
         viewModel.init()
         viewModel.goToDashboard()
-        //googleSignInOptions()
         setDefaultCategories()
 
     }

@@ -4,8 +4,8 @@ import com.gholem.moneylab.R
 
 sealed class NewCategoryImageItem {
     data class Image(
-        var id: Int,
-        var image: Int
+        val id: Int,
+        val image: Int
     ) : NewCategoryImageItem()
 
     companion object {

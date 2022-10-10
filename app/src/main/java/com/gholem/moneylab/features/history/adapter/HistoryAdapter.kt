@@ -62,10 +62,10 @@ class HistoryAdapter(
         val viewHolder =
             HistoryViewHolder.HistoryTransactionViewHolder(binding)
         binding.root.setOnClickListener {
-            var historyTransactionItem =
+            val historyTransactionItem =
                 adapterData[viewHolder.adapterPosition] is HistoryTransactionItem.HistoryTransaction
             historyTransactionItem.also {
-                var transactionItem =
+                val transactionItem =
                     adapterData.get(viewHolder.adapterPosition) as HistoryTransactionItem.HistoryTransaction
                 editItemPosition.invoke(transactionItem.id)
             }
