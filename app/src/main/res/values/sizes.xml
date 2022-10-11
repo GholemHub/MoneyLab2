@@ -21,6 +21,8 @@
 
 
     <dimen name="margin_recycler_add_fragment">4dp</dimen>
+    <dimen name="margin_chart">24dp</dimen>
+
 
     <dimen name="app_text_size_header">18sp</dimen>
     <dimen name="app_text_size_micro">12sp</dimen>

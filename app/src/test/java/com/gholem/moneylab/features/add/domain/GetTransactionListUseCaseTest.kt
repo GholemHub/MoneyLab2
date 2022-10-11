@@ -13,7 +13,7 @@ import org.mockito.Mockito.*
 class GetTransactionListUseCaseTest {
 
     private val transactionStorageRepositoryMock = mock(TransactionStorageRepository::class.java)
-    private var useCase = GetTransactionListUseCase(transactionStorageRepositoryMock)
+    private val useCase = GetTransactionListUseCase(transactionStorageRepositoryMock)
 
     @Test
     fun `verify if getAll method was triggered`() = runTest {

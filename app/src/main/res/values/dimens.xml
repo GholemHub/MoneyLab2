@@ -8,4 +8,5 @@
       <dimen name="text_size_height">39dp</dimen>
       <dimen name="margin_1.5x">24dp</dimen>
       <dimen name="margin_2x">32dp</dimen>
-   </resources>
+    <dimen name="chart_height">300dp</dimen>
+</resources>

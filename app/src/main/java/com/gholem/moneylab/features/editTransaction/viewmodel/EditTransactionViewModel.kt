@@ -1,7 +1,5 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
-
-import android.text.Editable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
@@ -26,7 +24,7 @@ class EditTransactionViewModel @Inject constructor(
     private val bottomNavigationVisibilityBus: BottomNavigationVisibilityBus,
     private val updateTransactionModelUseCase: UpdateTransactionModelUseCase,
     private val deleteTransactionModelUseCase: DeleteTransactionModelUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
     override fun onCleared() {
         bottomNavigationVisibilityBus.changeVisibility(true)
@@ -60,7 +58,7 @@ class EditTransactionViewModel @Inject constructor(
         currentTransaction = currentTransaction.copy(amount = amount)
     }
 
-    fun changeTransactionDate(date: Long){
+    fun changeTransactionDate(date: Long) {
         currentTransaction = currentTransaction.copy(date = date)
     }
 
@@ -68,7 +66,7 @@ class EditTransactionViewModel @Inject constructor(
         currentTransaction = currentTransaction.copy(category = category)
     }
 
-    fun setCurrentTransaction(currentTransaction: TransactionModel){
+    fun setCurrentTransaction(currentTransaction: TransactionModel) {
         this.currentTransaction = currentTransaction
     }
 

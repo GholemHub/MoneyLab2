@@ -32,4 +32,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_category_header"
         tools:drawableEnd="@drawable/ic_category_transport" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

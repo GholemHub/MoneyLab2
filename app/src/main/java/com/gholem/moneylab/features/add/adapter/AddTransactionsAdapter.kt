@@ -5,22 +5,23 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.gholem.moneylab.R
-import com.gholem.moneylab.databinding.ItemCategoryBinding
-import com.gholem.moneylab.databinding.ItemNewTransactionBinding
-import com.gholem.moneylab.databinding.ItemTransactionBinding
+import com.gholem.moneylab.databinding.ItemAddCategoryBinding
+import com.gholem.moneylab.databinding.ItemAddNewTransactionBinding
+import com.gholem.moneylab.databinding.ItemAddTransactionBinding
 import com.gholem.moneylab.domain.model.TransactionCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
-import timber.log.Timber.i
 import java.util.*
 
 class AddTransactionsAdapter(
-    private var adapterData: MutableList<AddTransactionItem>,
+    private val adapterData: MutableList<AddTransactionItem>,
     private val categoryClickListener: () -> Unit,
     private val dateClickListener: (position: Int) -> Unit
 ) :
     RecyclerView.Adapter<AddTransactionViewHolder>() {
+
+    private val MAX_COUNT_TRANSACTIONS = 6
 
     private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
     private var listOfInvalidItemsIndexes = listOf<Int>()
@@ -33,7 +34,8 @@ class AddTransactionsAdapter(
         val isInvalidData = listOfInvalidItemsIndexes.contains(position)
 
         when (holder) {
-            is AddTransactionViewHolder.CategoryViewHolder -> holder.bind(adapterData[position] as AddTransactionItem.Category)
+            is AddTransactionViewHolder.CategoryViewHolder ->
+                holder.bind(adapterData[position] as AddTransactionItem.Category)
             is AddTransactionViewHolder.TransactionViewHolder -> {
                 holder.bind(
                     adapterData[position] as AddTransactionItem.Transaction,
@@ -48,9 +50,9 @@ class AddTransactionsAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
-            is AddTransactionItem.Category -> R.layout.item_category
-            is AddTransactionItem.Transaction -> R.layout.item_transaction
-            is AddTransactionItem.NewTransaction -> R.layout.item_new_transaction
+            is AddTransactionItem.Category -> R.layout.item_add_category
+            is AddTransactionItem.Transaction -> R.layout.item_add_transaction
+            is AddTransactionItem.NewTransaction -> R.layout.item_add_new_transaction
         }
     }
 
@@ -82,7 +84,7 @@ class AddTransactionsAdapter(
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-        val copyCategory = cat.copy(category = listOfCategory[categoryId.toInt() - 1])
+        val copyCategory = cat.copy(category = listOfCategory.first { it.id == categoryId })
         val categoryPosition = adapterData.indexOf(cat)
         adapterData[categoryPosition] = copyCategory
         notifyItemChanged(adapterData.indexOf(copyCategory))
@@ -129,9 +131,9 @@ class AddTransactionsAdapter(
         viewType: Int
     ): AddTransactionViewHolder {
         return when (viewType) {
-            R.layout.item_category -> createCategoryViewHolder(parent)
-            R.layout.item_transaction -> createTransactionViewHolder(parent)
-            R.layout.item_new_transaction -> createNewTransactionViewHolder(parent)
+            R.layout.item_add_category -> createCategoryViewHolder(parent)
+            R.layout.item_add_transaction -> createTransactionViewHolder(parent)
+            R.layout.item_add_new_transaction -> createNewTransactionViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -139,7 +141,7 @@ class AddTransactionsAdapter(
     private fun createCategoryViewHolder(
         parent: ViewGroup
     ): AddTransactionViewHolder.CategoryViewHolder {
-        val binding = ItemCategoryBinding.inflate(
+        val binding = ItemAddCategoryBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -156,7 +158,7 @@ class AddTransactionsAdapter(
         parent: ViewGroup
     ): AddTransactionViewHolder.TransactionViewHolder {
 
-        val binding = ItemTransactionBinding.inflate(
+        val binding = ItemAddTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -187,7 +189,7 @@ class AddTransactionsAdapter(
     private fun createNewTransactionViewHolder(
         parent: ViewGroup
     ): AddTransactionViewHolder.NewTransactionViewHolder {
-        val binding = ItemNewTransactionBinding.inflate(
+        val binding = ItemAddNewTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -197,8 +199,9 @@ class AddTransactionsAdapter(
             .also { viewHolder ->
                 binding.createNewTransactionBtn.setOnClickListener {
                     val startPosition = viewHolder.adapterPosition
-
-                    adapterData.add(startPosition, AddTransactionItem.Transaction())
+                    if (startPosition <= MAX_COUNT_TRANSACTIONS) {
+                        adapterData.add(startPosition, AddTransactionItem.Transaction())
+                    }
                     notifyDataSetChanged()
                 }
             }

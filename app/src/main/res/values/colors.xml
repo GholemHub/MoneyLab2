@@ -30,4 +30,12 @@
     <color name="cyan_gray">#FF018786</color>
     <!--Palette gray-->
     <color name="light_silver">#E4E4E4</color>
+
+    <color name="chart_green">#2ecc71</color>
+    <color name="chart_orange">#ff6600</color>
+    <color name="chart_yellow">#F5C700</color>
+    <color name="chart_red">#EEF61C1C</color>
+    <color name="chart_blue">#3498db</color>
+    <color name="chart_raspberry">#C1254E</color>
+    <color name="chart_purple">#FFBB86FC</color>
 </resources>

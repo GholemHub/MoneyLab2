@@ -2,17 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/chart_navigation"
+        android:id="@+id/history_navigation"
         android:icon="@drawable/ic_baseline_history_24"
-        android:title="History" />
-
+        android:title="@string/history" />
     <item
         android:id="@+id/add_navigation"
-        android:title="Add" />
-
+        android:title="@string/add" />
     <item
-        android:id="@+id/planning_navigation"
+        android:id="@+id/chart_navigation"
         android:icon="@drawable/ic_baseline_bar_chart_24"
-        android:title="Planning" />
+        android:title="@string/chart" />
 
 </menu>

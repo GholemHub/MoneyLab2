@@ -53,14 +53,14 @@
         android:id="@+id/set_date_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textSize="@dimen/app_text_size_micro"
         app:icon="@drawable/ic_calendar"
         app:iconPadding="@dimen/margin_0.5x"
         app:iconSize="@dimen/image_size_small"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/amount_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/item_transaction_header"
+        app:layout_constraintTop_toTopOf="@id/amount_input_layout"
         tools:text="25.07.22" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

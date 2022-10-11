@@ -19,4 +19,8 @@ class CategoryStorageRepositoryImpl @Inject constructor(
 
     override suspend fun getAll(): List<TransactionCategoryModel> =
         categoryDao.getAll().map { it.toModel() }
+
+    override suspend fun deleteItem(category: Int) {
+        categoryDao.deleteItem(category)
+    }
 }

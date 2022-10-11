@@ -17,8 +17,8 @@ class HistoryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         return when (viewType) {
-            R.layout.item_history_date -> createChartDateHolder(parent)
-            R.layout.item_history_transaction -> createChartTransactionHolder(parent)
+            R.layout.item_history_date -> createHistoryDateHolder(parent)
+            R.layout.item_history_transaction -> createHistoryTransactionHolder(parent)
 
             else -> throw IllegalArgumentException("Invalid view type $viewType, size ${adapterData.size}")
         }
@@ -40,7 +40,7 @@ class HistoryAdapter(
         }
     }
 
-    private fun createChartDateHolder(
+    private fun createHistoryDateHolder(
         parent: ViewGroup
     ): HistoryViewHolder.HistoryDateViewHolder {
         val binding = ItemHistoryDateBinding.inflate(
@@ -51,7 +51,7 @@ class HistoryAdapter(
         return HistoryViewHolder.HistoryDateViewHolder(binding)
     }
 
-    private fun createChartTransactionHolder(
+    private fun createHistoryTransactionHolder(
         parent: ViewGroup
     ): HistoryViewHolder.HistoryTransactionViewHolder {
         val binding = ItemHistoryTransactionBinding.inflate(
@@ -62,10 +62,10 @@ class HistoryAdapter(
         val viewHolder =
             HistoryViewHolder.HistoryTransactionViewHolder(binding)
         binding.root.setOnClickListener {
-            var historyTransactionItem =
+            val historyTransactionItem =
                 adapterData[viewHolder.adapterPosition] is HistoryTransactionItem.HistoryTransaction
             historyTransactionItem.also {
-                var transactionItem =
+                val transactionItem =
                     adapterData.get(viewHolder.adapterPosition) as HistoryTransactionItem.HistoryTransaction
                 editItemPosition.invoke(transactionItem.id)
             }

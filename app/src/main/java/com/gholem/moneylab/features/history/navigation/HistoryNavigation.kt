@@ -13,7 +13,7 @@ class HistoryNavigation @Inject constructor(
 
         when (event) {
             is HistoryNavigationEvent.ToEditTransaction -> {
-                navControllerWrapper.navigate(actionHistoryFragmentToEditTransactionFragment(event.pos))
+                navControllerWrapper.navigate(actionHistoryFragmentToEditTransactionFragment(event.position))
             }
         }
     }

@@ -30,6 +30,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
             { showCategoryBottomSheet() },
             { showDateDialog(it) })
     }
+
     private fun showCategoryBottomSheet() {
         viewModel.navigateToCategoryBottomSheet()
     }
