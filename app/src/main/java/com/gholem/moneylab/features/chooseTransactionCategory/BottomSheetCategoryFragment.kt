@@ -12,6 +12,7 @@ import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomS
 import com.gholem.moneylab.features.chooseTransactionCategory.viewmodel.BottomSheetCategoryViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 
 @AndroidEntryPoint
 class BottomSheetCategoryFragment :
@@ -66,6 +67,8 @@ class BottomSheetCategoryFragment :
                             navigateToAddTransaction()
                         }
                         categoryViewBinding.deleteCategory.setOnClickListener {
+
+
                             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                                 KEY_CATEGORY,
                                 firstCategory.id
@@ -75,7 +78,9 @@ class BottomSheetCategoryFragment :
                                 viewModel.deleteCategory(
                                     categoryToDelete.toInt()
                                 )
+                                viewModel.getCategories()
                             }
+
                             navigateToAddTransaction()
                         }
                         getViewBinding().bottomSheetCategoriesContainer.addView(categoryViewBinding.root)

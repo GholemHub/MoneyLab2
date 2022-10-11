@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,7 +82,7 @@ class EditTransactionViewModel @Inject constructor(
 
     fun setIdOfCategory(result: Long) = viewModelScope.launch {
         val categories = getCategoryListUseCase.run(Unit)
-        Action.GetCurrentCategory(categories[result.toInt()]).send()
+        Action.GetCurrentCategory(categories.first { it.id == result }).send()
     }
 
     fun onDoneButtonClick(amount: String) {

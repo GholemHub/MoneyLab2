@@ -74,7 +74,7 @@ class EditTransactionFragment :
             KEY_CATEGORY
         )
             ?.observe(viewLifecycleOwner) { result ->
-                viewModel.setIdOfCategory(result - 1)
+                viewModel.setIdOfCategory(result)
             }
     }
 
