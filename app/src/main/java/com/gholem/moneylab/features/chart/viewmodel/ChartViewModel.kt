@@ -46,11 +46,11 @@ class ChartViewModel @Inject constructor(
             })
     }
 
-    private fun convertDate(dateInMilliseconds: String, dateFormat: String?): String? {
+    private fun getDateOfCurrentMonth(dateInMilliseconds: String, dateFormat: String?): String? {
         return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
     }
 
-    private fun convertDate(): String? {
+    private fun getDateOfCurrentMonth(): String? {
         getTransactionList()
         return setMonth()
     }
@@ -58,7 +58,7 @@ class ChartViewModel @Inject constructor(
         var lastMonth = System.currentTimeMillis()
         lastMonth = lastMonth + COUNT_MONTH
 
-        return convertDate(lastMonth.toString(), "MM/yyyy")
+        return getDateOfCurrentMonth(lastMonth.toString(), "MM/yyyy")
     }
 
     private fun sortTransactionList(listOfTransaction: List<TransactionModel>) =
@@ -92,11 +92,11 @@ class ChartViewModel @Inject constructor(
 
     fun deductCountMonth(): String? {
         COUNT_MONTH -= LAST_MONTH
-        return  convertDate()
+        return  getDateOfCurrentMonth()
     }
     fun sumCountMonth(): String? {
         COUNT_MONTH += LAST_MONTH
-        return convertDate()
+        return getDateOfCurrentMonth()
     }
 
     private fun Action.send() =
