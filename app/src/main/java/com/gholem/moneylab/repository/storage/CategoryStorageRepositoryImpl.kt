@@ -23,4 +23,8 @@ class CategoryStorageRepositoryImpl @Inject constructor(
     override suspend fun deleteItem(category: Int) {
         categoryDao.deleteItem(category)
     }
+
+    override suspend fun updateItem(category: TransactionCategoryModel) {
+        categoryDao.update(CategoryEntity.from(category))
+    }
 }

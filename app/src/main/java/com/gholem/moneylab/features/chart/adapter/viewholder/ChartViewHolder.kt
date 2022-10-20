@@ -1,5 +1,7 @@
 package com.gholem.moneylab.features.chart.adapter.viewholder
 
+import android.graphics.Paint
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,7 @@ import com.github.mikephil.charting.data.*
 sealed class ChartViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
     val resources = binding.root.resources
+
 
     class ChartEmptyViewHolder(
         private val binding: ItemChartEmptyBinding
@@ -53,11 +56,17 @@ sealed class ChartViewHolder(binding: ViewBinding) :
                 ChartColors.values().map { resources.getColor(it.colorResId, resources.newTheme()) }
                     .toIntArray(), 1000
             )
-            pieDataSet.valueTextSize = 13f
+            pieDataSet.valueTextSize = 10f
+
+            var totalExpense = 0
+            data.transactionModelList.forEach {
+                totalExpense += it.amount
+            }
 
             binding.pieChart.data = PieData(pieDataSet)
             binding.pieChart.animateXY(1000, 3000)
-            binding.pieChart.description.isEnabled = false
+            binding.pieChart.description.textSize = resources.getDimension(R.dimen.chart_total_expense_size_default)
+            binding.pieChart.description.text = "$totalExpense    "
         }
     }
 
@@ -89,6 +98,19 @@ sealed class ChartViewHolder(binding: ViewBinding) :
             binding.barChart.animateXY(1000, 3000)
             binding.barChart.data = BarData(barDataSet)
             binding.barChart.description.isEnabled = false
+        }
+    }
+
+    class ChartTotalExpenseViewHolder(
+        private val binding: ItemChartTotalexpenseBinding
+    ) : ChartViewHolder(binding) {
+
+        fun bind(data: ChartItem.TotalExpense) {
+            var totalExpense = 0
+            data.transactionModel.forEach {
+                totalExpense += it.amount
+            }
+            binding.totalexpenseChart.text = totalExpense.toString()
         }
     }
 

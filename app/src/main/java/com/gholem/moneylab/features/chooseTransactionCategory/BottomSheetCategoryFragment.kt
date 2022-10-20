@@ -73,11 +73,13 @@ class BottomSheetCategoryFragment :
                                 KEY_CATEGORY,
                                 firstCategory.id
                             )
-                            val categoryItem = action.list.first { it.id == category.id }
+                            var categoryItem = action.list.first { it.id == category.id }
                             categoryItem.id?.let { categoryToDelete ->
                                 viewModel.deleteCategory(
                                     categoryToDelete.toInt()
                                 )
+                                categoryItem = firstCategory
+                                viewModel.updateCategoryList(categoryItem)
                                 viewModel.getCategories()
                             }
 

@@ -14,6 +14,7 @@ data class TransactionEntity(
 ) {
 
     fun map(categoryEntity: CategoryEntity): TransactionModel =
+
         TransactionModel(
             category = TransactionCategoryModel(
                 categoryName = categoryEntity.name,

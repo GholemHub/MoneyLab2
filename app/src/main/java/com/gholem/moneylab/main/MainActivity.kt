@@ -1,6 +1,8 @@
 package com.gholem.moneylab.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             savedInstanceState?.getBoolean(BOTTOM_NAVIGATION_VISIBILITY_KEY) ?: false
         )
     }
+
 
     //Can change stuff when screen is rotating(or when screen is reloaded)
     override fun onSaveInstanceState(outState: Bundle) {

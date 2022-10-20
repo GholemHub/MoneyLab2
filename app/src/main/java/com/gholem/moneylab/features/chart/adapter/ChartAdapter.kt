@@ -26,6 +26,7 @@ class ChartAdapter(
             is ChartViewHolder.ChartPieViewHolder -> holder.bind(adapterData[position] as ChartItem.Pie)
             is ChartViewHolder.ChartBarViewHolder -> holder.bind(adapterData[position] as ChartItem.Bar)
             is ChartViewHolder.ChartDataRetrofitViewHolder -> holder.bind(adapterData[position] as ChartItem.Transaction)
+            is ChartViewHolder.ChartTotalExpenseViewHolder -> holder.bind(adapterData[position] as ChartItem.TotalExpense)
 
         }
     }
@@ -37,6 +38,7 @@ class ChartAdapter(
             is ChartItem.Bar -> R.layout.item_chart_bar
             is ChartItem.Transaction -> R.layout.item_chart_transaction
             is ChartItem.Empty -> R.layout.item_chart_empty
+            is ChartItem.TotalExpense -> R.layout.item_chart_totalexpense
         }
     }
 
@@ -52,6 +54,7 @@ class ChartAdapter(
             R.layout.item_chart_bar -> createBarViewHolder(parent)
             R.layout.item_chart_transaction -> createTransactionViewHolder(parent)
             R.layout.item_chart_empty -> createEmptyViewHolder(parent)
+            R.layout.item_chart_totalexpense -> createTotalExpenseViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -71,6 +74,18 @@ class ChartAdapter(
                 positionClickListener.invoke(adapterData[position])
             }
         }
+    }
+
+    private fun createTotalExpenseViewHolder(
+        parent: ViewGroup
+    ): ChartViewHolder.ChartTotalExpenseViewHolder {
+        val binding = ItemChartTotalexpenseBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return ChartViewHolder.ChartTotalExpenseViewHolder(binding)
     }
 
     private fun createEmptyViewHolder(
@@ -125,6 +140,7 @@ class ChartAdapter(
         adapterData.clear()
 
         if (list.isNotEmpty()) {
+            //adapterData.add(ChartItem.TotalExpense(list))
             adapterData.add(ChartItem.Pie(list))
             adapterData.add(ChartItem.Bar(list))
             adapterData.addAll(list.map { ChartItem.Category(it) })

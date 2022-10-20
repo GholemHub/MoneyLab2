@@ -46,7 +46,7 @@ class ChartViewModel @Inject constructor(
             })
     }
 
-    private fun getDateOfCurrentMonth(dateInMilliseconds: String, dateFormat: String?): String? {
+    private fun convertDateOfCurrentMonth(dateInMilliseconds: String, dateFormat: String?): String? {
         return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
     }
 
@@ -54,11 +54,12 @@ class ChartViewModel @Inject constructor(
         getTransactionList()
         return setMonth()
     }
+
     private fun setMonth(): String? {
         var lastMonth = System.currentTimeMillis()
         lastMonth = lastMonth + COUNT_MONTH
 
-        return getDateOfCurrentMonth(lastMonth.toString(), "MM/yyyy")
+        return convertDateOfCurrentMonth(lastMonth.toString(), "MM/yyyy")
     }
 
     private fun sortTransactionList(listOfTransaction: List<TransactionModel>) =
@@ -70,6 +71,13 @@ class ChartViewModel @Inject constructor(
         val last30Days = getMonthFromList(listOfTransaction)
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
         Action.ShowTransactions(listOfSortedTransactions).send()
+    }
+    private fun getTransactionListToExport() = viewModelScope.launch {
+
+        val listOfTransaction = getTransactionListUseCase.run(Unit)
+        val last30Days = getMonthFromList(listOfTransaction)
+        val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
+        Action.ExportDataToExcel(listOfSortedTransactions).send()
     }
 
     private fun getMonthFromList(list: List<TransactionModel>): List<TransactionModel> {
@@ -98,6 +106,13 @@ class ChartViewModel @Inject constructor(
         COUNT_MONTH += LAST_MONTH
         return getDateOfCurrentMonth()
     }
+    fun nowCountMonth(): String? {
+        return getDateOfCurrentMonth()
+    }
+
+    fun exportDataToExcel(){
+        getTransactionListToExport()
+    }
 
     private fun Action.send() =
         viewModelScope.launch {
@@ -107,5 +122,6 @@ class ChartViewModel @Inject constructor(
     sealed class Action {
         data class FetchTransactions(val transactions: List<TransactionModel>) : Action()
         data class ShowTransactions(val list: List<TransactionModel>) : Action()
+        data class ExportDataToExcel(val list: List<TransactionModel>) : Action()
     }
 }

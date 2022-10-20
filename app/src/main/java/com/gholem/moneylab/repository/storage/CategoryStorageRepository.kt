@@ -11,4 +11,6 @@ interface CategoryStorageRepository {
     suspend fun getAll(): List<TransactionCategoryModel>
 
     suspend fun deleteItem(category: Int)
+
+    suspend fun updateItem(category: TransactionCategoryModel)
 }

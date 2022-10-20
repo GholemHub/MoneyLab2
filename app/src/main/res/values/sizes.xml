@@ -29,5 +29,6 @@
     <dimen name="app_text_size_macro">10sp</dimen>
     <dimen name="app_text_size_small">14sp</dimen>
     <dimen name="app_text_size_default">16sp</dimen>
+    <dimen name="chart_total_expense_size_default">26sp</dimen>
 
 </resources>

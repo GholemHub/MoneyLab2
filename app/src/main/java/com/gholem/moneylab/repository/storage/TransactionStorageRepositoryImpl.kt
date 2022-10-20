@@ -4,6 +4,7 @@ import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.dao.CategoryDao
 import com.gholem.moneylab.repository.storage.dao.TransactionDao
 import com.gholem.moneylab.repository.storage.entity.TransactionEntity
+import timber.log.Timber.i
 import javax.inject.Inject
 
 class TransactionStorageRepositoryImpl @Inject constructor(
@@ -28,7 +29,13 @@ class TransactionStorageRepositoryImpl @Inject constructor(
 
     override suspend fun getItemById(id: Long): TransactionModel {
         val item = transactionDao.getItem(id)
-        return item.map(categoryDao.getById(item.categoryId))
+        var categoryDaoId = categoryDao.getById(item.categoryId)
+        if(categoryDaoId == null){
+            categoryDaoId = categoryDao.getById(categoryDao.getAll().first().id)
+        }else{
+            categoryDaoId = categoryDao.getById(item.categoryId)
+        }
+        return item.map(categoryDaoId)
     }
 
     override suspend fun getAll(): List<TransactionModel> {
@@ -36,8 +43,17 @@ class TransactionStorageRepositoryImpl @Inject constructor(
         val transactions = transactionDao.getAll()
 
         return transactions.map { transaction ->
-            val category = categoryDao.getById(transaction.categoryId)
-            transaction.map(category)
+            val categoryListDao = categoryDao.getAll()
+            val itemWithIdOfCategory = categoryListDao.firstOrNull {
+                it.id == transaction.categoryId
+            }
+            if (itemWithIdOfCategory != null) {
+                val category = categoryDao.getById(transaction.categoryId)
+                transaction.map(category)
+            } else {
+                val category = categoryDao.getById(categoryListDao.first().id)
+                transaction.map(category)
+            }
         }
     }
 }

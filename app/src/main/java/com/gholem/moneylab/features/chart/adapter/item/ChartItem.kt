@@ -19,5 +19,9 @@ sealed class ChartItem {
         val transactionModel: TransactionModel
     ) : ChartItem()
 
+    data class TotalExpense(
+        val transactionModel: List<TransactionModel>
+    ) : ChartItem()
+
     object Empty: ChartItem()
 }
