@@ -3,7 +3,7 @@ package com.gholem.moneylab.features.createNewCategory.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,7 +50,7 @@ class CreateNewCategoryViewModelTest {
     @Test
     fun `verify invocations when saveCategoryAndFinish method is called`() = runTest {
         /* Given */
-        val transactionCategory = TransactionCategoryModel("123", 1)
+        val transactionCategory = ExcomeCategoryModel("123", 1)
         `when`(insertCategoryModelUseCaseMock.run(transactionCategory)).thenReturn(1L)
 
         /* When */

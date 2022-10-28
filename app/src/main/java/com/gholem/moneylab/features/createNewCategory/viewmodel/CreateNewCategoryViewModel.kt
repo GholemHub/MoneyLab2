@@ -3,7 +3,8 @@ package com.gholem.moneylab.features.createNewCategory.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.InsertCategoryModelUseCase
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,8 @@ class CreateNewCategoryViewModel @Inject constructor(
         navigation.emit(CreateNewCategoryNavigationEvent.ToImagePicker)
     }
 
-    fun saveCategoryAndFinish(category: TransactionCategoryModel) = viewModelScope.launch {
+    fun saveCategoryAndFinish(category: CategoryItem) = viewModelScope.launch {
+
         val categoryId = insertCategoryModelUseCase.run(category)
         Action.ReturnCategoryId(categoryId).send()
 

@@ -17,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/category_name"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,6 +37,8 @@
         android:layout_marginTop="@dimen/margin_0.5x"
         android:layout_marginBottom="@dimen/margin_0.5x"
         android:background="@drawable/ic_baseline_close_24"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

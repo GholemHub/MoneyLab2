@@ -17,7 +17,7 @@ interface CategoryDao {
     suspend fun deleteItem(id: Int)
 
     @Insert
-    suspend fun insert(categoryEntities: List<CategoryEntity>)
+    suspend fun insertList(categoryEntities: List<CategoryEntity>)
 
     @Query("SELECT * FROM category_table")
     suspend fun getAll(): List<CategoryEntity>

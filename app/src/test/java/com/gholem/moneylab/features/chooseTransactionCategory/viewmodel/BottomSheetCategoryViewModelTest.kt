@@ -2,8 +2,7 @@ package com.gholem.moneylab.features.chooseTransactionCategory.viewmodel
 
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.arch.nav.NavigationLiveData
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
 import com.gholem.moneylab.features.chooseTransactionCategory.domain.GetCategoryListUseCase
 import com.gholem.moneylab.features.chooseTransactionCategory.navigation.BottomSheetCategoryEvent
@@ -56,7 +55,7 @@ class BottomSheetCategoryViewModelTest {
     @Test
     fun `verify invocations when getCategory method is called`() = runTest {
         /* Given */
-        val transactionCategory = TransactionCategoryModel(
+        val transactionCategory = ExcomeCategoryModel(
             "123",
             1
         )

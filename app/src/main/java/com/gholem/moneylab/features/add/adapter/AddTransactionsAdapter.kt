@@ -8,7 +8,9 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemAddCategoryBinding
 import com.gholem.moneylab.databinding.ItemAddNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemAddTransactionBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
+import com.gholem.moneylab.domain.model.CategoryItem.IncomeCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.adapter.viewholder.AddTransactionViewHolder
@@ -23,7 +25,7 @@ class AddTransactionsAdapter(
 
     private val MAX_COUNT_TRANSACTIONS = 6
 
-    private var listOfCategory: List<TransactionCategoryModel> = mutableListOf()
+    private var listOfCategory: List<CategoryItem> = mutableListOf()
     private var listOfInvalidItemsIndexes = listOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddTransactionViewHolder {
@@ -56,20 +58,29 @@ class AddTransactionsAdapter(
         }
     }
 
-    fun updateData(listOfTrCategory: List<TransactionCategoryModel>) {
+    fun updateData(listOfTrCategory: List<CategoryItem>) {
         listOfCategory = listOfTrCategory
         notifyDataSetChanged()
     }
 
-    fun setDate(position: Int, day: Int, month: Int, year: Int) {
+    fun setDate(
+        position: Int,
+        day: Int,
+        month: Int,
+        year: Int,
+        hour: Int,
+        minute: Int,
+        sec: Int,
+
+        ) {
         val transaction = adapterData[position]
                 as? AddTransactionItem.Transaction
 
         val rightNow: Calendar = Calendar.getInstance()
         rightNow.set(Calendar.MILLISECOND, 0)
-        rightNow.set(Calendar.SECOND, 0)
-        rightNow.set(Calendar.MINUTE, 0)
-        rightNow.set(Calendar.HOUR, 0)
+        rightNow.set(Calendar.SECOND, sec)
+        rightNow.set(Calendar.MINUTE, minute)
+        rightNow.set(Calendar.HOUR, hour)
         rightNow.set(Calendar.DAY_OF_MONTH, day)
         rightNow.set(Calendar.MONTH, month)
         rightNow.set(Calendar.YEAR, year)
@@ -84,7 +95,18 @@ class AddTransactionsAdapter(
         val cat = adapterData.first {
             it is AddTransactionItem.Category
         } as AddTransactionItem.Category
-        val copyCategory = cat.copy(category = listOfCategory.first { it.id == categoryId })
+
+        val copyCategory = cat.copy(category = listOfCategory.first {
+            when(it){
+                is ExpenseCategoryModel -> {
+                    it.id == categoryId
+                }
+                is CategoryItem.IncomeCategoryModel -> {
+                    it.id == categoryId
+                }
+            }
+
+        })
         val categoryPosition = adapterData.indexOf(cat)
         adapterData[categoryPosition] = copyCategory
         notifyItemChanged(adapterData.indexOf(copyCategory))
@@ -92,7 +114,7 @@ class AddTransactionsAdapter(
 
     fun getTransactionListData(): List<TransactionModel> {
         val listTransactionModel = mutableListOf<TransactionModel>().apply {
-            var currentCategory: TransactionCategoryModel? = null
+            var currentCategory: CategoryItem? = null
 
             adapterData.forEach { item ->
                 when (item) {
@@ -100,13 +122,19 @@ class AddTransactionsAdapter(
                         currentCategory = item.category
                     }
                     is AddTransactionItem.Transaction -> {
-                        this.add(mapToTransaction(currentCategory, item))
+                        when(currentCategory){
+                            is ExpenseCategoryModel -> {
+                                this.add(mapToTransaction(currentCategory as ExpenseCategoryModel, item))
+                            }
+                            is IncomeCategoryModel -> {
+                                this.add(mapToTransaction(currentCategory as IncomeCategoryModel, item))
+                            }
+                        }
                     }
                     else -> Unit // Do nothing
                 }
             }
         }
-
         return listTransactionModel
     }
 
@@ -116,15 +144,31 @@ class AddTransactionsAdapter(
     }
 
     private fun mapToTransaction(
-        category: TransactionCategoryModel?,
+        category: CategoryItem,
         item: AddTransactionItem.Transaction
-    ) =
-        TransactionModel(
-            category = category ?: listOfCategory[0],
-            amount = item.amount.ifBlank { "0" }.toInt(),
-            date = item.date,
-            transactionId = 0
-        )
+    ) : TransactionModel {
+        return when(category){
+            is ExpenseCategoryModel -> {
+                TransactionModel(
+                    category = category,
+                    amount = item.amount.ifBlank { "0" }.toInt(),
+                    date = item.date,
+                    transactionId = 0
+                )
+            }
+            is IncomeCategoryModel -> {
+                TransactionModel(
+                    category = category,
+                    amount = item.amount.ifBlank { "0" }.toInt(),
+                    date = item.date,
+                    transactionId = 0
+                )
+            }
+        }
+
+    }
+
+
 
     private fun createViewHolders(
         parent: ViewGroup,

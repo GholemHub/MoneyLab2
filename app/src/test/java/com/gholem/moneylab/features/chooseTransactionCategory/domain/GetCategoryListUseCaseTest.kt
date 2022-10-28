@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.chooseTransactionCategory.domain
 
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.repository.storage.CategoryStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -33,11 +33,11 @@ class GetCategoryListUseCaseTest {
     fun `verify result if run method is called`() = runTest {
         /* Given */
         val categoryList = listOf(
-            TransactionCategoryModel(
+            ExcomeCategoryModel(
                 categoryName = "Cat1",
                 image = 0
             ),
-            TransactionCategoryModel(
+            ExcomeCategoryModel(
                 categoryName = "Cat2",
                 image = 1
             )
@@ -51,13 +51,13 @@ class GetCategoryListUseCaseTest {
         assertEquals(2, result.size)
 
         assertEquals(
-            TransactionCategoryModel(
+            ExcomeCategoryModel(
                 categoryName = "Cat1",
                 image = 0
             ), result.first()
         )
         assertEquals(
-            TransactionCategoryModel(
+            ExcomeCategoryModel(
                 categoryName = "Cat2",
                 image = 1
             ), result.last()

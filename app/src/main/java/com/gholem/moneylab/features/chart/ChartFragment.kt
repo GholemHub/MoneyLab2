@@ -1,20 +1,19 @@
 package com.gholem.moneylab.features.chart
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.content.res.Configuration
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentChartBinding
+import com.gholem.moneylab.domain.model.CategoryItem
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chart.adapter.ChartAdapter
 import com.gholem.moneylab.features.chart.adapter.item.ChartItem
+import com.gholem.moneylab.features.chart.domain.FileOpen
 import com.gholem.moneylab.features.chart.navigation.ChartNavigation
 import com.gholem.moneylab.features.chart.viewmodel.ChartViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
@@ -26,8 +25,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import timber.log.Timber.i
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
@@ -35,9 +32,10 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     lateinit var chartNavigation: ChartNavigation
     private val viewModel: ChartViewModel by viewModels()
     private lateinit var viewBinding: FragmentChartBinding
+    private lateinit var currentMonth: String
 
     private val dataAdapter: ChartAdapter by lazy {
-        ChartAdapter(viewModel.adapterData) {
+        ChartAdapter(viewModel.adapterData, ) {
             saveTransaction(it as ChartItem.Transaction)
         }
     }
@@ -48,7 +46,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
                 viewModel.exportDataToExcel()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -56,8 +53,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_navigation_menu, menu)
     }
-
-    private lateinit var currentMonth: String
 
     override fun constructViewBinding(): FragmentChartBinding =
         FragmentChartBinding.inflate(layoutInflater)
@@ -89,75 +84,51 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
 
         val sheet = wb.createSheet(currentMonth)
 
-        var row: Row = sheet.createRow(0)
-        val cell: Cell = row.createCell(0)
-        cell.setCellValue("Category")
-        row.createCell(1).setCellValue(currentMonth)
+        var mainRow: Row = sheet.createRow(0)
+        val IncomeCell: Cell = mainRow.createCell(0)
+        IncomeCell.setCellValue("Income")
+        mainRow.createCell(1).setCellValue(currentMonth)
 
-        list.forEachIndexed { index, transactionModel ->
-            val row: Row = sheet.createRow(index + 1)
-            row.createCell(0).setCellValue(transactionModel.category.categoryName)
-            row.createCell(1).setCellValue(transactionModel.amount.toString())
+        val ExpendsCell: Cell = mainRow.createCell(3)
+        ExpendsCell.setCellValue("Expends")
+        mainRow.createCell(4).setCellValue(currentMonth)
+        var expenseIterator = 0
+        var incomeIterator = 0
+
+        list.forEachIndexed { i, it ->
+            mainRow = sheet.createRow(i + 1)
         }
-        row = sheet.createRow(list.size + 1)
+        var expense = 0
+        var income = 0
+        list.forEach { transactionModel ->
+            var rowIncome: Row = sheet.getRow(incomeIterator + 1)
+            var rowExpense: Row = sheet.getRow(expenseIterator + 1)
+            rowIncome.createCell(1).setCellValue(income.toString())
+            when (transactionModel.category) {
+                is CategoryItem.ExpenseCategoryModel -> {
+                    expense += transactionModel.amount
+                    rowExpense.createCell(3).setCellValue(transactionModel.category.categoryName)
+                    rowExpense.createCell(4).setCellValue(transactionModel.amount.toString())
+                    expenseIterator++
+                }
+                is CategoryItem.IncomeCategoryModel -> {
+                    income += transactionModel.amount
+                    rowIncome.createCell(0).setCellValue(transactionModel.category.categoryName)
+                    rowIncome.createCell(1).setCellValue(transactionModel.amount.toString())
+                    incomeIterator++
+                }
+            }
+            rowIncome = sheet.getRow(incomeIterator + 1)
+            rowIncome.createCell(1).setCellValue(income.toString())
 
-        var totalExpense = 0
-        list.forEach {
-            totalExpense += it.amount
+            rowExpense = sheet.getRow(expenseIterator + 1)
+            rowExpense.createCell(4).setCellValue(expense.toString())
+
         }
-
-        row.createCell(1).setCellValue(totalExpense.toString())
 
         FileOutputStream(file).use { fileOut -> wb.write(fileOut) }
-////////////////////////
 
-//        val launcher =
-//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-//                if (result.resultCode == Activity.RESULT_OK) {
-//                    val intent = result.data
-//                    // handle stuff here
-//                }
-//            }
-//
-//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-//        val mimeType = arrayOf(
-//            "application/msword",
-//            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  // .doc & .docx
-//            "application/vnd.ms-powerpoint",
-//            "application/vnd.openxmlformats-officedocument.presentationml.presentation",  // .ppt & .pptx
-//            "application/vnd.ms-excel",
-//            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",  // .xls & .xlsx
-//            "text/plain",
-//            "application/pdf",
-//            "application/zip"
-//        ).joinToString("|")
-//        intent.type = mimeType
-//        intent.addCategory(Intent.CATEGORY_OPENABLE)
-//        val chooserIntent = Intent
-//            .createChooser(intent, "example")
-//        launcher.launch(chooserIntent)
-
-        i("THE PASS ${file.path}")
         FileOpen.openFile(requireContext(), file);
-        
-    }
-
-    object FileOpen {
-        @Throws(IOException::class)
-        fun openFile(context: Context, url: File) {
-            val uri = FileProvider.getUriForFile(
-                context,
-                context.applicationContext.packageName.toString() + ".provider",
-                url
-            )
-            val intent = Intent(Intent.ACTION_VIEW)
-            if (url.toString().contains(".xlsx")) {
-                // Excel file
-                intent.setDataAndType(uri, "application/vnd.ms-excel")
-            }
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            context.startActivity(intent)
-        }
     }
 
     private fun clickListeners() {
@@ -195,4 +166,3 @@ class ChartFragment : BaseFragment<FragmentChartBinding, ChartViewModel>() {
         }
     }
 }
-

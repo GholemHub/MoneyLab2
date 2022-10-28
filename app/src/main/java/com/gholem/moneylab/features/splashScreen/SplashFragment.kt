@@ -6,7 +6,8 @@ import androidx.fragment.app.viewModels
 import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentSplashBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem.IncomeCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.features.splashScreen.navigation.SplashNavigation
 import com.gholem.moneylab.features.splashScreen.viewmodel.SplashViewModel
 import com.gholem.moneylab.util.observeWithLifecycle
@@ -33,21 +34,25 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
     private fun setDefaultCategories() {
         val listOfDefaultCategories = listOf(
-            TransactionCategoryModel(
+            ExpenseCategoryModel(
                 getString(R.string.category_others),
                 R.drawable.ic_category_other
             ),
-            TransactionCategoryModel(
+            ExpenseCategoryModel(
                 getString(R.string.category_transport),
                 R.drawable.ic_category_transport
             ),
-            TransactionCategoryModel(
+            ExpenseCategoryModel(
                 getString(R.string.category_food),
                 R.drawable.ic_category_food
             ),
-            TransactionCategoryModel(
+            ExpenseCategoryModel(
                 getString(R.string.category_sport),
                 R.drawable.ic_category_sport
+            ),
+            IncomeCategoryModel(
+                getString(R.string.salory),
+                R.drawable.attach_money_24px
             )
         )
         viewModel.getCategoriesAndSetDefault(listOfDefaultCategories)

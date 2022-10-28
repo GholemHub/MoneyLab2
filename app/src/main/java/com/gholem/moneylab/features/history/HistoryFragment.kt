@@ -1,7 +1,9 @@
 package com.gholem.moneylab.features.history
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentHistoryBinding
 import com.gholem.moneylab.features.history.adapter.HistoryAdapter
@@ -58,6 +60,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding, HistoryViewModel>()
             when (action) {
                 is HistoryViewModel.Action.ShowDataHistoryTransactionItem -> {
                     dataAdapter.updateData(action.list)
+                    (activity as AppCompatActivity).supportActionBar?.setTitle("${getString(R.string.toolbar)} ${viewModel.getAllExpends(action.list)}")
                 }
             }
         }

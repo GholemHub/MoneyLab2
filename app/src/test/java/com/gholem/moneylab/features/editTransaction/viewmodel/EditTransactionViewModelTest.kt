@@ -1,11 +1,10 @@
 package com.gholem.moneylab.features.editTransaction.viewmodel
 
-import android.text.Editable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionItemUseCase
@@ -224,7 +223,7 @@ class EditTransactionViewModelTest {
         }
     }
 
-    private val transactionCategory = TransactionCategoryModel(
+    private val transactionCategory = ExcomeCategoryModel(
         categoryName = "categoryName",
         image = 1,
         id = 5

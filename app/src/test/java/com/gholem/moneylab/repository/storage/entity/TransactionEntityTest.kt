@@ -1,7 +1,7 @@
 package com.gholem.moneylab.repository.storage.entity
 
 import com.gholem.moneylab.domain.model.TransactionModel
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,7 +10,7 @@ class TransactionEntityTest {
     @Test
     fun `map Transaction to TransactionEntity`() {
         /* Given */
-        val category = TransactionCategoryModel("1", 1, 1)
+        val category = ExcomeCategoryModel("1", 1, 1)
         val transaction = TransactionModel(category, 2, 3, 1)
 
         /* When */
@@ -32,7 +32,7 @@ class TransactionEntityTest {
         /* Then */
         assertEquals(
             TransactionModel(
-                category = TransactionCategoryModel("name", 1, 1),
+                category = ExcomeCategoryModel("name", 1, 1),
                 amount = 1,
                 date = 1,
                 1

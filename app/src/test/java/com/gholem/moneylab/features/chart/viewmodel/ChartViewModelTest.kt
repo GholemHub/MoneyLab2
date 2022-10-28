@@ -3,7 +3,7 @@ package com.gholem.moneylab.features.chart.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.domain.InsertTransactionModelUseCase
@@ -75,11 +75,11 @@ class ChartViewModelTest {
         }
 
     private val chartCategoryModelList: List<TransactionModel> = listOf(
-        TransactionModel(TransactionCategoryModel("", 1), 1, 1, 1)
+        TransactionModel(ExcomeCategoryModel("", 1), 1, 1, 1)
     )
 
     private val list: List<TransactionModel> = listOf(
-        TransactionModel(TransactionCategoryModel("", 1), 1, 1664790573068, 1),
-        TransactionModel(TransactionCategoryModel("", 1), 1, 1664790573068, 1)
+        TransactionModel(ExcomeCategoryModel("", 1), 1, 1664790573068, 1),
+        TransactionModel(ExcomeCategoryModel("", 1), 1, 1664790573068, 1)
     )
 }

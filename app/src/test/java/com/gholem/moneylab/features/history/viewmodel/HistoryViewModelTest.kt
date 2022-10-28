@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.features.history.adapter.item.HistoryTransactionItem
 import com.gholem.moneylab.domain.model.TransactionModel
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
 import com.gholem.moneylab.features.add.viewmodel.AddTransactionViewModel
 import com.gholem.moneylab.features.history.navigation.HistoryNavigationEvent
@@ -82,7 +82,7 @@ class HistoryViewModelTest {
             }
         }
 
-    private val transactionCategory = TransactionCategoryModel(
+    private val transactionCategory = ExcomeCategoryModel(
         categoryName = "categoryName",
         image = 1,
         id = 5

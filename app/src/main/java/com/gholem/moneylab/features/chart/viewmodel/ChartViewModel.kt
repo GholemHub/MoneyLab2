@@ -46,7 +46,10 @@ class ChartViewModel @Inject constructor(
             })
     }
 
-    private fun convertDateOfCurrentMonth(dateInMilliseconds: String, dateFormat: String?): String? {
+    private fun convertDateOfCurrentMonth(
+        dateInMilliseconds: String,
+        dateFormat: String?
+    ): String? {
         return DateFormat.format(dateFormat, dateInMilliseconds.toLong()).toString()
     }
 
@@ -72,6 +75,7 @@ class ChartViewModel @Inject constructor(
         val listOfSortedTransactions = createNotDuplicatedTransactionModel(last30Days)
         Action.ShowTransactions(listOfSortedTransactions).send()
     }
+
     private fun getTransactionListToExport() = viewModelScope.launch {
 
         val listOfTransaction = getTransactionListUseCase.run(Unit)
@@ -100,17 +104,19 @@ class ChartViewModel @Inject constructor(
 
     fun deductCountMonth(): String? {
         COUNT_MONTH -= LAST_MONTH
-        return  getDateOfCurrentMonth()
+        return getDateOfCurrentMonth()
     }
+
     fun sumCountMonth(): String? {
         COUNT_MONTH += LAST_MONTH
         return getDateOfCurrentMonth()
     }
+
     fun nowCountMonth(): String? {
         return getDateOfCurrentMonth()
     }
 
-    fun exportDataToExcel(){
+    fun exportDataToExcel() {
         getTransactionListToExport()
     }
 

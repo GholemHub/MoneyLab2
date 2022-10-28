@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.history.adapter.item
 
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
 
 sealed class HistoryTransactionItem {
     data class HistoryDate(
@@ -8,7 +8,7 @@ sealed class HistoryTransactionItem {
     ) : HistoryTransactionItem()
 
     data class HistoryTransaction(
-        val category: TransactionCategoryModel,
+        val category: CategoryItem,
         val amount: String = "",
         val id: Long
     ) : HistoryTransactionItem()

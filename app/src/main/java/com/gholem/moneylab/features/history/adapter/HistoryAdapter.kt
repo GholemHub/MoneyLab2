@@ -77,4 +77,6 @@ class HistoryAdapter(
         adapterData = listOfTransaction
         notifyDataSetChanged()
     }
+
+
 }

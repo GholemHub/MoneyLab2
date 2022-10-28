@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.DeleteTransactionModelUseCase
 import com.gholem.moneylab.features.add.domain.GetTransactionItemUseCase
@@ -15,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +63,7 @@ class EditTransactionViewModel @Inject constructor(
         currentTransaction = currentTransaction.copy(date = date)
     }
 
-    fun changeTransactionCategory(category: TransactionCategoryModel) {
+    fun changeTransactionCategory(category: CategoryItem) {
         currentTransaction = currentTransaction.copy(category = category)
     }
 
@@ -82,7 +82,21 @@ class EditTransactionViewModel @Inject constructor(
 
     fun setIdOfCategory(result: Long) = viewModelScope.launch {
         val categories = getCategoryListUseCase.run(Unit)
-        Action.GetCurrentCategory(categories.first { it.id == result }).send()
+        //it.id == result
+
+        var categoryItem = categories.first{
+            when (it){
+                is ExpenseCategoryModel -> {
+                    it.id == result
+                }
+                is CategoryItem.IncomeCategoryModel -> {
+                    it.id == result
+                }
+            }
+        }
+
+        Action.GetCurrentCategory(categoryItem).send()
+
     }
 
     fun onDoneButtonClick(amount: String) {
@@ -98,7 +112,7 @@ class EditTransactionViewModel @Inject constructor(
 
     sealed class Action {
         data class UpdateTransactionInfo(val transaction: TransactionModel) : Action()
-        data class GetCurrentCategory(val category: TransactionCategoryModel) : Action()
+        data class GetCurrentCategory(val category: CategoryItem) : Action()
         object SetEditedTransaction : Action()
     }
 }

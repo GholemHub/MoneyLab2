@@ -10,7 +10,9 @@ import androidx.navigation.fragment.navArgs
 import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentEditTransactionBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
+import com.gholem.moneylab.domain.model.CategoryItem.IncomeCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategoryFragment.Companion.KEY_CATEGORY
 import com.gholem.moneylab.features.editTransaction.navigation.EditTransactionNavigation
@@ -90,6 +92,7 @@ class EditTransactionFragment :
                     fillTransactionData(action.transaction)
                 }
                 is EditTransactionViewModel.Action.GetCurrentCategory -> {
+
                     fillCategoryData(viewBinding, action.category)
                 }
                 EditTransactionViewModel.Action.SetEditedTransaction -> {
@@ -102,19 +105,41 @@ class EditTransactionFragment :
     private fun fillTransactionData(transaction: TransactionModel) {
         viewBinding.amountEditTextEditTransaction.setText(transaction.amount.toString())
         viewBinding.setDateBtn.text = transaction.date.timestampToString()
-        viewBinding.categoryButton.text = transaction.category.categoryName
-        viewBinding.categoryButton
-            .setCompoundDrawablesWithIntrinsicBounds(0, 0, transaction.category.image, 0)
+        when(transaction.category){
+            is ExpenseCategoryModel -> {
+                viewBinding.categoryButton.text = transaction.category.categoryName
+                viewBinding.categoryButton
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, transaction.category.image, 0)
+            }
+            is IncomeCategoryModel -> {
+                viewBinding.categoryButton.text = transaction.category.categoryName
+                viewBinding.categoryButton
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, transaction.category.image, 0)
+            }
+
+        }
+
     }
 
     private fun fillCategoryData(
         viewBinding: FragmentEditTransactionBinding,
-        category: TransactionCategoryModel
+        category: CategoryItem
     ) {
-        viewBinding.categoryButton.text = category.categoryName
-        viewBinding.categoryButton
-            .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.image, 0)
-        viewModel.changeTransactionCategory(category)
+        when(category){
+            is ExpenseCategoryModel -> {
+                viewBinding.categoryButton.text = category.categoryName
+                viewBinding.categoryButton
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.image, 0)
+                viewModel.changeTransactionCategory(category)
+            }
+            is IncomeCategoryModel -> {
+                viewBinding.categoryButton.text = category.categoryName
+                viewBinding.categoryButton
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.image, 0)
+                viewModel.changeTransactionCategory(category)
+            }
+        }
+
     }
 
     private fun getTransactionInfo(positionItem: Long) {

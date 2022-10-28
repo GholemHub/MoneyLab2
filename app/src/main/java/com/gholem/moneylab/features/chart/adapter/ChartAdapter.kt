@@ -26,8 +26,6 @@ class ChartAdapter(
             is ChartViewHolder.ChartPieViewHolder -> holder.bind(adapterData[position] as ChartItem.Pie)
             is ChartViewHolder.ChartBarViewHolder -> holder.bind(adapterData[position] as ChartItem.Bar)
             is ChartViewHolder.ChartDataRetrofitViewHolder -> holder.bind(adapterData[position] as ChartItem.Transaction)
-            is ChartViewHolder.ChartTotalExpenseViewHolder -> holder.bind(adapterData[position] as ChartItem.TotalExpense)
-
         }
     }
 
@@ -54,7 +52,6 @@ class ChartAdapter(
             R.layout.item_chart_bar -> createBarViewHolder(parent)
             R.layout.item_chart_transaction -> createTransactionViewHolder(parent)
             R.layout.item_chart_empty -> createEmptyViewHolder(parent)
-            R.layout.item_chart_totalexpense -> createTotalExpenseViewHolder(parent)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -74,18 +71,6 @@ class ChartAdapter(
                 positionClickListener.invoke(adapterData[position])
             }
         }
-    }
-
-    private fun createTotalExpenseViewHolder(
-        parent: ViewGroup
-    ): ChartViewHolder.ChartTotalExpenseViewHolder {
-        val binding = ItemChartTotalexpenseBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-
-        return ChartViewHolder.ChartTotalExpenseViewHolder(binding)
     }
 
     private fun createEmptyViewHolder(
@@ -136,19 +121,16 @@ class ChartAdapter(
         return ChartViewHolder.ChartBarViewHolder(binding)
     }
 
-    fun createAdapterData(list: List<TransactionModel>) {
+    fun createAdapterData(listTransactions: List<TransactionModel>) {
         adapterData.clear()
 
-        if (list.isNotEmpty()) {
-            //adapterData.add(ChartItem.TotalExpense(list))
-            adapterData.add(ChartItem.Pie(list))
-            adapterData.add(ChartItem.Bar(list))
-            adapterData.addAll(list.map { ChartItem.Category(it) })
+        if (listTransactions.isNotEmpty()) {
+            adapterData.add(ChartItem.Pie(listTransactions))
+            adapterData.add(ChartItem.Bar(listTransactions))
+            adapterData.addAll(listTransactions.map { ChartItem.Category(it) })
         } else {
             adapterData.add(ChartItem.Empty)
         }
-
         notifyDataSetChanged()
     }
-
 }

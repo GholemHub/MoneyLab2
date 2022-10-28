@@ -15,31 +15,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_of_new_category"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginEnd="@dimen/margin_default"
-        android:gravity="center"
-        android:hint="@string/transaction_name_category_hint"
-        android:maxLength="15"
-        android:maxLines="1"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_of_new_category" />
+        app:layout_constraintTop_toBottomOf="@id/image_of_new_category">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_new_category_text_editTransaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:background="@android:color/transparent"
+            android:hint="@string/transaction_amount_hint"
+            android:textSize="@dimen/app_text_size_default" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
-        android:id="@+id/done_new_category_btn"
-        android:layout_width="match_parent"
+        android:id="@+id/income_new_category_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
         android:gravity="center"
-        android:text="@string/done"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/income"
+        app:layout_constraintEnd_toStartOf="@+id/expense_new_category_btn"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_of_new_category" />
+
+    <Button
+        android:id="@+id/expense_new_category_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:gravity="center"
+        android:text="@string/expense"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/income_new_category_btn"
         app:layout_constraintTop_toBottomOf="@id/name_of_new_category" />
 </androidx.constraintlayout.widget.ConstraintLayout>

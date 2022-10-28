@@ -3,14 +3,17 @@ package com.gholem.moneylab.features.history.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
+import com.gholem.moneylab.domain.model.CategoryItem
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.GetTransactionListUseCase
+import com.gholem.moneylab.features.chart.adapter.viewholder.ChartViewHolder
 import com.gholem.moneylab.features.history.adapter.item.HistoryTransactionItem
 import com.gholem.moneylab.features.history.navigation.HistoryNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,15 +40,26 @@ class HistoryViewModel @Inject constructor(
             result.add(HistoryTransactionItem.HistoryDate(entry.key))
 
             entry.value.forEach { transaction ->
-                result.add(
-                    HistoryTransactionItem.HistoryTransaction(
-                        transaction.category,
-                        transaction.amount.toString(),
-                        transaction.transactionId
-                    )
-                )
+                val transactionCategoryItem = when (transaction.category) {
+                    is CategoryItem.ExpenseCategoryModel -> {
+                        HistoryTransactionItem.HistoryTransaction(
+                            transaction.category,
+                            transaction.amount.toString(),
+                            transaction.transactionId
+                        )
+                    }
+                    is CategoryItem.IncomeCategoryModel -> {
+                        HistoryTransactionItem.HistoryTransaction(
+                            transaction.category,
+                            transaction.amount.toString(),
+                            transaction.transactionId
+                        )
+                    }
+                }
+                result.add(transactionCategoryItem)
             }
         }
+        i("result @@ ${result}")
         Action.ShowDataHistoryTransactionItem(result).send()
     }
 
@@ -64,6 +78,27 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch {
             _actions.send(this@send)
         }
+
+    fun getAllExpends(list: List<HistoryTransactionItem>): String {
+        i("List @@ ${list} ")
+
+        var excomes = 0
+        var incomes = 0
+        list.forEach {
+            if (it is HistoryTransactionItem.HistoryTransaction) {
+                when (it.category) {
+                    is CategoryItem.ExpenseCategoryModel -> {
+                        excomes += it.amount.toInt()
+                    }
+                    is CategoryItem.IncomeCategoryModel -> {
+                        incomes += it.amount.toInt()
+                    }
+                }
+            }
+        }
+        i("excomes.minus(incomes @@ ${excomes} ${incomes}")
+        return incomes.minus(excomes).toString()
+    }
 
     sealed class Action {
         data class ShowDataHistoryTransactionItem(val list: List<HistoryTransactionItem>) : Action()

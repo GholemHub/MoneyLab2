@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.add.domain
 
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.TransactionStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,8 +19,8 @@ class GetTransactionListUseCaseTest {
     fun `verify if getAll method was triggered`() = runTest {
         /* Given */
         val transactionList = listOf(
-            TransactionModel(TransactionCategoryModel("categoryName", 1, 5), 2, 3, 1),
-            TransactionModel(TransactionCategoryModel("categoryName2", 2, 4), 5, 6, 1)
+            TransactionModel(ExcomeCategoryModel("categoryName", 1, 5), 2, 3, 1),
+            TransactionModel(ExcomeCategoryModel("categoryName2", 2, 4), 5, 6, 1)
         )
         `when`(transactionStorageRepositoryMock.getAll()).thenReturn(transactionList)
 

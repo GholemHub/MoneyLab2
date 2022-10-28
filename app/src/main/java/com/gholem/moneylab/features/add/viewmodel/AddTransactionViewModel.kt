@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gholem.moneylab.arch.nav.NavigationLiveData
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
@@ -14,8 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.Timber.i
 import javax.inject.Inject
 
 @HiltViewModel
@@ -94,7 +92,7 @@ class AddTransactionViewModel @Inject constructor(
 
     sealed class Action {
         object GetTransactionsData : Action()
-        data class ShowData(val list: List<TransactionCategoryModel>) : Action()
+        data class ShowData(val list: List<CategoryItem>) : Action()
         data class SelectCategory(val categoryId: Long) : Action()
         data class InvalidData(val listOfIndexes: List<Int>) : Action()
     }

@@ -3,6 +3,7 @@
 
     <color name="primary_color">#545274</color>
     <color name="primary_color_dark">#3d3b55</color>
+    <color name="primary_green">#3B5541</color>
     <color name="secondary_color">#edb22a</color>
     <color name="secondary_color_dark">#b88715</color>
 
@@ -38,4 +39,11 @@
     <color name="chart_blue">#3498db</color>
     <color name="chart_raspberry">#C1254E</color>
     <color name="chart_purple">#FFBB86FC</color>
+    <color name="chart_deepBlue">#3F51B5</color>
+    <color name="chart_gold">#B66D00</color>
+    <color name="chart_cian">@color/teal_200</color>
+    <color name="chart_leaf_green">#00CC00</color>
+    <color name="chart_violet">#5C0DAC</color>
+    <color name="chart_pink">#DB37BC</color>
+    <color name="chart_lemon">#CCF600</color>
 </resources>

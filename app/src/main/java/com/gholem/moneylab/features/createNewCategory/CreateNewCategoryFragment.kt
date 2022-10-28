@@ -5,7 +5,8 @@ import androidx.navigation.fragment.findNavController
 import com.gholem.moneylab.R
 import com.gholem.moneylab.arch.base.BaseFragment
 import com.gholem.moneylab.databinding.FragmentNewCategoryBinding
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
 import com.gholem.moneylab.features.createNewCategory.navigation.CreateNewCategoryNavigation
 import com.gholem.moneylab.features.createNewCategory.viewmodel.CreateNewCategoryViewModel
 import com.gholem.moneylab.features.createNewCategoryImage.CreateNewCategoryImageFragment.Companion.KEY_IMAGE
@@ -31,8 +32,11 @@ class CreateNewCategoryFragment :
         viewBinding.imageOfNewCategory.setOnClickListener {
             navigateToImagePicker()
         }
-        viewBinding.doneNewCategoryBtn.setOnClickListener {
-            createNewCategory(viewBinding)
+        viewBinding.expenseNewCategoryBtn.setOnClickListener {
+            createNewExpenseCategory(viewBinding)
+        }
+        viewBinding.incomeNewCategoryBtn.setOnClickListener {
+            createNewIncomeCategory(viewBinding)
         }
     }
 
@@ -49,14 +53,35 @@ class CreateNewCategoryFragment :
             }
     }
 
-    private fun createNewCategory(viewBinding: FragmentNewCategoryBinding) {
-        val categoryName = viewBinding.nameOfNewCategory.text.toString()
-        viewModel.saveCategoryAndFinish(
-            TransactionCategoryModel(
-                categoryName,
-                categoryImageResource
+    private fun createNewIncomeCategory(viewBinding: FragmentNewCategoryBinding) {
+
+        val categoryName = viewBinding.nameNewCategoryTextEditTransaction.text.toString()
+        if (categoryName.isEmpty()) {
+            viewBinding.nameOfNewCategory.error = resources.getText(R.string.error_message)
+            viewBinding.nameOfNewCategory.isErrorEnabled = true
+        } else {
+            viewModel.saveCategoryAndFinish(
+                CategoryItem.IncomeCategoryModel(
+                    categoryName,
+                    categoryImageResource
+                )
             )
-        )
+        }
+    }
+
+    private fun createNewExpenseCategory(viewBinding: FragmentNewCategoryBinding) {
+        val categoryName = viewBinding.nameNewCategoryTextEditTransaction.text.toString()
+        if (categoryName.isEmpty()) {
+            viewBinding.nameOfNewCategory.error = resources.getText(R.string.error_message)
+            viewBinding.nameOfNewCategory.isErrorEnabled = true
+        } else {
+            viewModel.saveCategoryAndFinish(
+                ExpenseCategoryModel(
+                    categoryName,
+                    categoryImageResource
+                )
+            )
+        }
     }
 
     private fun navigateToImagePicker() {

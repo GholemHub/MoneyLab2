@@ -6,20 +6,32 @@ import com.gholem.moneylab.R
 import com.gholem.moneylab.databinding.ItemAddCategoryBinding
 import com.gholem.moneylab.databinding.ItemAddNewTransactionBinding
 import com.gholem.moneylab.databinding.ItemAddTransactionBinding
+import com.gholem.moneylab.domain.model.CategoryItem.ExpenseCategoryModel
+import com.gholem.moneylab.domain.model.CategoryItem.IncomeCategoryModel
 import com.gholem.moneylab.features.add.adapter.item.AddTransactionItem
 import com.gholem.moneylab.util.timestampToString
 
-sealed class AddTransactionViewHolder(binding: ViewBinding) :
+sealed class
+AddTransactionViewHolder(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     class CategoryViewHolder(
         private val binding: ItemAddCategoryBinding
     ) : AddTransactionViewHolder(binding) {
         fun bind(category: AddTransactionItem.Category) {
+            when(category.category){
+                is ExpenseCategoryModel -> {
+                    binding.categoryButton.text = category.category.categoryName
+                    binding.categoryButton
+                        .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.category.image, 0)
+                }
+                is IncomeCategoryModel -> {
+                    binding.categoryButton.text = category.category.categoryName
+                    binding.categoryButton
+                        .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.category.image, 0)
+                }
+            }
 
-            binding.categoryButton.text = category.category.categoryName
-            binding.categoryButton
-                .setCompoundDrawablesWithIntrinsicBounds(0, 0, category.category.image, 0)
         }
     }
 

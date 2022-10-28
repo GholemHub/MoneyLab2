@@ -3,7 +3,7 @@ package com.gholem.moneylab.features.add.viewmodel
 import app.cash.turbine.test
 import com.gholem.moneylab.MainCoroutineRule
 import com.gholem.moneylab.common.BottomNavigationVisibilityBus
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.features.add.domain.InsertTransactionsModelUseCase
 import com.gholem.moneylab.features.add.navigation.AddNavigationEvent
@@ -57,7 +57,7 @@ class AddTransactionViewModelTest {
         /* Given */
         val transactionList = listOf(
             TransactionModel(
-                TransactionCategoryModel("1", 2, 3), 1, 2, 1
+                ExcomeCategoryModel("1", 2, 3), 1, 2, 1
             )
         )
         `when`(insertTransactionsModelUseCaseMock.run(transactionList)).thenReturn(Unit)
@@ -90,7 +90,7 @@ class AddTransactionViewModelTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
-                TransactionCategoryModel("123", 123, 123)
+                ExcomeCategoryModel("123", 123, 123)
             )
         )
         /* When */
@@ -102,7 +102,7 @@ class AddTransactionViewModelTest {
         viewModel.actions.test {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
-                    listOf(TransactionCategoryModel("123", 123, 123))
+                    listOf(ExcomeCategoryModel("123", 123, 123))
                 ), awaitItem()
             )
             expectNoEvents()
@@ -114,7 +114,7 @@ class AddTransactionViewModelTest {
         /* Given */
         `when`(getCategoryListUseCaseMock.run(Unit)).thenReturn(
             listOf(
-                TransactionCategoryModel("123", 123, 123)
+                ExcomeCategoryModel("123", 123, 123)
             )
         )
 
@@ -127,7 +127,7 @@ class AddTransactionViewModelTest {
             assertEquals(
                 AddTransactionViewModel.Action.ShowData(
                     listOf(
-                        TransactionCategoryModel("123", 123, 123)
+                        ExcomeCategoryModel("123", 123, 123)
                     )
                 ), awaitItem()
             )

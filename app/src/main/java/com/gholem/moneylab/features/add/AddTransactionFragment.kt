@@ -14,6 +14,7 @@ import com.gholem.moneylab.features.chooseTransactionCategory.BottomSheetCategor
 import com.gholem.moneylab.features.createNewCategory.CreateNewCategoryFragment.Companion.KEY_CATEGORY_CHOOSE
 import com.gholem.moneylab.util.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber.i
 import java.util.*
 
 @AndroidEntryPoint
@@ -65,7 +66,9 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dataAdapter.setDate(position, p3, p2, p1)
+        val rightNow: Calendar = Calendar.getInstance()
+
+        dataAdapter.setDate(position, p3, p2, p1, rightNow.time.hours,rightNow.time.minutes, rightNow.time.seconds)
     }
 
     //only: fragment back to fragment\\savedStateHandle
@@ -102,7 +105,7 @@ class AddTransactionFragment : BaseFragment<FragmentAddBinding, AddTransactionVi
         viewModel.actions.observeWithLifecycle(viewLifecycleOwner) { action ->
             when (action) {
                 AddTransactionViewModel.Action.GetTransactionsData -> {
-                    viewModel.saveTransaction(dataAdapter.getTransactionListData())
+                    viewModel.saveTransaction(dataAdapter.getTransactionListData().sortedBy { it.date })
                 }
                 is AddTransactionViewModel.Action.ShowData -> {
                     dataAdapter.updateData(action.list)

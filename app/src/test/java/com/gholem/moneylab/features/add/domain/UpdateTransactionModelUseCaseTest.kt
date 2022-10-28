@@ -1,6 +1,6 @@
 package com.gholem.moneylab.features.add.domain
 
-import com.gholem.moneylab.domain.model.TransactionCategoryModel
+import com.gholem.moneylab.domain.model.ExcomeCategoryModel
 import com.gholem.moneylab.domain.model.TransactionModel
 import com.gholem.moneylab.repository.storage.TransactionStorageRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +20,7 @@ class UpdateTransactionModelUseCaseTest {
     @Test
     fun `verify invocations when run method was called`() = runTest {
         /* Given */
-        val item = TransactionCategoryModel("Name", 0, 0)
+        val item = ExcomeCategoryModel("Name", 0, 0)
         Mockito.`when`(transactionStorageRepositoryMock.updateItem(transactionList.first()))
             .thenReturn(Unit)
         /* When */
@@ -30,7 +30,7 @@ class UpdateTransactionModelUseCaseTest {
         Mockito.verify(transactionStorageRepositoryMock).updateItem(transactionList.first())
     }
 
-    private val transactionCategory = TransactionCategoryModel(
+    private val transactionCategory = ExcomeCategoryModel(
         categoryName = "categoryName",
         image = 1,
         id = 5
